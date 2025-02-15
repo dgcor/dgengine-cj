@@ -1,0 +1,15 @@
+*.macrocall
+/*.a
+/*.AppImage
+/*.dll
+/*.exe
+/*.zip
+/.cache
+/.svn
+/.vs
+/.vscode
+/dependencies/csfml
+/dependencies/physfs
+/dependencies/sfml
+/portable
+/target

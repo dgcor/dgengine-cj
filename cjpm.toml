@@ -1,0 +1,21 @@
+[package]
+  cjc-version = "0.53.18"
+  compile-option = "--dy-std --dy-libs -O2"
+  description = "DGEngine game engine"
+  link-option = ""
+  name = "dgengine"
+  output-type = "dynamic"
+  src-dir = ""
+  target-dir = ""
+  version = "1.2.1"
+  package-configuration = {}
+
+[dependencies]
+  cenum = { path = "dependencies/cenum" }
+  cjsfml = { path = "dependencies/cjsfml" }
+  ctemplate = { path = "dependencies/ctemplate" }
+  customiterators = { path = "dependencies/customiterators" }
+  endian = { path = "dependencies/endian" }
+
+[ffi.c]
+  physfs = { path = "dependencies/physfs/install/lib" }

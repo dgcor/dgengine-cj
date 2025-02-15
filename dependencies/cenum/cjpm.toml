@@ -1,0 +1,11 @@
+[package]
+  cjc-version = "0.53.18"
+  compile-option = "--dy-std --dy-libs -O2"
+  description = "C enum macro"
+  link-option = ""
+  name = "cenum"
+  output-type = "dynamic"
+  src-dir = ""
+  target-dir = ""
+  version = "1.0.0"
+  package-configuration = {}

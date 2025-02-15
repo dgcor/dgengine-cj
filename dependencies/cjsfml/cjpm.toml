@@ -1,0 +1,23 @@
+[package]
+  cjc-version = "0.53.18"
+  compile-option = "--dy-std --dy-libs -O2"
+  description = "SFML library bindings"
+  link-option = ""
+  name = "cjsfml"
+  output-type = "dynamic"
+  src-dir = ""
+  target-dir = ""
+  version = "1.0.0"
+  package-configuration = {}
+
+[dependencies]
+  cenum = { path = "../cenum" }
+  ctemplate = { path = "../ctemplate" }
+  endian = { path = "../endian" }
+
+[ffi.c]
+  csfml-audio = { path = "../csfml/install/lib" }
+  csfml-graphics = { path = "../csfml/install/lib" }
+  csfml-network = { path = "../csfml/install/lib" }
+  csfml-system = { path = "../csfml/install/lib" }
+  csfml-window = { path = "../csfml/install/lib" }

@@ -1,0 +1,61 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+    VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout DGEngine
+      uses: actions/checkout@v4
+
+    - name: Export GitHub Actions cache environment variables
+      uses: actions/github-script@v6
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+    - name: Install Ubuntu dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+        version: 1.0
+        execute_install_scripts: true
+
+    - name: Setup Ninja Build
+      uses: turtlesec-no/get-ninja@main
+
+    - name: Build and install SFML
+      run: |
+        vcpkg install sfml --triplet=x64-linux --overlay-ports=dependencies/vcpkg
+
+    - name: Build and install CSFML
+      run: |
+        git clone --branch feature/right-align-text https://github.com/dgcor/CSFML.git dependencies/csfml
+        cp -f dependencies/CMakePresets.json dependencies/csfml/CMakePresets.json
+        cd dependencies/csfml
+        cmake --preset linux-release -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake --build --preset linux-release --target install
+
+    - name: Build and install physfs
+      run: |
+        git clone https://github.com/icculus/physfs.git dependencies/physfs
+        cp -f dependencies/CMakePresets.json dependencies/physfs/CMakePresets.json
+        cd dependencies/physfs
+        cmake --preset linux-release
+        cmake --build --preset linux-release --target install
+
+    - name: Setup Cangjie
+      run: |
+        curl -L -o Cangjie-0.53.18-linux_x64.tar.gz https://github.com/causerp/cangjie/releases/download/v0.53.18/Cangjie-0.53.18-linux_x64.tar.gz
+        tar -xzf Cangjie-0.53.18-linux_x64.tar.gz -C .
+
+    - name: Build DGEngine
+      run: |
+        source ./cangjie/envsetup.sh
+        cjpm build
