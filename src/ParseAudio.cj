@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.audio.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func openMusicFromFile(game: Game, music: Music, audioSource: AudioSource, id: String, resource: String): Bool {
     if (game.resources.hasSong(id, checkTopOnly: true) == false) {

@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.audio.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseAudioTimeSpan(elem: JsonValue) {
     TimeSpan(

@@ -1,13 +1,14 @@
 [package]
-  cjc-version = "0.53.18"
-  compile-option = "--dy-std --dy-libs -O2"
-  description = "SFML library bindings"
-  link-option = ""
+  cjc-version = "1.0.0"
   name = "cjsfml"
-  output-type = "dynamic"
-  src-dir = ""
+  description = "SFML library bindings"
+  version = "1.1.0"
   target-dir = ""
-  version = "1.0.0"
+  src-dir = ""
+  output-type = "dynamic"
+  compile-option = "--dy-std --dy-libs -O2"
+  override-compile-option = ""
+  link-option = ""
   package-configuration = {}
 
 [dependencies]
@@ -16,8 +17,8 @@
   endian = { path = "../endian" }
 
 [ffi.c]
-  csfml-audio = { path = "../csfml/install/lib" }
-  csfml-graphics = { path = "../csfml/install/lib" }
-  csfml-network = { path = "../csfml/install/lib" }
-  csfml-system = { path = "../csfml/install/lib" }
-  csfml-window = { path = "../csfml/install/lib" }
+  csfml-audio = { path = "../csfml" }
+  csfml-graphics = { path = "../csfml" }
+  csfml-network = { path = "../csfml" }
+  csfml-system = { path = "../csfml" }
+  csfml-window = { path = "../csfml" }

@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseShader(game: Game, elem: JsonValue): Unit {
     let id = parseValidId(elem)

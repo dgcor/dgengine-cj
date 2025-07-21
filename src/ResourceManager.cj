@@ -60,21 +60,21 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
     }
 
     public func addResource(id: String): Unit {
-        m_resources.append(ResourceBundle(id))
+        m_resources.add(ResourceBundle(id))
     }
 
     public func popResource(): Unit {
         if (m_resources.size > 0) {
-            m_resources.remove(m_resources.size - 1).closeSongs()
-            GC()
+            m_resources.remove(at: m_resources.size - 1).closeSongs()
+            gc()
         }
     }
 
     public func popResource(id: String): Unit {
         for ((index, res) in m_resources |> enumerate) {
             if (res.id == id) {
-                m_resources.remove(index).closeSongs()
-                GC()
+                m_resources.remove(at: index).closeSongs()
+                gc()
                 return
             }
         }
@@ -87,7 +87,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
                     res.closeSongs()
                 }
                 m_resources.remove(index..m_resources.size)
-                GC()
+                gc()
                 return
             }
         }
@@ -103,7 +103,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
             m_resources[0] = ResourceBundle()
             m_currentLevel = None
         }
-        GC()
+        gc()
     }
 
     public func ignoreResources(id: String, ignore: IgnoreResource): Unit {
@@ -158,7 +158,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
     }
 
     public func addCursor(cursor: ?Image): Unit {
-        m_cursors.append(cursor)
+        m_cursors.add(cursor)
     }
 
     public func popCursor(popAll!: Bool = false): Unit {
@@ -168,7 +168,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
         if (popAll) {
             m_cursors.clear()
         } else {
-            m_cursors.remove(m_cursors.size - 1)
+            m_cursors.remove(at: m_cursors.size - 1)
         }
     }
 
@@ -186,7 +186,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
 
     public func setAction(key: String, obj: ?Action): Unit {
         match (obj) {
-            case Some(obj) => m_resources.back.actions.put(key, obj)
+            case Some(obj) => m_resources.back.actions.add(key, obj)
             case None => m_resources.back.actions.remove(key)
         }
     }
@@ -209,7 +209,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
                 m_resources.back.anyKeyAction = obj
                 return
             case _ => match (obj) {
-                case Some(obj) => m_resources.back.inputActions.put(key, obj)
+                case Some(obj) => m_resources.back.inputActions.add(key, obj)
                 case None => m_resources.back.inputActions.remove(key)
             }
         }
@@ -256,7 +256,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
     // InputEvents
 
     public func setInputEvent(event: InputEvent, name: String): Unit {
-        m_resources.back.inputEvents.append((event, name))
+        m_resources.back.inputEvents.add((event, name))
     }
 
     public func hasActiveInputEvents(): Bool {
@@ -282,8 +282,8 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
             }
             for ((event, name) in res.inputEvents) {
                 if (event.isActive() == true && used.contains(event) == false) {
-                    m_activeInputEvents.append(name)
-                    used.append(event)
+                    m_activeInputEvents.add(name)
+                    used.add(event)
                 }
             }
         }
@@ -432,11 +432,11 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
 
     public func addSong(key: String, obj: Music, resourceId!: String = String.empty): Bool {
         if (resourceId.isEmpty() == true) {
-            return m_resources.back.songs.putIfAbsent(key, obj)
+            return m_resources.back.songs.addIfAbsent(key, obj).isNone()
         } else {
             for (res in m_resources |> reverse) {
                 if (res.id == resourceId) {
-                    return res.songs.putIfAbsent(key, obj)
+                    return res.songs.addIfAbsent(key, obj).isNone()
                 }
             }
         }
@@ -518,9 +518,9 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
     // Drawables
 
     private func addDrawable(res: ResourceBundle, key: String, obj: UIObject, manageObjDrawing!: Bool): Unit {
-        if (res.drawableIds.putIfAbsent(key, obj) == true) {
+        if (res.drawableIds.addIfAbsent(key, obj).isNone()) {
             if (manageObjDrawing == true) {
-                res.drawables.append(obj)
+                res.drawables.add(obj)
             }
         }
     }
@@ -590,7 +590,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
             if (let Some(obj) <- res.drawableIds.remove(id)) {
                 for ((index, drawable) in res.drawables |> enumerate) {
                     if (isObjEq(drawable, obj) == true) {
-                        res.drawables.remove(index)
+                        res.drawables.remove(at: index)
                         break
                     }
                 }
@@ -609,7 +609,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
         for (res in m_resources |> reverse) {
             for ((index, drawable) in res.drawables |> enumerate) {
                 if (isObjEq(drawable, obj) == true) {
-                    res.drawables.remove(index)
+                    res.drawables.remove(at: index)
                     break
                 }
             }
@@ -624,7 +624,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
                 return
             }
         }
-        res.focusButtons.append(obj)
+        res.focusButtons.add(obj)
     }
 
     public func addFocused(obj: Button, resourceId!: String = String.empty): Unit {
@@ -657,7 +657,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
             let btn = res.focusButtons[index]
             if (let Some(resource) <- (btn as Resource)) {
                 if (resource.isClosed()) {
-                    res.focusButtons.remove(index)
+                    res.focusButtons.remove(at: index)
                     if (res.focusButtons.isEmpty() == false && res.focusIdx >= res.focusButtons.size) {
                         res.focusIdx--
                     }
@@ -794,7 +794,7 @@ public class ResourceManager <: Iterable<ResourceBundle> & Resource {
                 }
             }
         }
-        m_playingSounds.append(obj)
+        m_playingSounds.addLast(obj)
         obj.play()
         obj.playingOffset = seek
     }

@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseRandom(game: Game, elem: JsonValue): ?Action {
     ActRandom(

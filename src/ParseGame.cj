@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseGameElem(game: Game, name: String, elem: JsonValue): Unit {
     match (name) {

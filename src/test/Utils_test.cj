@@ -279,34 +279,34 @@ class TestUtils {
 
     @TestCase
     func Int32_toString() {
-        @Expect(toString(0i32), "0")
-        @Expect(toString(-1i32), "-1")
-        @Expect(toString(987654i32), "987654")
-        @Expect(toString(-123456789i32), "-123456789")
+        @Expect((0i32).toString(), "0")
+        @Expect((-1i32).toString(), "-1")
+        @Expect((987654i32).toString(), "987654")
+        @Expect((-123456789i32).toString(), "-123456789")
     }
 
     @TestCase
     func Int64_toString() {
-        @Expect(toString(0i64), "0")
-        @Expect(toString(-1i64), "-1")
-        @Expect(toString(987654i64), "987654")
-        @Expect(toString(-123456789i64), "-123456789")
+        @Expect((0i64).toString(), "0")
+        @Expect((-1i64).toString(), "-1")
+        @Expect((987654i64).toString(), "987654")
+        @Expect((-123456789i64).toString(), "-123456789")
     }
 
     @TestCase
     func UInt32_toString() {
-        @Expect(toString(0u32), "0")
-        @Expect(toString(1u32), "1")
-        @Expect(toString(987654u32), "987654")
-        @Expect(toString(123456789u32), "123456789")
+        @Expect((0u32).toString(), "0")
+        @Expect((1u32).toString(), "1")
+        @Expect((987654u32).toString(), "987654")
+        @Expect((123456789u32).toString(), "123456789")
     }
 
     @TestCase
     func UInt64_toString() {
-        @Expect(toString(0u64), "0")
-        @Expect(toString(1u64), "1")
-        @Expect(toString(987654u64), "987654")
-        @Expect(toString(123456789u64), "123456789")
+        @Expect((0u64).toString(), "0")
+        @Expect((1u64).toString(), "1")
+        @Expect((987654u64).toString(), "987654")
+        @Expect((123456789u64).toString(), "123456789")
     }
 
     @TestCase

@@ -31,10 +31,10 @@ public type GlslIvec3 = Vector3i
 
 @C
 public struct GlslMat3 {
-    public var array: VArray<Float32, $9> = VArray<Float32, $9>(item: 0.0)
+    public var array: VArray<Float32, $9> = VArray<Float32, $9>(repeat: 0.0)
 }
 
 @C
 public struct GlslMat4 {
-    public var array: VArray<Float32, $16> = VArray<Float32, $16>(item: 0.0)
+    public var array: VArray<Float32, $16> = VArray<Float32, $16>(repeat: 0.0)
 }

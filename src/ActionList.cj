@@ -6,12 +6,12 @@ public class ActionList <: Action {
     public ActionList(private let actions!: ArrayList<Action> = ArrayList<Action>()) {}
 
     public func add(action: Action) {
-        actions.append(action)
+        actions.add(action)
     }
 
     public func add(action: ?Action) {
         if (let Some(action) <- action) {
-            actions.append(action)
+            actions.add(action)
         }
     }
 

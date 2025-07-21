@@ -205,7 +205,7 @@ public class Game <: Resource {
         m_focusLossAction = None
         m_focusGainAction = None
 
-        GC()
+        gc()
     }
 
     public func load(gamefilePath: String, mainFile: String): Unit {

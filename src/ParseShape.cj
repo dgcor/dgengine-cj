@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.graphics.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getShapeObj(game: Game, elem: JsonValue): ?Shape {
     let shape = Shape(getPrimitiveTypeKey(elem, "type"))

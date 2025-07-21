@@ -21,9 +21,9 @@ public class GameInputEventManager {
                     return
                 }
             }
-            inputEvents.append(value)
+            inputEvents.add(value)
         } else {
-            m_gameInputEvents.put(key, ArrayList<SFMLEvent>(1, {_ => value}))
+            m_gameInputEvents.add(key, ArrayList<SFMLEvent>(1, {_ => value}))
         }
     }
 }

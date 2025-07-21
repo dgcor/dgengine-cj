@@ -24,8 +24,8 @@ public prop handle: CPointer<Unit>
 ```
 
 Classes also implement destructors to free resources. Destructors are invoked by
-cangjie's garbage collector or by calling `GC()` directly. Programs don't have to
-do resource management and can free unused resources by simply calling `GC()`.  
+cangjie's garbage collector or by calling `gc()` directly. Programs don't have to
+do resource management and can free unused resources by simply calling `gc()`.  
 
 It is important to free `Texture` resources when not in use as they take up GPU memory.
 

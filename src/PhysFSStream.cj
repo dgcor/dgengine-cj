@@ -19,8 +19,15 @@ private func physfsInputStream_seek(position: Int64, userData: CPointer<Unit>): 
 
 public class PhysFSStream <: InputStream {
     public init(fileName: String) {
-        super(InputStreamData(physfsInputStream_read, physfsInputStream_seek, PHYSFS_tell, PHYSFS_fileLength, CPointer()
-        ))
+        super(
+            InputStreamData(
+                physfsInputStream_read,
+                physfsInputStream_seek,
+                PHYSFS_tell,
+                PHYSFS_fileLength,
+                CPointer()
+            )
+        )
 
         var handle: CPointer<Unit> = CPointer()
         unsafe {

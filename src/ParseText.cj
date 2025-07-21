@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseTextObj(game: Game, elem: JsonValue, text: Text): Unit {
     text.horizontalSpaceOffset = getIntKey(elem, "horizontalSpaceOffset")

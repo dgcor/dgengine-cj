@@ -3,7 +3,7 @@ package dgengine
 import cjsfml.graphics.*
 import cjsfml.system.*
 import ctemplate.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func getAnimationTypeKey(elem: JsonValue, key: String, default!: AnimationType = AnimationType.Looped) {

@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.fs.*
 
 public func parseGame(game: Game, filePath: String, fileName: String): Unit {

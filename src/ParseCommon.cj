@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 // tries to get id from id element
 public func parseValidId(elem: JsonValue): String {

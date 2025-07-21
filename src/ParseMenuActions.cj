@@ -2,7 +2,7 @@ package dgengine
 
 import ctemplate.*
 import cjsfml.graphics.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 @Template[functionName, actionName: parseMenuAppendText, ActMenuAppendText ; parseMenuSetText, ActMenuSetText](
 public func functionName(elem: JsonValue): ?Action {

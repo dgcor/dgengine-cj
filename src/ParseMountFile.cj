@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseMountFile(game: Game, elem: JsonValue): Unit {
     var file = getStringKey(elem, "file")

@@ -55,7 +55,7 @@ class Edge <: Effect {
             // Load the moving entities
             for (i in 0i32..6) {
                 let entity = Sprite(entityTexture, IntRect(96 * i, 0, 96, 96))
-                m_entities.append(entity)
+                m_entities.add(entity)
             }
 
             // Load the shader

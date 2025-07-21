@@ -53,11 +53,11 @@ public func easeOutQuint(t: Float64, b: Float64, c: Float64, d: Float64): Float6
 }
 
 public func easeInSine(t: Float64, b: Float64, c: Float64, d: Float64): Float64 {
-    return -c * cos(t / d * (Float64.PI / 2.0)) + c + b
+    return -c * cos(t / d * (Float64.getPI() / 2.0)) + c + b
 }
 
 public func easeOutSine(t: Float64, b: Float64, c: Float64, d: Float64): Float64 {
-    return c * sin(t / d * (Float64.PI / 2.0)) + b
+    return c * sin(t / d * (Float64.getPI() / 2.0)) + b
 }
 
 public func easeInExpo(t: Float64, b: Float64, c: Float64, d: Float64): Float64 {

@@ -1,11 +1,14 @@
 [package]
-  cjc-version = "0.53.18"
-  compile-option = "--dy-std --dy-libs -O2"
-  description = "custom iterators collection"
-  link-option = ""
+  cjc-version = "1.0.0"
   name = "customiterators"
-  output-type = "dynamic"
-  src-dir = ""
+  description = "custom iterators collection"
+  version = "1.1.0"
   target-dir = ""
-  version = "1.0.0"
+  src-dir = ""
+  output-type = "dynamic"
+  compile-option = "--dy-std --dy-libs -O2"
+  override-compile-option = ""
+  link-option = ""
   package-configuration = {}
+
+[dependencies]

@@ -1,7 +1,5 @@
 package cjsfml.graphics
 
-import std.math.{min, max}
-
 @C
 public struct Color {
     public var r: UInt8

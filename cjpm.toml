@@ -1,13 +1,14 @@
 [package]
-  cjc-version = "0.53.18"
-  compile-option = "--dy-std --dy-libs -O2"
-  description = "DGEngine game engine"
-  link-option = ""
+  cjc-version = "1.0.0"
   name = "dgengine"
-  output-type = "dynamic"
-  src-dir = ""
-  target-dir = ""
+  description = "DGEngine game engine"
   version = "1.2.1"
+  target-dir = ""
+  src-dir = ""
+  output-type = "dynamic"
+  compile-option = "--dy-std --dy-libs"
+  override-compile-option = "--dy-std --dy-libs"
+  link-option = ""
   package-configuration = {}
 
 [dependencies]
@@ -18,4 +19,10 @@
   endian = { path = "dependencies/endian" }
 
 [ffi.c]
-  physfs = { path = "dependencies/physfs/install/lib" }
+  physfs = { path = "dependencies/physfs" }
+
+[target.x86_64-unknown-linux-gnu.bin-dependencies]
+  path-option = ["dependencies/stdx/linux_x86_64_llvm/dynamic/stdx"]
+
+[target.x86_64-w64-mingw32.bin-dependencies]
+  path-option = ["dependencies/stdx/windows_x86_64_llvm/dynamic/stdx"]

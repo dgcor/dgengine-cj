@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getImageContainerObj(game: Game, elem: JsonValue): ?ImageContainer {
     var fileBytes: ?Array<Byte> = None

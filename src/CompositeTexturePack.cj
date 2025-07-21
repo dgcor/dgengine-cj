@@ -34,7 +34,7 @@ public class CompositeTexturePack <: StackedTexturePack {
                     directions: m_texturePacks[0].getDirectionCount(0),
                     range: m_texturePacks[0].getAnimation(-1, -1).indexRange,
                 )
-                m_compositeTextureGroups.append(group)
+                m_compositeTextureGroups.add(group)
                 m_totalTexturePackGroups += group.texturePackGroups
                 m_numberOfFrames += group.range[1] + 1 - group.range[0]
                 return true
@@ -55,7 +55,7 @@ public class CompositeTexturePack <: StackedTexturePack {
                     rangeStartIdx: rangeStartIdx,
                     range: range
                 )
-                m_compositeTextureGroups.append(group)
+                m_compositeTextureGroups.add(group)
                 m_totalTexturePackGroups += group.texturePackGroups
                 m_numberOfFrames += group.range[1] + 1 - group.range[0]
                 return true
@@ -75,7 +75,7 @@ public class CompositeTexturePack <: StackedTexturePack {
         }
         let layersOrdersStopIdx = layersOrdersStartIdx + UInt32(groupLayersOrders.size - 1)
 
-        m_layersOrders.appendAll(groupLayersOrders)
+        m_layersOrders.add(all: groupLayersOrders)
 
         var group = m_compositeTextureGroups.back
         group.layersOrdersStartIdx = layersOrdersStartIdx
@@ -198,7 +198,7 @@ public class CompositeTexturePack <: StackedTexturePack {
             {
                 index, texturePack =>
                 if (let Some(ti) <- texturePack.get(index)) {
-                    tiVec.append(ti)
+                    tiVec.add(ti)
                 }
                 return true
             }

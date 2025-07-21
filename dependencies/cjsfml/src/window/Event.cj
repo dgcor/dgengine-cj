@@ -513,6 +513,6 @@ public enum Event <: Equatable<Event> & Hashable {
     }
 
     public static func getEmpty() {
-        Array<Byte>(20, item: 0)
+        Array<Byte>(20, repeat: 0)
     }
 }

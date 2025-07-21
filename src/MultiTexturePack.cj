@@ -60,7 +60,7 @@ public class MultiTexturePack <: TexturePack {
                 m_frameRange = (m_frameRange[0], m_frameRange[1] + m_textureGroups.back.numFrames + indexGap)
             }
             m_textureCount += textureGroup.numFrames
-            m_textureGroups.append(textureGroup)
+            m_textureGroups.add(textureGroup)
         }
     }
 

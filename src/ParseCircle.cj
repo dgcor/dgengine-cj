@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getCircleObj(game: Game, elem: JsonValue): Circle {
     let circle = Circle(Float32(getIntKey(elem, "radius")))

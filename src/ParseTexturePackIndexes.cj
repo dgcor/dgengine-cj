@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.math.*
 
 public func parseTexturePackIndexes(texturePack: Box<?TexturePack>, elem: JsonValue): Unit {

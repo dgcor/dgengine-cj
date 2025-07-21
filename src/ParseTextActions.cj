@@ -2,7 +2,7 @@ package dgengine
 
 import ctemplate.*
 import cjsfml.graphics.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 @Template[functionName, actionName: parseTextAppendText, ActTextAppendText ; parseTextSetText, ActTextSetText](
 public func functionName(elem: JsonValue): ?Action {

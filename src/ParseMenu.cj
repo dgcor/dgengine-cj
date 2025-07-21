@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getMenuObj(game: Game, elem: JsonValue): ?Menu {
     if (let Some(referenceButton) <- parseTextButton(game, elem)) {

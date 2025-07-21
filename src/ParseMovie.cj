@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getMovieObj(game: Game, elem: JsonValue): ?Movie {
     let action = getActionKey(game, elem, "onComplete")

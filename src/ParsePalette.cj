@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.math.*
 
 public func parsePalette(game: Game, elem: JsonValue): Unit {

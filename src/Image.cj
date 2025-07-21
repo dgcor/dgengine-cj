@@ -224,8 +224,11 @@ public open class Image <: UIObject {
 
     public func setOrigin(): Unit {
         m_sprite.setOrigin(
-            Vector2f(round(Float32(m_sprite.textureRect.width) / 2.0), round(Float32(m_sprite.textureRect.height) / 2.0)
-            ))
+            Vector2f(
+                round(Float32(m_sprite.textureRect.width) / 2.0),
+                round(Float32(m_sprite.textureRect.height) / 2.0)
+            )
+        )
     }
 
     // Image

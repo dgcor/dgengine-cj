@@ -4,7 +4,7 @@ import cjsfml.graphics.*
 import cjsfml.system.*
 import cjsfml.window.*
 import dgengine.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 import std.math.*
 import std.unittest.*

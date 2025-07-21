@@ -131,7 +131,7 @@ class TestFormula {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..100) {
             let val = Int64(formula.eval())
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -174,7 +174,7 @@ class TestFormula {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(formula.eval()))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }

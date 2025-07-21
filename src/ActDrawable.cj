@@ -243,7 +243,7 @@ public class ActDrawableExecuteAction <: Action {
 
     public operator func ()(game: Game): Bool {
         if (let Some(item) <- game.resources.getDrawable(id)) {
-            if (let Some(item) <- item as ActionQueryable) {
+            if (let Some(item) <- (item as ActionQueryable)) {
                 if (let Some(action) <- item.getAction(id)) {
                     return action(game)
                 }

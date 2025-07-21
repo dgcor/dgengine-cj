@@ -189,13 +189,13 @@ public class Formula <: ToString {
                 case FormulaRightBracket => continue
                 case _ => ()
             }
-            m_elements.append(element)
+            m_elements.add(element)
         }
         // remove trailing closing brackets (faster eval, same result)
         while (m_elements.isEmpty() == false) {
             let lastIndex = m_elements.size - 1
             match (m_elements[lastIndex]) {
-                case FormulaRightBracket => m_elements.remove(lastIndex)
+                case FormulaRightBracket => m_elements.remove(at: lastIndex)
                 case _ => break
             }
         }
@@ -213,11 +213,11 @@ public class Formula <: ToString {
                 case FormulaString(propName) =>
                     if (propName.isEmpty() == false) {
                         if (propName.startsWith('$') == false) {
-                            if (let Some(queryVal) <- queryA?.getNumber(propName) ?? None) {
+                            if (let Some(queryVal) <- (queryA?.getNumber(propName) ?? None)) {
                                 val2 = queryVal.getDouble()
                             }
                         } else {
-                            if (let Some(queryVal) <- queryB?.getNumber(propName[1..]) ?? None) {
+                            if (let Some(queryVal) <- (queryB?.getNumber(propName[1..]) ?? None)) {
                                 val2 = queryVal.getDouble()
                             }
                         }
@@ -442,6 +442,6 @@ public class Formula <: ToString {
         for (_ in 0..brackets) {
             str.append(")")
         }
-        return str.toString().replace(" )", ")").replace("  ", " ").trimAsciiRight()
+        return str.toString().replace(" )", ")").replace("  ", " ").trimAsciiEnd()
     }
 }

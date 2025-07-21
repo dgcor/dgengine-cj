@@ -2,37 +2,47 @@
 
 Get the latest Cangie compiler from https://cangjie-lang.cn/en
 
-All Cangjie dependencies are included under the dependencies folder.
+Most Cangjie dependencies are included under the dependencies folder.
 
 C dependencies need to be placed in these folders:
 
-dependencies/csfml/install/lib
-dependencies/physfs/install/lib
+dependencies/csfml
+dependencies/physfs
+
+Cangjie stdx dependency needs to be placed in:
+
+dependencies/stdx
+
+Example:
+
+dependencies/stdx/linux_x86_64_llvm
+dependencies/stdx/windows_x86_64_llvm
+
+Download: https://gitcode.com/Cangjie/cangjie-stdx
 
 On Windows, these files need to be present to successfully compile and run:
 
 dependencies
 │
 ├───csfml
-│   └───install
-│       └───lib
-│               csfml-audio-2.dll
-│               csfml-graphics-2.dll
-│               csfml-network-2.dll
-│               csfml-system-2.dll
-│               csfml-window-2.dll
-│               libcsfml-audio.a
-│               libcsfml-graphics.a
-│               libcsfml-network.a
-│               libcsfml-system.a
-│               libcsfml-window.a
-│               OpenAL32.dll
+│       csfml-audio-2.dll
+│       csfml-graphics-2.dll
+│       csfml-network-2.dll
+│       csfml-system-2.dll
+│       csfml-window-2.dll
+│       libcsfml-audio.a
+│       libcsfml-graphics.a
+│       libcsfml-network.a
+│       libcsfml-system.a
+│       libcsfml-window.a
+│       OpenAL32.dll
 │
-└───physfs
-    └───install
-        └───lib
-                libphysfs.a
-                libphysfs.dll
+├───physfs
+│       libphysfs.a
+│       libphysfs.dll
+│
+└───stdx
+        windows_x86_64_llvm
 
 Download these files for Windows:
 

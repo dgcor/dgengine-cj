@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func parseTexturePackAnimatedTextures(texturePack: Box<?TexturePack>, elem: JsonValue): Unit {
@@ -18,7 +18,7 @@ public func parseTexturePackAnimatedTextures(texturePack: Box<?TexturePack>, ele
                 if (let Some(elemIndexes) <- getValidArray(elem, "indexes")) {
                     let indexes = ArrayList<UInt32>()
                     for (elem in elemIndexes.getItems()) {
-                        indexes.append(getUIntVal(elem))
+                        indexes.add(getUIntVal(elem))
                     }
                     let animIndex = getUIntKey(elem, "index", default: indexes.front)
                     let refresh = getTimeUKey(elem, "refresh", default: Time(milliseconds: 50))

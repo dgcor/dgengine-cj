@@ -2,8 +2,8 @@ package dgengine
 
 import cjsfml.system.*
 import ctemplate.*
-import encoding.json.*
-import encoding.json.stream.*
+import stdx.encoding.json.*
+import stdx.encoding.json.stream.*
 import std.collection.*
 import std.io.*
 

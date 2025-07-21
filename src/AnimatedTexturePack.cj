@@ -30,8 +30,8 @@ public class AnimatedTexturePack <: TexturePackIndexWrapper {
         if (m_animatedIndexes.contains(animIndex)) {
             return
         }
-        m_animatedIndexes.put(animIndex, UInt32(m_animatedTextures.size))
-        m_animatedTextures.append(
+        m_animatedIndexes.add(animIndex, UInt32(m_animatedTextures.size))
+        m_animatedTextures.add(
             TexturePackAnimation(
                 refresh: ElapsedTime(timeout: refresh),
                 currentIndex: 0,

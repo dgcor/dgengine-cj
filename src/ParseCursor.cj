@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.math.*
 
 private func getOrigin(elem: JsonObject, width: Float32, height: Float32): Vector2f {

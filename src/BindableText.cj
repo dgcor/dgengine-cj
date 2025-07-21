@@ -55,7 +55,7 @@ public open class BindableText <: Text {
 
     public func setBinding(binding: String): Unit {
         m_bindings.clear()
-        m_bindings.append(binding)
+        m_bindings.add(binding)
     }
 
     public func setBinding(bindings: ArrayList<String>): Unit {

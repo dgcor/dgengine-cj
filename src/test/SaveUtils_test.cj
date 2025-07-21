@@ -3,8 +3,8 @@ package dgengine.test
 import cjsfml.graphics.*
 import cjsfml.system.*
 import dgengine.*
-import encoding.json.*
-import encoding.json.stream.*
+import stdx.encoding.json.*
+import stdx.encoding.json.stream.*
 import std.collection.*
 import std.io.*
 import std.unittest.*
@@ -118,7 +118,7 @@ class TestSaveUtils {
 
     @TestCase
     func test_write() {
-        let stream = ByteArrayStream()
+        let stream = ByteBuffer()
         let writer = JsonWriter(stream)
         writer.writeConfig = WriteConfig.pretty
         writer.writeConfig.indent = "  "
@@ -160,7 +160,7 @@ class TestSaveUtils {
         writer.endObject()
         writer.flush()
 
-        let json = String.fromUtf8(stream.readToEnd())
+        let json = String.fromUtf8(stream.bytes())
         @Expect(FileUtils.readText("json/saveFile.json"), json)
 
         if (let Some(doc) <- JsonUtils.loadJson(json)) {

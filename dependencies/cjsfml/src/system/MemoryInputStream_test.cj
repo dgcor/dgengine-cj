@@ -19,7 +19,7 @@ class TestMemoryInputStream {
             @Expect(stream.remainLength, bytes.size)
             @Expect(stream.position, 0)
 
-            var array = Array<Byte>(4, item: 0)
+            var array = Array<Byte>(4, repeat: 0)
             var bytesRead = stream.read(array)
 
             @Expect(stream.length, bytes.size)
@@ -76,7 +76,7 @@ class TestMemoryInputStream {
             @Expect(stream.position, 11)
             @Expect(seekPos, 11)
 
-            var array = Array<Byte>(4, item: 0)
+            var array = Array<Byte>(4, repeat: 0)
             var bytesRead = stream.read(array)
 
             @Expect(stream.length, bytes.size)

@@ -168,7 +168,7 @@ public class CompositeSprite <: Resource {
             m_sprites.remove(ti.size..m_sprites.size)
         } else if (m_sprites.size < ti.size) {
             for (ti in ti |> skip(m_sprites.size)) {
-                m_sprites.append(Sprite2(ti))
+                m_sprites.add(Sprite2(ti))
             }
         }
         m_drawAfterExtraSprites = drawAfter

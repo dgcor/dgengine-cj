@@ -61,8 +61,7 @@ private func enumBlockBegin(visibility: Token, name: Token, valueType: Token, ad
     public operator const func >=(right: $(name)): Bool {
         value >= right.value
     }
-)
-    )
+))
     if (addFlagOps) {
         block.append(
             quote(
@@ -89,8 +88,7 @@ private func enumBlockBegin(visibility: Token, name: Token, valueType: Token, ad
     public const func isSet(right: $(name)): Bool {
         (value & right.value) != 0
     }
-)
-        )
+))
     }
     return block
 }

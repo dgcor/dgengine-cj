@@ -21,9 +21,9 @@ main(args: Array<String>) {
 
         try (game = Game()) {
             if (CmdLineUtils.processCmdLine(args) == false) {
-                if (args.size == 2) {
+                if (args.size == 1) {
                     game.load(args[0], "main.json")
-                } else if (args.size == 3) {
+                } else if (args.size == 2) {
                     game.load(args[0], args[1])
                 } else {
                     game.load(".", "main.json")

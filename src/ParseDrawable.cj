@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 // sets anchor, position, size and visible
 public func parseDrawableProperties(game: Game, elem: JsonValue, obj: UIObject): Unit {

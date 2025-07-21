@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseAnimationPause(elem: JsonValue): ?Action {
     ActAnimationPause(

@@ -11,7 +11,7 @@ private func getParams(attrTokens: Tokens): ArrayList<ArrayList<(Token, Token)>>
     for (token in attrTokens) {
         if (hasColon == false) {
             match (token.kind) {
-                case IDENTIFIER => genericParams.append(token)
+                case IDENTIFIER => genericParams.add(token)
                 case COLON =>
                     hasColon = true
                     if (genericParams.isEmpty()) {
@@ -24,14 +24,14 @@ private func getParams(attrTokens: Tokens): ArrayList<ArrayList<(Token, Token)>>
             match (token.kind) {
                 case COMMA => ()
                 case SEMI => ()
-                case _ => replaceParams.append(token)
+                case _ => replaceParams.add(token)
             }
             if (replaceParams.size == genericParams.size) {
                 let values = ArrayList<(Token, Token)>()
                 for (keyValue in genericParams |> zip(replaceParams)) {
-                    values.append(keyValue)
+                    values.add(keyValue)
                 }
-                allParams.append(values)
+                allParams.add(values)
                 replaceParams = ArrayList<Token>()
             }
         }
@@ -55,7 +55,7 @@ public macro Template(attrTokens: Tokens, inputTokens: Tokens) {
             }
         }
         if (index < allParams.size - 1) {
-            if (let Some(token) <- ret |> last) {
+            if (let Some(token) <- (ret |> last)) {
                 match (token.kind) {
                     case NL => ()
                     case _ => ret.append(Token(NL))

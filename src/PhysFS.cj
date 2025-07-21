@@ -132,17 +132,17 @@ public class PhysFS {
                 }
                 try (filePathRes = LibC.mallocCString(filePath).asResource()) {
                     if (PHYSFS_mount(filePathRes.value, mountPointRes.value, append) != 0) {
-                        logger.info('mount: "${filePath}" -> "${mountPoint}"')
+                        logger.info('mount: \"${filePath}\" -> \"${mountPoint}\"')
                         return true
                     }
                 }
                 var path = Path(filePath)
-                if (path.extensionName.isSome()) {
-                    path = path.directoryName?.join(path.fileNameWithoutExtension ?? "") ?? path
+                if (path.extensionName.isEmpty() == false) {
+                    path = path.parent.join(path.fileNameWithoutExtension)
                     let pathStr = path.toString()
                     try (pathRes = LibC.mallocCString(pathStr).asResource()) {
                         if (PHYSFS_mount(pathRes.value, mountPointRes.value, append) != 0) {
-                            logger.info('mount: "${pathStr}" -> "${mountPoint}"')
+                            logger.info('mount: \"${pathStr}\" -> \"${mountPoint}\"')
                             return true
                         }
                     }
@@ -152,15 +152,15 @@ public class PhysFS {
                     let pathStr = pathStr + ext
                     try (pathRes = LibC.mallocCString(pathStr).asResource()) {
                         if (PHYSFS_mount(pathRes.value, mountPointRes.value, append) != 0) {
-                            logger.info('mount: "${pathStr}" -> "${mountPoint}"')
+                            logger.info('mount: \"${pathStr}\" -> \"${mountPoint}\"')
                             return true
                         }
                     }
                 }
             } catch (_: Exception) {
-                logger.debug('mount error: "${filePath}" -> "${mountPoint}"')
+                logger.debug('mount error: \"${filePath}\" -> \"${mountPoint}\"')
             }
-            logger.error('mount failed: "${filePath}" -> "${mountPoint}"')
+            logger.error('mount failed: \"${filePath}\" -> \"${mountPoint}\"')
             return false
         }
     }
@@ -173,8 +173,8 @@ public class PhysFS {
                     return true
                 }
                 var path = Path(filePath)
-                if (path.extensionName.isSome()) {
-                    path = path.directoryName?.join(path.fileNameWithoutExtension ?? "") ?? path
+                if (path.extensionName.isEmpty() == false) {
+                    path = path.parent.join(path.fileNameWithoutExtension)
                     let pathStr = path.toString()
                     try (pathRes = LibC.mallocCString(pathStr).asResource()) {
                         if (PHYSFS_unmount(pathRes.value) != 0) {
@@ -249,7 +249,7 @@ public class PhysFS {
                                         let fileWrite = PHYSFS_openWrite(fullDstPathRes.value)
                                         if (fileWrite.isNotNull()) {
                                             try {
-                                                let data = Array<Byte>(fileRead.length, item: 0)
+                                                let data = Array<Byte>(fileRead.length, repeat: 0)
                                                 fileRead.read(data)
                                                 let rawData = acquireArrayRawData(data)
                                                 try {
@@ -370,7 +370,7 @@ public class PhysFS {
                                 continue
                             }
                         }
-                        list.append(dirStr)
+                        list.add(dirStr)
                     }
                 }
                 PHYSFS_freeList(CPointer(dirs))
@@ -408,9 +408,9 @@ public class PhysFS {
                         }
                         if (fileStat.filetype == PhysFSFileType.Regular) {
                             if (getFullPath == true) {
-                                list.append(fullPath)
+                                list.add(fullPath)
                             } else {
-                                list.append(fileStr)
+                                list.add(fileStr)
                             }
                         }
                     }

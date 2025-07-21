@@ -56,11 +56,11 @@ public class IfCondition {
     }
 
     public func addCondition(op: ConditionOp): Unit {
-        m_elements.append(op)
+        m_elements.add(op)
     }
 
     public func addCondition(name: String, param1: VarOrPredicate, param2: VarOrPredicate): Unit {
-        m_elements.append(CoCondition(name, param1, param2))
+        m_elements.add(CoCondition(name, param1, param2))
     }
 
     public prop empty: Bool {

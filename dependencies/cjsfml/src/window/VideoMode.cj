@@ -45,7 +45,7 @@ public struct VideoMode {
             unsafe {
                 var count: UIntNative = 0
                 var modesPtr = sfVideoMode_getFullscreenModes(inout count)
-                var modes = Array<VideoMode>(Int64(count), item: VideoMode())
+                var modes = Array<VideoMode>(Int64(count), repeat: VideoMode())
                 for (i in 0..Int64(count)) {
                     modes[i] = modesPtr.read(i)
                 }

@@ -5,7 +5,7 @@ import endian.*
 import std.binary.*
 import std.convert.*
 import std.collection.*
-import std.io.{ByteArrayStream, StringReader}
+import std.io.{ByteBuffer, StringReader}
 import std.math.*
 
 // loads list of numbers from file.
@@ -43,7 +43,7 @@ public class NumberVector<T> <: Collection<T> where T <: CType & LittleEndianOrd
             return
         }
         let numElements = min((Int64(size)) / Int64(sizeOf<T>()), Int64(maxNumElements))
-        m_data = Array<T>(numElements, item: unsafe { zeroValue<T>() })
+        m_data = Array<T>(numElements, repeat: unsafe { zeroValue<T>() })
 
         let inputStream = LittleEndianReader(file)
         for (i in 0..m_data.size) {
@@ -56,21 +56,20 @@ public class NumberVector<T> <: Collection<T> where T <: CType & LittleEndianOrd
     // loads a list of numbers from a new line (\n) separated text file.
     // number separtor characters: whitespace, tab and comma
     public func loadText(fileName: String, default!: T = unsafe { zeroValue<T>() }, maxNumElements!: UInt32 = UInt32.Max): Unit {
-        let byteArrayStream = ByteArrayStream()
-        byteArrayStream.write(FileUtils.readBytes(fileName))
-        let stringReader = StringReader(byteArrayStream)
+        let byteBuffer = ByteBuffer(FileUtils.readBytes(fileName))
+        let stringReader = StringReader(byteBuffer)
         let arrayList = ArrayList<T>()
 
         while (let Some(line) <- stringReader.readln()) {
             if (line.isEmpty() == true) {
-                arrayList.append(default)
+                arrayList.add(default)
             } else {
                 let numbersStr = splitString(line, "\t ,")
                 for (numberStr in numbersStr) {
                     if (numberStr.isEmpty() == true) {
                         continue
                     }
-                    arrayList.append(T.tryParse(numberStr) ?? default)
+                    arrayList.add(T.tryParse(numberStr) ?? default)
                     if (arrayList.size >= Int64(maxNumElements)) {
                         break
                     }

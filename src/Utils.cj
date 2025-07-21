@@ -152,14 +152,14 @@ public func splitString(str: String, delimiters: String): Array<String> {
             // Add the token found before the delimiter
             if (startIndex < delimiterIndex) {
                 let token = str[startIndex..delimiterIndex]
-                tokens.append(token)
+                tokens.add(token)
             }
             // Move the start index past the delimiter
             startIndex = delimiterIndex + 1
         } else {
             // Add the last token if no more delimiters are found
             let token = str[startIndex..]
-            tokens.append(token)
+            tokens.add(token)
             break
         }
     }
@@ -180,63 +180,23 @@ public func swap<T>(a: Box<T>, b: Box<T>): Unit where T <: Any {
 }
 
 public func toString(num: Float64): String {
-    var str = trimEnd(num.toString(), chars: "0")
+    var str = num.toString().trimEnd("0")
     if (str.endsWith(".")) {
         str += "0"
     }
     return str
 }
 
-@Template[T: Int32, Int64, UInt32, UInt64](
-public func toString(num: T): String {
-    num.toString()
-})
-
 public func trim(str: String, chars!: String = " \t"): String {
-    var startIndex = 0
-    for (index in 0..str.size) {
-        if (chars.contains(Rune(str[index]).toString())) {
-            startIndex = index + 1
-        } else {
-            break
-        }
-    }
-    var endIndex = str.size
-    for (index in str.size - 1..=0 : -1) {
-        if (chars.contains(Rune(str[index]).toString())) {
-            endIndex = index
-        } else {
-            break
-        }
-    }
-    if (endIndex <= startIndex) {
-        return String.empty
-    }
-    return str[startIndex..endIndex]
+    str.trimEnd(chars).trimStart(chars)
 }
 
 public func trimEnd(str: String, chars!: String = " \t"): String {
-    var endIndex = str.size
-    for (index in str.size - 1..=0 : -1) {
-        if (chars.contains(Rune(str[index]).toString())) {
-            endIndex = index
-        } else {
-            break
-        }
-    }
-    return str[..endIndex]
+    str.trimEnd(chars)
 }
 
 public func trimStart(str: String, chars!: String = " \t"): String {
-    var startIndex = 0
-    for (index in 0..str.size) {
-        if (chars.contains(Rune(str[index]).toString())) {
-            startIndex = index + 1
-        } else {
-            break
-        }
-    }
-    return str[startIndex..]
+    str.trimStart(chars)
 }
 
 public func wordWrap(str: String, length: Int64): String {

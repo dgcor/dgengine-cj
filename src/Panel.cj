@@ -169,7 +169,7 @@ public class Panel <: UIObject {
         for (index in m_drawables.size - 1..=0 : -1) {
             let drawable = m_drawables[index]
             match (drawable.isClosed()) {
-                case true => m_drawables.remove(index)
+                case true => m_drawables.remove(at: index)
                 case false => drawable.update(game)
             }
         }
@@ -204,7 +204,7 @@ public class Panel <: UIObject {
                 return false
             }
         }
-        m_drawables.append(obj)
+        m_drawables.add(obj)
         if (m_relativePositions == true) {
             obj.position = obj.position + m_position
         }

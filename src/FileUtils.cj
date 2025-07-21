@@ -2,10 +2,10 @@ package dgengine
 
 import cjsfml.system.*
 import std.collection.*
+import std.env.*
 import std.fs.*
 import std.io.*
 import std.math.*
-import std.os.*
 
 public class FileUtils {
     public static func initPhysFS(argv0!: ?String = None): Unit {
@@ -19,18 +19,18 @@ public class FileUtils {
     public static func gamefileExists(filePath: String): Bool {
         try {
             var path = Path(filePath)
-            if (File.exists(path) || Directory.exists(path)) {
+            if (exists(path)) {
                 return true
             }
-            if (path.extensionName.isSome()) {
-                path = path.directoryName?.join(path.fileNameWithoutExtension ?? "") ?? path
-                if (File.exists(path) || Directory.exists(path)) {
+            if (path.extensionName.isEmpty() == false) {
+                path = path.parent.join(path.fileNameWithoutExtension)
+                if (exists(path)) {
                     return true
                 }
             }
             for (ext in Hooks.archiveExtensions) {
                 let path = path.join(ext)
-                if (File.exists(path) || Directory.exists(path)) {
+                if (exists(path)) {
                     return true
                 }
             }
@@ -117,17 +117,17 @@ public class FileUtils {
     }
 
     public static func getFileName(filePath: String): String {
-        Path(filePath).fileName ?? String.empty
+        Path(filePath).fileName
     }
 
     public static func getFileNameWithoutExt(filePath: String): String {
         try {
             let path = Path(filePath)
-            if (let Some(name) <- path.fileNameWithoutExtension) {
-                return name
+            if (path.fileNameWithoutExtension.isEmpty() == false) {
+                return path.fileNameWithoutExtension
             }
-            if (let Some(name) <- path.fileName) {
-                return name
+            if (path.fileName.isEmpty() == false) {
+                return path.fileName
             }
         } catch (_: Exception) {
         }
@@ -135,7 +135,8 @@ public class FileUtils {
     }
 
     public static func getFileExtension(filePath: String): String {
-        if (let Some(ext) <- Path(filePath).extensionName) {
+        let ext = Path(filePath).extensionName
+        if (ext.isEmpty() == false) {
             return ".${ext}"
         } else if (filePath.endsWith(".")) {
             return "."
@@ -144,7 +145,7 @@ public class FileUtils {
     }
 
     public static func getFilePath(filePath: String): String {
-        Path(filePath).directoryName?.toString() ?? String.empty
+        Path(filePath).parent.toString()
     }
 
     public static func readBytes(filePath: String, startPosition!: Int64 = 0, maxNumBytes!: Int64 = 0xFFFFFFFF): Array<Byte> {
@@ -162,7 +163,7 @@ public class FileUtils {
                 return data
             }
 
-            data = Array<Byte>(size, item: 0)
+            data = Array<Byte>(size, repeat: 0)
             if (startPosition > 0) {
                 ifs.seek(Begin(startPosition))
             }
@@ -175,7 +176,7 @@ public class FileUtils {
 
     public static func readText(filePath: String): String {
         try (ifs = PhysFSStream(filePath)) {
-            let data = Array<Byte>(ifs.length, item: 0)
+            let data = Array<Byte>(ifs.length, repeat: 0)
             ifs.read(data)
             return String.fromUtf8(data)
         } catch (_: Exception) {
@@ -197,8 +198,8 @@ public class FileUtils {
     public static func setSaveDir(dirName: String): Bool {
         var userDir = String.empty
         try {
-            var portablePath = currentDir().info.path.join("portable")
-            if (Directory.exists(portablePath) == true) {
+            var portablePath = getWorkingDirectory().join("portable")
+            if (exists(portablePath) == true) {
                 portablePath = portablePath.join(dirName)
                 userDir = portablePath.toString()
                 Directory.create(portablePath, recursive: true)
@@ -217,12 +218,13 @@ public class FileUtils {
     // creates path if it doesn't exist
     public static func saveBytes(filePath: String, bytes: Array<Byte>): Bool {
         try {
-            var path = Path(filePath)
-            if (File.exists(path) || Directory.exists(path)) {
+            let path = Path(filePath)
+            if (exists(path)) {
                 return true
             }
-            if (let Some(dir) <- path.directoryName) {
-                createDir(dir.toString())
+            let dir = path.parent.toString()
+            if (dir.isEmpty() == false) {
+                createDir(dir)
             }
             return PhysFS.writeBytes(filePath, bytes)
         } catch (_: Exception) {
@@ -235,11 +237,11 @@ public class FileUtils {
     // creates path if it doesn't exist
     public static func saveText(filePath: String, str: String): Bool {
         unsafe {
-            let rawStr = str.getRaw()
+            let rawStr = acquireArrayRawData(str.rawData())
             try {
                 return saveBytes(filePath, rawStr.array)
             } finally {
-                str.releaseRaw(rawStr)
+                releaseArrayRawData(rawStr)
             }
         }
     }
@@ -250,14 +252,14 @@ public class FileUtils {
             let inPath = Path(infilePath)
             var outPath = Path(outfilePath)
 
-            if (Directory.exists(outPath) == true) {
-                if (let Some(fileName) <- inPath.fileName) {
-                    outPath = outPath.join(fileName)
+            if (exists(outPath) == true) {
+                if (inPath.fileName.isEmpty() == false) {
+                    outPath = outPath.join(inPath.fileName)
                 }
             }
 
             let data = readBytes(infilePath)
-            File.writeTo(outPath, data, openOption: OpenOption.CreateOrTruncate(true))
+            File.writeTo(outPath, data)
             return true
         } catch (ex: Exception) {
             logger.warn("exportFile failed: \"${infilePath}\" -> \"${outfilePath}\"")

@@ -1,7 +1,7 @@
 package dgengine
 
-import encoding.json.*
-import encoding.json.stream.*
+import stdx.encoding.json.*
+import stdx.encoding.json.stream.*
 import std.collection.*
 import std.io.*
 
@@ -122,14 +122,14 @@ public class JsonUtils {
                 let items = elem.asObject().getFields()
                 for ((key, value) in items) {
                     let newValue = replaceValuesWithFunction(value, stringValueReplaceFunc)
-                    items.put(key, newValue)
+                    items.add(key, newValue)
                 }
                 return elem
             case JsArray =>
                 let items = elem.asArray().getItems()
                 for (index in 0..items.size) {
                     let newValue = replaceValuesWithFunction(items[index], stringValueReplaceFunc)
-                    items.set(index, newValue)
+                    items[index] = newValue
                 }
                 return elem
             case _ => return elem
@@ -218,13 +218,13 @@ public class JsonUtils {
     }
 
     public static func jsonToPrettyString(elem: JsonValue): String {
-        let stream = ByteArrayStream()
+        let stream = ByteBuffer()
         let writer = JsonWriter(stream)
         writer.writeConfig = WriteConfig.pretty
         writer.writeConfig.indent = "  "
         writePrettyString(writer, elem)
         writer.flush()
-        return stream.readString()
+        return String.fromUtf8(stream.bytes())
     }
 
     // loads json from a file
@@ -261,7 +261,7 @@ public class JsonUtils {
     }
 
     public static func saveToFile(file: String, key: String, it: Iterator<(String, Variable)>): Unit {
-        let stream = ByteArrayStream()
+        let stream = ByteBuffer()
         let writer = JsonWriter(stream)
         writer.writeConfig = WriteConfig.pretty
 
@@ -276,6 +276,6 @@ public class JsonUtils {
         writer.endObject()
         writer.flush()
 
-        FileUtils.saveText(file, stream.readString())
+        FileUtils.saveBytes(file, stream.bytes())
     }
 }

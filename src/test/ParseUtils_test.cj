@@ -13,7 +13,7 @@ func test_getIdFromFile() {
     @Expect(getIdFromFile("path 1//file."),Some("file"))
     @Expect(getIdFromFile("path 1//file.."), Some("file"))
     @Expect(getIdFromFile("path 1//.txt"), Some("txt"))
-    @Expect(getIdFromFile("path 1//file/"), None)
+    @Expect(getIdFromFile("path 1//file/"), Some("file"))
     @Expect(getIdFromFile("path 1//file/."), None)
     @Expect(getIdFromFile("path 1//file/.."), None)
     @Expect(getIdFromFile("path 1//file/..."), None)

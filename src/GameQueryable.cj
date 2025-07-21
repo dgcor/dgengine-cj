@@ -188,17 +188,17 @@ extend Game <: ActionQueryable & Queryable {
             match (props[0]) {
                 case "saveDirs" =>
                     for (dir in FileUtils.getDirList(props[1], onlyWritableDirs: true)) {
-                        queryableList.append(VarOrQueryVariable(VaString(dir)))
+                        queryableList.add(VarOrQueryVariable(VaString(dir)))
                     }
                     return true
                 case "dirs" =>
                     for (dir in FileUtils.getDirList(props[1], onlyWritableDirs: false)) {
-                        queryableList.append(VarOrQueryVariable(VaString(dir)))
+                        queryableList.add(VarOrQueryVariable(VaString(dir)))
                     }
                     return true
                 case "files" =>
                     for (file in FileUtils.getFileList(props[1], "", getFullPath: false)) {
-                        queryableList.append(VarOrQueryVariable(VaString(file)))
+                        queryableList.add(VarOrQueryVariable(VaString(file)))
                     }
                     return true
                 case _ => ()

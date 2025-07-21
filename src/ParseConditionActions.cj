@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func parseIfCondition(condition: String, game: Game, elem: JsonValue): ?Action {
@@ -18,7 +18,7 @@ public func parseInListCondition(game: Game, elem: JsonValue): ?Action {
     if (let Some(elem) <- getValidArray(elem, "list")) {
         for (val in elem.getItems()) {
             if (let Some(value) <- getVariableVal(val)) {
-                list.append(value)
+                list.add(value)
             }
         }
     }
@@ -106,7 +106,7 @@ public func parseSwitchCondition(game: Game, elem: JsonValue): ?Action {
             for (val in elem.getItems()) {
                 if (let Some(val) <- getValidObject(val)) {
                     if (let Some(value) <- getVariableKey(val, "value")) {
-                        cases.append((value, parseSwitchConditionHelper(game, val, "action", cases)))
+                        cases.add((value, parseSwitchConditionHelper(game, val, "action", cases)))
                     }
                 }
             }

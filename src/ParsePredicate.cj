@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getPredicateObj(game: Game, elem: JsonValue): ?Predicate {
     if (let Some(name) <- getValidString(elem, "name")) {

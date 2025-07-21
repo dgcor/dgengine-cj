@@ -27,7 +27,7 @@ public open class StackedTexturePack <: TexturePack {
             }
             m_frameRange = (frameStart, frameEnd)
         }
-        m_texturePacks.append(texturePack)
+        m_texturePacks.add(texturePack)
     }
 
     public open func get(index: UInt32): ?TextureInfo {

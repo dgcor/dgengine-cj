@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseSaveDir(elem: JsonValue): Unit {
     let saveDir = getStringChar(elem)

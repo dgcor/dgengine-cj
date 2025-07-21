@@ -11,7 +11,7 @@ public class GroupTexturePack <: TexturePackWrapper {
     }
 
     public func addGroup(group: AnimationGroup): Unit {
-        m_groups.append(group)
+        m_groups.add(group)
     }
 
     public prop groupCount: UInt32 {

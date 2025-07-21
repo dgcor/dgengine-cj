@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseEvent(game: Game, elem: JsonValue): Unit {
     if (let Some(action) <- getActionKey(game, elem, "action")) {

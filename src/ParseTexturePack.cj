@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 private func getTexturePackObj2(game: Game, elem: JsonValue): ?TexturePack {
     return getTexturePackObj(game, elem, getTexturePackType)

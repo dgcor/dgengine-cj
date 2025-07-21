@@ -1,6 +1,6 @@
 package dgengine
 
-import std.regex.{Matcher, Regex as StdRegex}
+import std.regex.{MatchData, Regex as StdRegex}
 
 public class Regex {
     private var m_regex: ?StdRegex = None
@@ -24,7 +24,9 @@ public class Regex {
     public func matcher(str: String): Bool {
         try {
             if (let Some(regex) <- m_regex) {
-                return regex.matcher(str).fullMatch().isSome()
+                if (let Some(matchData) <- regex.find(str)) {
+                    return matchData.matchString().size == str.size
+                }
             }
         } catch (_: Exception) {}
         return false

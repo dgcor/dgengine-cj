@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public type MenuFilterObject = (condition: String, property: String, value: Variable)
@@ -14,10 +14,10 @@ public func parseMenuFilterObj(elem: JsonValue, list: ArrayList<MenuFilterObject
             let property = getStringKey(elem, "property")
             if (let Some(elem) <- getValidArray(elem)) {
                 for (val in elem.getItems()) {
-                    list.append((condition, property, getVariableVal(val) ?? VaString(String.empty)))
+                    list.add((condition, property, getVariableVal(val) ?? VaString(String.empty)))
                 }
             } else {
-                list.append((condition, property, getVariableVal(elem) ?? VaString(String.empty)))
+                list.add((condition, property, getVariableVal(elem) ?? VaString(String.empty)))
             }
         }
     }

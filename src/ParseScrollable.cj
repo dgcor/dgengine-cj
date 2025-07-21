@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getScrollableObj(game: Game, elem: JsonValue): ?Scrollable {
     if (let Some(uiObj) <- game.resources.getDrawable(getStringKey(elem, "drawable"))) {

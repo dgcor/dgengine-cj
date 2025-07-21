@@ -2,7 +2,6 @@ package cjsfml.graphics
 
 import cjsfml.system.*
 import ctemplate.*
-import std.math.{min, max}
 
 @Template[ClassName, NumType, VectorType, DefaultValue: FloatRect, Float32, Vector2f, 0.0 ; IntRect, Int32, Vector2i, 0](
 @C

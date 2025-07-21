@@ -2,6 +2,7 @@ package dgengine
 
 import std.collection.*
 import std.math.*
+import std.sort.*
 
 public struct RectPackItem {
     public RectPackItem(
@@ -23,9 +24,10 @@ public func packRectangles(rectangles: ArrayList<(Int64, Int64)>, maxSize: (Int6
 
     let rectanglesIndexes = ArrayList(rectangles.size, {index => (index, rectangles[index][0], rectangles[index][1])})
 
-    rectanglesIndexes.sortBy(
+    sort(
+        rectanglesIndexes,
         stable: true,
-        comparator: {
+        by: {
             a, b =>
             let areaA = a[1] * a[2]
             let areaB = b[1] * b[2]
@@ -45,7 +47,7 @@ public func packRectangles(rectangles: ArrayList<(Int64, Int64)>, maxSize: (Int6
             maxHeight = 0
         }
 
-        packedRectangles.append(
+        packedRectangles.add(
             RectPackItem(
                 index: index,
                 x: currentX,
@@ -63,8 +65,9 @@ public func packRectangles(rectangles: ArrayList<(Int64, Int64)>, maxSize: (Int6
         throw OverflowException("packRectangles: unable to pack all rects inside (${maxSize[0]}, ${maxSize[1]})")
     }
 
-    packedRectangles.sortBy(
-        comparator: {
+    sort(
+        packedRectangles,
+        by: {
             a, b =>
             if (a.index > b.index) {
                 return Ordering.GT

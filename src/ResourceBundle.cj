@@ -126,10 +126,10 @@ public class ResourceBundle <: Resource {
                     case _ => ()
                 }
             }
-            resItems.append(obj)
+            resItems.add(obj)
             return true
         } else {
-            resources.put(key, ArrayList(1, {_ => obj}))
+            resources.add(key, ArrayList(1, {_ => obj}))
             return true
         }
         return false
@@ -180,25 +180,25 @@ public class ResourceBundle <: Resource {
             for ((index, res) in resItems |> enumerate) {
                 match (res) {
                     case ResFileBytes(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResFont(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResTexture(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResAudioSource(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResPalette(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResImageContainer(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case ResTexturePack(value) where value is T =>
-                        resItems.remove(index)
+                        resItems.remove(at: index)
                         return value as T
                     case _ => ()
                 }

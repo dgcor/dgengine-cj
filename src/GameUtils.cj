@@ -3,7 +3,7 @@ package dgengine
 import cjsfml.graphics.*
 import cjsfml.system.*
 import cjsfml.window.*
-import std.format.*
+import std.convert.*
 import std.math.*
 
 public class GameUtils {
@@ -526,18 +526,39 @@ public class GameUtils {
             case "HHMMSSf" =>
                 let (h, m, s, ms) = getTimeHMSf(time)
                 VaString(
-                    getTimeString(hours: h, minutes: m, seconds: s, milliseconds: ms, leadingZeroes: 2, milliDecimals: 1
-                    ))
+                    getTimeString(
+                        hours: h,
+                        minutes: m,
+                        seconds: s,
+                        milliseconds: ms,
+                        leadingZeroes: 2,
+                        milliDecimals: 1
+                    )
+                )
             case "HHMMSSff" =>
                 let (h, m, s, ms) = getTimeHMSf(time)
                 VaString(
-                    getTimeString(hours: h, minutes: m, seconds: s, milliseconds: ms, leadingZeroes: 2, milliDecimals: 2
-                    ))
+                    getTimeString(
+                        hours: h,
+                        minutes: m,
+                        seconds: s,
+                        milliseconds: ms,
+                        leadingZeroes: 2,
+                        milliDecimals: 2
+                    )
+                )
             case "HHMMSSfff" =>
                 let (h, m, s, ms) = getTimeHMSf(time)
                 VaString(
-                    getTimeString(hours: h, minutes: m, seconds: s, milliseconds: ms, leadingZeroes: 2, milliDecimals: 3
-                    ))
+                    getTimeString(
+                        hours: h,
+                        minutes: m,
+                        seconds: s,
+                        milliseconds: ms,
+                        leadingZeroes: 2,
+                        milliDecimals: 3
+                    )
+                )
             case _ => VaInteger(Int64(getTimeS(time, roundUp: roundUp)))
         }
     }

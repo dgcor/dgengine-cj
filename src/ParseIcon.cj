@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseIcon(game: Game, elem: JsonValue): Unit {
     if (let Some(file) <- getValidString(elem)) {

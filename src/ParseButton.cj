@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseBitmapButton(game: Game, elem: JsonValue): ?BitmapButton {
     var button = Option<BitmapButton>.None

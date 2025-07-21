@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseTexturePackRects(texturePack: Box<?TexturePack>, elem: JsonValue): Unit {
     if (let Some(rectsElem) <- getValidArray(elem, "rects")) {

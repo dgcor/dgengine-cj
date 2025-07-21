@@ -8,8 +8,10 @@
 /.svn
 /.vs
 /.vscode
+/build-script-cache
 /dependencies/csfml
 /dependencies/physfs
 /dependencies/sfml
+/dependencies/stdx
 /portable
 /target

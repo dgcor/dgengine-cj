@@ -27,7 +27,7 @@ foreign {
 
 @C
 public struct Transform {
-    public var matrix: VArray<Float32, $9> = VArray<Float32, $9>(item: 0.0)
+    public var matrix: VArray<Float32, $9> = VArray<Float32, $9>(repeat: 0.0)
 
     public init() {
         matrix[0] = 1.0
@@ -68,18 +68,20 @@ public struct Transform {
         matrix[x * 3 + y]
     }
 
+    // these 2 functions cause a compiler error in Cangjie 1.0.0
+
     public operator func [](index: Int64, value!: Float32): Unit {
-        matrix[index] = value
+        // matrix[index] = value
     }
 
     public operator func [](x: Int64, y: Int64, value!: Float32): Unit {
-        matrix[x * 3 + y] = value
+        // matrix[x * 3 + y] = value
     }
 
     public static let identity = Transform()
 
     public func getMatrix(): Array<Float32> {
-        var matrix = Array<Float32>(16, item: 0.0)
+        var matrix = Array<Float32>(16, repeat: 0.0)
         var transform2 = this
         unsafe {
             let rawData = acquireArrayRawData(matrix)

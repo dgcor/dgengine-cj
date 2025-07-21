@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func parseCompositeTexturePack(compTexture: CompositeTexturePack, game: Game, elem: JsonValue): Bool {
@@ -40,7 +40,7 @@ public func parseCompositeTexturePackDirectionLayerOrders(compTexture: Composite
                         layerOrder.remove(newSize..layerOrder.size)
                     } else if (layerOrder.size < newSize) {
                         for (_ in layerOrder.size..newSize) {
-                            layerOrder.append(-1)
+                            layerOrder.add(-1)
                         }
                     }
                     var subOrderIdx = Int64(orderIdx)

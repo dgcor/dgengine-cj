@@ -5,7 +5,7 @@ import std.binary.*
 import std.io.*
 
 private func readEndian<U>(inputStream: InputStream): ?U where U <: CType & BigEndianOrder<U> & LittleEndianOrder<U> {
-    let buffer = Array<Byte>(Int64(sizeOf<U>()), item: 0)
+    let buffer = Array<Byte>(Int64(sizeOf<U>()), repeat: 0)
     if (inputStream.read(buffer) == buffer.size) {
         return @ReadEndian[U](buffer)
     }
@@ -13,7 +13,7 @@ private func readEndian<U>(inputStream: InputStream): ?U where U <: CType & BigE
 }
 
 private func readBigEndian<U>(inputStream: InputStream): ?U where U <: CType & BigEndianOrder<U> {
-    let buffer = Array<Byte>(Int64(sizeOf<U>()), item: 0)
+    let buffer = Array<Byte>(Int64(sizeOf<U>()), repeat: 0)
     if (inputStream.read(buffer) == buffer.size) {
         return U.readBigEndian(buffer)
     }
@@ -21,7 +21,7 @@ private func readBigEndian<U>(inputStream: InputStream): ?U where U <: CType & B
 }
 
 private func readLittleEndian<U>(inputStream: InputStream): ?U where U <: CType & LittleEndianOrder<U> {
-    let buffer = Array<Byte>(Int64(sizeOf<U>()), item: 0)
+    let buffer = Array<Byte>(Int64(sizeOf<U>()), repeat: 0)
     if (inputStream.read(buffer) == buffer.size) {
         return U.readLittleEndian(buffer)
     }

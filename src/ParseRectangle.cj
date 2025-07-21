@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getRectangleObj(game: Game, elem: JsonValue): Rectangle {
     let rectangle = Rectangle(getSizeKey(elem, "size"))

@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseLoadingScreen(game: Game, elem: JsonValue): Unit {
     var loadingScreen = Option<LoadingScreen>.None

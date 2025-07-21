@@ -12,7 +12,7 @@ class TestRandom {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..100) {
             let val = Random.get(4)
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -34,7 +34,7 @@ class TestRandom {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..100) {
             let val = Random.get(-2, 2)
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -92,7 +92,7 @@ class TestRandom {
         let hist = HashMap<Float64, Int64>()
         for (_ in 0..100) {
             let val = round(Random.getf(-2.0, 2.0))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -117,7 +117,7 @@ class TestRandomNormal {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(RandomNormal.get(5.0)))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -145,7 +145,7 @@ class TestRandomNormal {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(RandomNormal.get(0.0, 2.0)))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -171,7 +171,7 @@ class TestRandomNormal {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(RandomNormal.get(-2.0, 0.0, 2.0)))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -197,7 +197,7 @@ class TestRandomNormal {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(RandomNormal.get(-2.0, 2.0, 2.0)))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }
@@ -219,7 +219,7 @@ class TestRandomNormal {
         let hist = HashMap<Int64, Int64>()
         for (_ in 0..1000) {
             let val = Int64(round(RandomNormal.getRange(4.0)))
-            if (hist.putIfAbsent(val, 1) == false) {
+            if (hist.addIfAbsent(val, 1).isSome()) {
                 hist[val]++
             }
         }

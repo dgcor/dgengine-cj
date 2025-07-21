@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseSoundLoadPlay(elem: JsonValue): ?Action {
     ActSoundLoadPlay(

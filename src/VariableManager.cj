@@ -154,7 +154,7 @@ public class VariableManager {
 
     // no tokens in key
     public func setVariable(key: String, value: Variable): Unit {
-        m_variables.put(key, value)
+        m_variables.add(key, value)
     }
 
     public func saveVariables(filePath: String, varNames: Array<String>): Unit {
@@ -164,7 +164,7 @@ public class VariableManager {
         let variablesToSave = ArrayList<(String, Variable)>()
         for (name in varNames) {
             if (let Some(value) <- m_variables.get(name)) {
-                variablesToSave.append((name, value))
+                variablesToSave.add((name, value))
             }
         }
         if (variablesToSave.isEmpty() == false) {

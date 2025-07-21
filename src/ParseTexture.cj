@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.graphics.Image as SFMLImage
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseTextureImg(game: Game, elem: JsonObject): ?SFMLImage {
     var img: ?SFMLImage = None

@@ -70,7 +70,7 @@ public class ActGameEnableInput <: Action {
 
 public class ActGameGC <: Action {
     public operator func ()(_: Game): Bool {
-        GC()
+        gc()
         return true
     }
 }

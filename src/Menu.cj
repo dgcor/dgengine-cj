@@ -278,7 +278,7 @@ public class Menu <: ActionQueryable & UIObject {
     }
 
     public func addItem(item: TextButton, recalculatePositions: Bool): Unit {
-        m_items.append(item)
+        m_items.add(item)
         if (recalculatePositions == true || m_vertAlign != AlignBottom) {
             m_recalculatePositions = true
         }

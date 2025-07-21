@@ -4,7 +4,7 @@ import cjsfml.graphics.*
 import cjsfml.system.*
 import cjsfml.window.*
 import ctemplate.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 import std.convert.*
 import std.math.*
@@ -848,9 +848,9 @@ public func getTimeUVal(elem: JsonValue, default!: Time = Time.zero): Time {
 public func getStringVectorVal(elem: JsonValue) {
     let list = ArrayList<String>()
     match (elem.kind()) {
-        case JsString => list.append(elem.asString().getValue())
+        case JsString => list.add(elem.asString().getValue())
         case JsArray => for (elem in elem.asArray().getItems()) {
-            list.append(JsonUtils.toString(elem))
+            list.add(JsonUtils.toString(elem))
         }
         case _ => ()
     }
@@ -862,11 +862,11 @@ public func getValidStringVectorVal(elem: JsonValue) {
     match (elem.kind()) {
         case JsString =>
             if (let Some(str) <- getValidString(elem)) {
-                list.append(str)
+                list.add(str)
             }
         case JsArray => for (elem in elem.asArray().getItems()) {
             if (let Some(str) <- getValidString(elem)) {
-                list.append(str)
+                list.add(str)
             }
         }
         case _ => ()
@@ -1012,7 +1012,7 @@ public func getVariables(elem: JsonValue) {
     match (elem.kind()) {
         case JsObject => for ((key, elem) in elem.asObject().getFields()) {
             if (let Some(value) <- getVariableVal(elem)) {
-                list.append((key, value))
+                list.add((key, value))
             }
         }
         case _ => ()
@@ -1025,7 +1025,7 @@ public func getVariablesMap(elem: JsonValue) {
     match (elem.kind()) {
         case JsObject => for ((key, elem) in elem.asObject().getFields()) {
             if (let Some(value) <- getVariableVal(elem)) {
-                list.put(key, value)
+                list.add(key, value)
             }
         }
         case _ => ()

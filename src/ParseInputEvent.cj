@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.window.*
 import cjsfml.window.Event as SFMLEvent
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func updateKeyEvent(evt: KeyEvent): KeyEvent {
@@ -51,9 +51,9 @@ public func parseInputEvents(elem: JsonValue): ArrayList<SFMLEvent> {
                     if (keyCode != KeyCode.Unknown) {
                         evt.code = keyCode
                         if (isKeyReleasedEvt == false) {
-                            inputEvents.append(EvtKeyPressed(updateKeyEvent(evt)))
+                            inputEvents.add(EvtKeyPressed(updateKeyEvent(evt)))
                         } else {
-                            inputEvents.append(EvtKeyReleased(updateKeyEvent(evt)))
+                            inputEvents.add(EvtKeyReleased(updateKeyEvent(evt)))
                         }
                     }
                 }
@@ -62,9 +62,9 @@ public func parseInputEvents(elem: JsonValue): ArrayList<SFMLEvent> {
                 if (keyCode != KeyCode.Unknown) {
                     evt.code = keyCode
                     if (isKeyReleasedEvt == false) {
-                        inputEvents.append(EvtKeyPressed(updateKeyEvent(evt)))
+                        inputEvents.add(EvtKeyPressed(updateKeyEvent(evt)))
                     } else {
-                        inputEvents.append(EvtKeyReleased(updateKeyEvent(evt)))
+                        inputEvents.add(EvtKeyReleased(updateKeyEvent(evt)))
                     }
                 }
             }
@@ -79,9 +79,9 @@ public func parseInputEvents(elem: JsonValue): ArrayList<SFMLEvent> {
                     if (scanCode != Scancode.Unknown) {
                         evt.scancode = scanCode
                         if (isKeyReleasedEvt == false) {
-                            inputEvents.append(EvtKeyPressed(updateKeyEvent(evt)))
+                            inputEvents.add(EvtKeyPressed(updateKeyEvent(evt)))
                         } else {
-                            inputEvents.append(EvtKeyReleased(updateKeyEvent(evt)))
+                            inputEvents.add(EvtKeyReleased(updateKeyEvent(evt)))
                         }
                     }
                 }
@@ -90,9 +90,9 @@ public func parseInputEvents(elem: JsonValue): ArrayList<SFMLEvent> {
                 if (scanCode != Scancode.Unknown) {
                     evt.scancode = scanCode
                     if (isKeyReleasedEvt == false) {
-                        inputEvents.append(EvtKeyPressed(updateKeyEvent(evt)))
+                        inputEvents.add(EvtKeyPressed(updateKeyEvent(evt)))
                     } else {
-                        inputEvents.append(EvtKeyReleased(updateKeyEvent(evt)))
+                        inputEvents.add(EvtKeyReleased(updateKeyEvent(evt)))
                     }
                 }
             }
@@ -113,7 +113,7 @@ private func getInputEvents(game: Game, elem: JsonValue): ArrayList<SFMLEvent> {
             if (let Some(array) <- getValidArray(gameInputElem)) {
                 for (elem in array.getItems()) {
                     let vec = game.gameInputEvents.get(getStringChar(elem))
-                    inputEvents.appendAll(vec)
+                    inputEvents.add(all: vec)
                 }
             }
         }

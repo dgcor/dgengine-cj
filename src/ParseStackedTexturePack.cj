@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseStackedTexturePack(game: Game, elem: JsonValue): ?TexturePack {
     let texturePack = StackedTexturePack()

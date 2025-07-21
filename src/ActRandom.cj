@@ -7,7 +7,7 @@ public class ActRandomList <: Action {
 
     public func add(action: ?Action): Unit {
         if (let Some(action) <- action) {
-            actions.append(action)
+            actions.add(action)
         }
     }
 

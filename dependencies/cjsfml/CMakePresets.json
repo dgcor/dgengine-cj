@@ -8,7 +8,10 @@
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}/install",
       "cacheVariables": {
-        "BUILD_SHARED_LIBS": true
+        "BUILD_SHARED_LIBS": true,
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/"
       },
       "condition": {
         "type": "equals",
@@ -40,6 +43,9 @@
       "installDir": "${sourceDir}/install",
       "cacheVariables": {
         "BUILD_SHARED_LIBS": true,
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/",
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++",
         "CMAKE_TOOLCHAIN_FILE": {

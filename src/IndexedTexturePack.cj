@@ -41,7 +41,7 @@ public class IndexedTexturePack <: TexturePackIndexWrapper {
             rangeEnd = mapIndex
         }
         m_indexRange = (rangeStart, rangeEnd)
-        m_textureIndexes.put(mapIndex, toIndex)
+        m_textureIndexes.add(mapIndex, toIndex)
     }
 
     // maps index range

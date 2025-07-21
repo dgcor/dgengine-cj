@@ -90,7 +90,7 @@ public class TextUtils {
             str.value = GameUtils.replaceStringWithVarOrProp(str.value, game)
         }
         if (textOp.isSet(TextOp.Trim)) {
-            str.value = trim(str.value, chars: " \t\r\n")
+            str.value = str.value.trimAscii()
         }
         if (textOp.isSet(TextOp.RemoveEmptyLines)) {
             str.value = removeEmptyLines(str.value)

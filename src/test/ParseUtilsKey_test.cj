@@ -3,7 +3,7 @@ package dgengine.test
 import cjsfml.graphics.*
 import cjsfml.system.*
 import dgengine.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 import std.math.*
 import std.unittest.*

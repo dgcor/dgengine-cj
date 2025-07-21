@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 public func parseMultiTextureTexturePack(game: Game, elem: JsonValue): ?TexturePack {

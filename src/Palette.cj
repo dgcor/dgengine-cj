@@ -49,7 +49,7 @@ public class Palette <: Iterable<Color> & Resource {
     }
 
     public init(fileName: String, colorFormat: ColorFormat) {
-        palette = PaletteArray(256, item: Color())
+        palette = PaletteArray(256, repeat: Color())
 
         let bytes = NumberVector<UInt8>(fileName, maxNumElements: 1024).data
         if (bytes.size < 768) {
@@ -98,7 +98,7 @@ public class Palette <: Iterable<Color> & Resource {
     }
 
     public init(pal: Palette, trn: Array<Byte>, start: Int64, length: Int64) {
-        palette = PaletteArray(256, item: Color())
+        palette = PaletteArray(256, repeat: Color())
         if (start + length <= trn.size) {
             for (index in 0..length) {
                 palette[index] = pal[Int64(trn[start + index])]
@@ -112,7 +112,7 @@ public class Palette <: Iterable<Color> & Resource {
     }
 
     protected init(pal: PaletteArray) {
-        palette = PaletteArray(pal)
+        palette = pal.clone()
         try (img = SFMLImage(UInt32(palette.size), 1, palette)) {
             texture = Texture(img)
             return

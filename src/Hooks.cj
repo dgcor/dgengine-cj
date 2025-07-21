@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.Image as SFMLImage
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 private type InitializeShaderManagerFunc = (shaderManager: ShaderManager) -> Unit
 

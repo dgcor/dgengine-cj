@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.audio.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseSoundObj(game: Game, id: String, file: String, resource: String): ?SoundBuffer {
     try {

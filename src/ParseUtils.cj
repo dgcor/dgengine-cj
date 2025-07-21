@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getIdFromFile(file: String): ?String {
     let id = FileUtils.getFileNameWithoutExt(file).replace(".", "")

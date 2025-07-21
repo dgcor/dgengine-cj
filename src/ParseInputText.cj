@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getInputTextObj(game: Game, elem: JsonValue): ?InputText {
     if (let Some(font) <- game.resources.getFont(getStringKey(elem, "font"))) {

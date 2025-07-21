@@ -152,7 +152,7 @@ public class ImageUtils {
             let rectangles = ArrayList<(Int64, Int64)>()
             for (frame in imgCache) {
                 let frameSize = frame.size
-                rectangles.append((Int64(frameSize.x), Int64(frameSize.y)))
+                rectangles.add((Int64(frameSize.x), Int64(frameSize.y)))
             }
 
             let maxSize = Int64(Texture.maximumSize)
@@ -164,7 +164,7 @@ public class ImageUtils {
             for (rect in packRects) {
                 let frame = imgCache[rect.index]
                 img.copy(frame, UInt32(rect.x), UInt32(rect.y))
-                rects.append(IntRect(Int32(rect.x), Int32(rect.y), Int32(rect.width), Int32(rect.height)))
+                rects.add(IntRect(Int32(rect.x), Int32(rect.y), Int32(rect.width), Int32(rect.height)))
             }
             return (img, rects)
         } catch (ex: Exception) {

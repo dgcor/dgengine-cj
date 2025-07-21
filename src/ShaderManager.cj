@@ -122,7 +122,7 @@ void main()
     // ShaderManager
 
     public func add(id: String, shader: GameShader): Unit {
-        if (let Some(oldShader) <- m_shaders.put(id, shader)) {
+        if (let Some(oldShader) <- m_shaders.add(id, shader)) {
             oldShader.close()
         }
     }

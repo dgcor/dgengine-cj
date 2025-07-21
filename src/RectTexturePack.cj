@@ -22,11 +22,11 @@ public class RectTexturePack <: TexturePackWrapper {
     }
 
     public func addRect(index: UInt32, rect: IntRect, offset: Vector2f): Unit {
-        m_rects.append(RectTexture(index, rect, offset))
+        m_rects.add(RectTexture(index, rect, offset))
     }
 
     public func addRect(rect: IntRect, offset: Vector2f): Unit {
-        m_rects.append(RectTexture(UInt32(m_rects.size), rect, offset))
+        m_rects.add(RectTexture(UInt32(m_rects.size), rect, offset))
     }
 
     public override func get(index: UInt32): ?TextureInfo {

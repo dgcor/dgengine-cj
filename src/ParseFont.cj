@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.graphics.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func cloneFont(game: Game, elem: JsonValue): Bool {
     if (let Some(cloneId) <- getValidString(elem, "clone")) {

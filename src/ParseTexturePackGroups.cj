@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 private func parseAnimationGroup(elem: JsonValue, defaultAnimInfo: AnimationInfo): AnimationGroup {
@@ -14,7 +14,7 @@ private func parseAnimationGroup(elem: JsonValue, defaultAnimInfo: AnimationInfo
             if (directionRange.y < directionRange.x) {
                 continue
             }
-            directions.append((directionRange.x, directionRange.y))
+            directions.add((directionRange.x, directionRange.y))
         }
         directionsVec = directions
     } else {

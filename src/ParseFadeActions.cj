@@ -2,7 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func parseGameFade(game: Game, elem: JsonValue, defautlColor: Color, isFadeOut: Bool): ?Action {
     let action = ActGameFade(

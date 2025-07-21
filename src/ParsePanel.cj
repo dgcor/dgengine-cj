@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getPanelObj(game: Game, elem: JsonValue): Panel {
     let panel = Panel(getBoolKey(elem, "relativePositions"))

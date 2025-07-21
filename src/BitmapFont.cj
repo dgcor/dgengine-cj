@@ -281,7 +281,7 @@ public class BitmapFont {
                         // triangle 1
 
                         // top left
-                        vertexText.append(
+                        vertexText.add(
                             Vertex(
                                 position: Vector2f(curX, curY),
                                 color: vertexColor,
@@ -290,7 +290,7 @@ public class BitmapFont {
                         )
 
                         // top right
-                        vertexText.append(
+                        vertexText.add(
                             Vertex(
                                 position: Vector2f(curX + Float32(ti.textureRect.width), curY),
                                 color: vertexColor,
@@ -300,7 +300,7 @@ public class BitmapFont {
                         )
 
                         // bottom left
-                        vertexText.append(
+                        vertexText.add(
                             Vertex(
                                 position: Vector2f(curX, curY + Float32(ti.textureRect.height)),
                                 color: vertexColor,
@@ -312,13 +312,13 @@ public class BitmapFont {
                         // triangle 2
 
                         // top right
-                        vertexText.append(vertexText[vertexText.size - 2])
+                        vertexText.add(vertexText[vertexText.size - 2])
 
                         // bottom left
-                        vertexText.append(vertexText[vertexText.size - 2])
+                        vertexText.add(vertexText[vertexText.size - 2])
 
                         // bottom right
-                        vertexText.append(
+                        vertexText.add(
                             Vertex(
                                 position: Vector2f(curX + Float32(ti.textureRect.width),
                                     curY + Float32(ti.textureRect.height)),

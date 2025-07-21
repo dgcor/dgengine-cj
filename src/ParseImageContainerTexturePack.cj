@@ -1,6 +1,6 @@
 package dgengine
 
-import encoding.json.*
+import stdx.encoding.json.*
 import std.collection.*
 
 private func getImageContainers(game: Game, elem: JsonValue): ArrayList<ImageContainer> {
@@ -10,11 +10,11 @@ private func getImageContainers(game: Game, elem: JsonValue): ArrayList<ImageCon
             match (elem.kind()) {
                 case JsString =>
                     if (let Some(imgCont) <- game.resources.getImageContainer(getStringChar(elem))) {
-                        imgContainers.append(imgCont)
+                        imgContainers.add(imgCont)
                     }
                 case JsArray => for (val in elem.asArray().getItems()) {
                     if (let Some(imgCont) <- game.resources.getImageContainer(getStringChar(val))) {
-                        imgContainers.append(imgCont)
+                        imgContainers.add(imgCont)
                     }
                 }
                 case _ => ()

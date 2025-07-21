@@ -1,7 +1,7 @@
 package dgengine
 
 import cjsfml.system.*
-import encoding.json.*
+import stdx.encoding.json.*
 
 public func getAnimationObj(game: Game, elem: JsonValue): ?Animation {
     var animation = Option<Animation>.None
