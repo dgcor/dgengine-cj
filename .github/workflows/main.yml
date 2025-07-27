@@ -43,7 +43,7 @@ jobs:
 
       - name: Build and install physfs
         run: |
-          git clone https://github.com/icculus/physfs.git dependencies/physfs
+          git clone --branch release-3.2.0 https://github.com/icculus/physfs.git dependencies/physfs
           cp -f dependencies/CMakePresets.json dependencies/physfs/CMakePresets.json
           cd dependencies/physfs
           cmake --preset linux-release
