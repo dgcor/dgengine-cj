@@ -39,7 +39,7 @@ foreign {
 
     // Shape
 
-    func sfCircleShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: SfBool): Unit
+    func sfCircleShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: Bool): Unit
 
     func sfCircleShape_setTextureRect(handle: CPointer<Unit>, rect: IntRect): Unit
 
@@ -62,6 +62,8 @@ foreign {
     func sfCircleShape_getPointCount(handle: CPointer<Unit>): UIntNative
 
     func sfCircleShape_getPoint(handle: CPointer<Unit>, index: UIntNative): Vector2f
+
+    func sfCircleShape_getGeometricCenter(handle: CPointer<Unit>): Vector2f
 
     func sfCircleShape_setRadius(handle: CPointer<Unit>, radius: Float32): Unit
 
@@ -232,7 +234,7 @@ public class CircleShape <: ResourceHandle & RenderTargetDrawable & Transformabl
     }
 
     public func setTexture(texture: ?Texture, resetRect!: Bool = false): Unit {
-        unsafe { sfCircleShape_setTexture(m_handle, texture?.handle ?? CPointer(), SfBool.fromBool(resetRect)) }
+        unsafe { sfCircleShape_setTexture(m_handle, texture?.handle ?? CPointer(), resetRect) }
     }
 
     public mut prop textureRect: IntRect {
@@ -282,6 +284,12 @@ public class CircleShape <: ResourceHandle & RenderTargetDrawable & Transformabl
 
     public func getPoint(index: UInt32): Vector2f {
         unsafe { sfCircleShape_getPoint(m_handle, UIntNative(index)) }
+    }
+
+    public prop geometricCenter: Vector2f {
+        get() {
+            unsafe { sfCircleShape_getGeometricCenter(m_handle) }
+        }
     }
 
     public mut prop radius: Float32 {

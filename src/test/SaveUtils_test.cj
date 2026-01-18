@@ -1,9 +1,7 @@
 package dgengine.test
 
-import cjsfml.graphics.*
 import cjsfml.system.*
 import dgengine.*
-import stdx.encoding.json.*
 import stdx.encoding.json.stream.*
 import std.collection.*
 import std.io.*

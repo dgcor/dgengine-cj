@@ -38,8 +38,7 @@ public class FreeTypeText <: DrawableText {
     private func calculateDrawPosition(): Unit {
         var drawPos = GameUtils.getAlignmentPosition(m_pos, size, m_horizAlign, m_vertAlign)
         let bounds = m_text.localBounds
-        drawPos.x -= bounds.left
-        drawPos.y -= bounds.top
+        drawPos -= bounds.position
         m_text.position = drawPos
     }
 

@@ -55,6 +55,6 @@ public func parseShadersetVec4(elem: JsonValue): ?Action {
     return ActShaderSetVec4(
         getStringCharKey(elem, "id"),
         getStringCharKey(elem, "key"),
-        GlslVec4(rect.left, rect.top, rect.width, rect.height)
+        GlslVec4(rect.position.x, rect.position.y, rect.size.x, rect.size.y)
     )
 }

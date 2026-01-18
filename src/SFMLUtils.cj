@@ -39,18 +39,18 @@ public class SFMLUtils {
         var texRect = sprite.textureRect
         var updateTexRect = false
 
-        let valX = round(-(Float32(texRect.width) / 2.0) + (Float32(texSize.x) / 2.0))
-        if (Int32(texSize.x) <= texRect.width) {
+        let valX = round(-(Float32(texRect.size.x) / 2.0) + (Float32(texSize.x) / 2.0))
+        if (Int32(texSize.x) <= texRect.size.x) {
             origin.x = valX
         } else {
-            texRect.left = Int32(valX)
+            texRect.position.x = Int32(valX)
             updateTexRect = true
         }
-        let valY = round(-(Float32(texRect.height) / 2.0) + (Float32(texSize.y) / 2.0))
-        if (Int32(texSize.y) <= texRect.height) {
+        let valY = round(-(Float32(texRect.size.y) / 2.0) + (Float32(texSize.y) / 2.0))
+        if (Int32(texSize.y) <= texRect.size.y) {
             origin.y = valY
         } else {
-            texRect.top = Int32(valY)
+            texRect.position.y = Int32(valY)
             updateTexRect = true
         }
         sprite.origin = origin
@@ -87,11 +87,11 @@ public class SFMLUtils {
 
         var viewPort2 = viewPort
         if (horizontalSpacing == true) {
-            viewPort2.width = viewRatio / windowRatio
-            viewPort2.left = (1.0 - viewPort2.width) / 2.0
+            viewPort2.size.x = viewRatio / windowRatio
+            viewPort2.position.x = (1.0 - viewPort2.size.x) / 2.0
         } else {
-            viewPort2.height = windowRatio / viewRatio
-            viewPort2.top = (1.0 - viewPort2.height) / 2.0
+            viewPort2.size.y = windowRatio / viewRatio
+            viewPort2.position.y = (1.0 - viewPort2.size.y) / 2.0
         }
         view.viewport = viewPort2
     }

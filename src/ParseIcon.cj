@@ -10,7 +10,7 @@ public func parseIcon(game: Game, elem: JsonValue): Unit {
                 if (iconSize.x == 0 || iconSize.y == 0) {
                     return
                 }
-                game.setIcon(iconSize.x, iconSize.y, icon.pixelsPtr)
+                game.setIcon(iconSize, icon.pixelsPtr)
             }
         }
     }

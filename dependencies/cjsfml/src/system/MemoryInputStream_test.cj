@@ -127,9 +127,9 @@ class TestMemoryInputStream {
             var seekPos = stream.seek(Begin(-2))
 
             @Expect(stream.length, bytes.size)
-            @Expect(stream.remainLength, 15)
+            @Expect(stream.remainLength, bytes.size)
             @Expect(stream.position, 0)
-            @Expect(seekPos, 0)
+            @Expect(seekPos, -1)
         }
     }
 

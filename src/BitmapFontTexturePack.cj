@@ -56,15 +56,15 @@ public class BitmapFontTexturePack <: TexturePack {
         var iCol = 0i32
         for (index in 0..m_charRects.size) {
             var rect = m_charRects[index]
-            rect.left = cellW * iCol
-            rect.top = cellH * iRow
+            rect.position.x = cellW * iCol
+            rect.position.y = cellH * iRow
             let charSizeIdx = (index * stepNBytes2) + charStartIdx
             if (charSizeIdx < charSizes.size) {
-                rect.width = Int32(charSizes[charSizeIdx])
+                rect.size.x = Int32(charSizes[charSizeIdx])
             } else {
-                rect.width = 0
+                rect.size.x = 0
             }
-            rect.height = cellH
+            rect.size.y = cellH
             m_charRects[index] = rect
 
             if (verticalDirection == false) {
@@ -85,31 +85,31 @@ public class BitmapFontTexturePack <: TexturePack {
         if (newLine > 0) {
             let index = Int64(UInt32(r'\n'))
             var rect = m_charRects[index]
-            rect.height = Int32(newLine)
+            rect.size.y = Int32(newLine)
             m_charRects[index] = rect
         } else if (charStartIdx == 2 && (charSizes.size == 130 || charSizes.size == 258)) {
             let index = Int64(UInt32(r'\n'))
             var rect = m_charRects[index]
-            rect.height = Int32(charSizes[1])
+            rect.size.y = Int32(charSizes[1])
             m_charRects[index] = rect
         }
 
         if (space > 0) {
             let index = Int64(UInt32(r' '))
             var rect = m_charRects[index]
-            rect.width = Int32(space)
+            rect.size.x = Int32(space)
             m_charRects[index] = rect
         } else if (charStartIdx == 2 && (charSizes.size == 130 || charSizes.size == 258)) {
             let index = Int64(UInt32(r' '))
             var rect = m_charRects[index]
-            rect.width = Int32(charSizes[0])
+            rect.size.x = Int32(charSizes[0])
             m_charRects[index] = rect
         }
 
         if (tab > 0) {
             let index = Int64(UInt32(r'\t'))
             var rect = m_charRects[index]
-            rect.width = Int32(tab)
+            rect.size.x = Int32(tab)
             m_charRects[index] = rect
         }
     }
@@ -137,12 +137,12 @@ public class BitmapFontTexturePack <: TexturePack {
             var rect = m_charRects[index]
 
             // Set the character offset
-            rect.left = cellW * iCol
-            rect.top = cellH * iRow
+            rect.position.x = cellW * iCol
+            rect.position.y = cellH * iRow
 
             // Set the dimensions of the character
-            rect.width = cellW
-            rect.height = cellH
+            rect.size.x = cellW
+            rect.size.y = cellH
 
             // Find Left Side
             // Go through pixel columns
@@ -156,9 +156,9 @@ public class BitmapFontTexturePack <: TexturePack {
                     let pY = (cellH * iRow) + pRow
 
                     // If a non colorkey pixel is found
-                    if (img.getPixel(UInt32(pX), UInt32(pY)).a != 0) {
+                    if (img.getPixel(Vector2u(UInt32(pX), UInt32(pY))).a != 0) {
                         // Set the x offset
-                        rect.left = pX
+                        rect.position.x = pX
 
                         // Break the loops
                         pCol = cellW
@@ -182,9 +182,9 @@ public class BitmapFontTexturePack <: TexturePack {
                     let pY = (cellH * iRow) + pRowW
 
                     // If a non colorkey pixel is found
-                    if (img.getPixel(UInt32(pX), UInt32(pY)).a != 0) {
+                    if (img.getPixel(Vector2u(UInt32(pX), UInt32(pY))).a != 0) {
                         // Set the width
-                        rect.width = (pX - rect.left) + 1
+                        rect.size.x = (pX - rect.position.x) + 1
 
                         // Break the loops
                         pColW = -1
@@ -204,11 +204,11 @@ public class BitmapFontTexturePack <: TexturePack {
                 var pCol = 0i32
                 while (pCol < cellW) {
                     // Get the pixel offsets
-                    let pX = (cellW * iCol) + pCol
-                    let pY = (cellH * iRow) + pRow
+                    let pX = UInt32((cellW * iCol) + pCol)
+                    let pY = UInt32((cellH * iRow) + pRow)
 
                     // If a non colorkey pixel is found
-                    if (img.getPixel(UInt32(pX), UInt32(pY)).a != 0) {
+                    if (img.getPixel(Vector2u(pX, pY)).a != 0) {
                         // If new top is found
                         if (pRow < top) {
                             top = pRow
@@ -246,22 +246,22 @@ public class BitmapFontTexturePack <: TexturePack {
             let rect = m_charRects[indexA]
 
             // Go through pixel rows
-            var pRow = rect.height - 1
+            var pRow = rect.size.y - 1
             while (pRow >= 0) {
                 // Go through pixel columns
                 var pCol = 0i32
-                while (pCol < rect.width) {
+                while (pCol < rect.size.x) {
                     // Get the pixel offsets
-                    let pX = rect.left + pCol
-                    let pY = rect.top + pRow
+                    let pX = rect.position.x + pCol
+                    let pY = rect.position.y + pRow
 
                     // If a non colorkey pixel is found
-                    if (img.getPixel(UInt32(pX), UInt32(pY)).a != 0) {
+                    if (img.getPixel(Vector2u(UInt32(pX), UInt32(pY))).a != 0) {
                         // Bottom of a is found
                         baseA = pRow
 
                         // Break the loops
-                        pCol = rect.width
+                        pCol = rect.size.x
                         pRow = -1
                     } else {
                         pCol++
@@ -271,12 +271,12 @@ public class BitmapFontTexturePack <: TexturePack {
             }
             let indexNL = Int64(UInt32(r'\n'))
             var charRectNL = m_charRects[indexNL]
-            charRectNL.height = baseA - top
+            charRectNL.size.y = baseA - top
             m_charRects[indexNL] = charRectNL
         } else if (newLine > 0) {
             let indexNL = Int64(UInt32(r'\n'))
             var charRectNL = m_charRects[indexNL]
-            charRectNL.height = Int32(newLine)
+            charRectNL.size.y = Int32(newLine)
             m_charRects[indexNL] = charRectNL
         }
 
@@ -284,12 +284,12 @@ public class BitmapFontTexturePack <: TexturePack {
         if (space < 0) {
             let index = Int64(UInt32(r' '))
             var rect = m_charRects[index]
-            rect.width = cellW / 2
+            rect.size.x = cellW / 2
             m_charRects[index] = rect
         } else if (space > 0) {
             let index = Int64(UInt32(r' '))
             var rect = m_charRects[index]
-            rect.width = Int32(space)
+            rect.size.x = Int32(space)
             m_charRects[index] = rect
         }
 
@@ -297,20 +297,20 @@ public class BitmapFontTexturePack <: TexturePack {
         if (tab < 0) {
             let index = Int64(UInt32(r'\t'))
             var rect = m_charRects[index]
-            rect.width = cellW * 2
+            rect.size.x = cellW * 2
             m_charRects[index] = rect
         } else if (tab > 0) {
             let index = Int64(UInt32(r'\t'))
             var rect = m_charRects[index]
-            rect.width = Int32(tab)
+            rect.size.x = Int32(tab)
             m_charRects[index] = rect
         }
 
         // Loop off excess top pixels
         for (index in 0..m_charRects.size) {
             var rect = m_charRects[index]
-            rect.top += top
-            rect.height -= top
+            rect.position.y += top
+            rect.size.y -= top
             m_charRects[index] = rect
         }
     }

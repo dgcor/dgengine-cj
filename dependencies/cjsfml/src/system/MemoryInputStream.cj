@@ -3,12 +3,13 @@ package cjsfml.system
 foreign func memcpy(dest: CPointer<Unit>, src: CPointer<Unit>, count: UIntNative): CPointer<Unit>
 
 @C
-private func memoryInputStream_read(data: CPointer<Byte>, size: Int64, userData: CPointer<Unit>): Int64 {
+private func memoryInputStream_read(data: CPointer<Byte>, size: UIntNative, userData: CPointer<Unit>): Int64 {
     let memoryPtr = CPointer<MemoryStruct>(userData)
     if (memoryPtr.isNull()) {
         return -1
     }
     unsafe {
+        let size = Int64(size)
         var memory = memoryPtr.read()
         let endPosition = memory.offset + size
         let count = match (endPosition <= memory.size) {
@@ -25,15 +26,16 @@ private func memoryInputStream_read(data: CPointer<Byte>, size: Int64, userData:
 }
 
 @C
-private func memoryInputStream_seek(position: Int64, userData: CPointer<Unit>): Int64 {
+private func memoryInputStream_seek(position: UIntNative, userData: CPointer<Unit>): Int64 {
     let memoryPtr = CPointer<MemoryStruct>(userData)
     if (memoryPtr.isNull()) {
         return -1
     }
     unsafe {
+        let position = Int64(position)
         var memory = memoryPtr.read()
         if (position < 0) {
-            memory.offset = 0
+            return -1
         } else if (position < memory.size) {
             memory.offset = position
         } else {

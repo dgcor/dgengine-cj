@@ -278,8 +278,8 @@ public class Game <: Resource {
                 match (event) {
                     case EvtClosed => onClosed()
                     case EvtResized(evt) => onResized(evt)
-                    case EvtLostFocus => onLostFocus()
-                    case EvtGainedFocus => onGainedFocus()
+                    case EvtFocusLost => onFocusLost()
+                    case EvtFocusGained => onFocusGained()
                     case EvtTextEntered(evt) => onTextEntered(evt)
                     case EvtKeyPressed(evt) => onKeyPressed(event, evt)
                     case EvtKeyReleased(evt) => onKeyReleased(event, evt)
@@ -307,7 +307,7 @@ public class Game <: Resource {
 
     protected func onResized(evt: SizeEvent): Unit {
         var needsResize = false
-        var newSize = Vector2u(evt.width, evt.height)
+        var newSize = evt.size
         if (newSize.x < m_minSize.x) {
             newSize.x = m_minSize.x
             needsResize = true
@@ -400,7 +400,7 @@ public class Game <: Resource {
             gameTexture.close()
             m_gameTexture = None
         }
-        let gameTexture = RenderTexture(m_drawRegionSize.x, m_drawRegionSize.y)
+        let gameTexture = RenderTexture(m_drawRegionSize)
         gameTexture.smooth = m_smoothScreen
         m_gameTexture = gameTexture
     }
@@ -411,11 +411,10 @@ public class Game <: Resource {
         if (m_fullScreen == true) {
             let videoMode = VideoMode.desktopMode
             m_windowedSize = m_size
-            m_size.x = videoMode.width
-            m_size.y = videoMode.height
-            m_window = RenderWindow(videoMode, m_title, style: WindowStyle.Fullscreen)
+            m_size = videoMode.size
+            m_window = RenderWindow(videoMode, m_title, state: WindowState.Fullscreen)
         } else {
-            m_window = RenderWindow(VideoMode(m_size.x, m_size.y), m_title)
+            m_window = RenderWindow(VideoMode(m_size), m_title)
             if (let Some(position) <- m_position) {
                 m_window?.position = position
             } else {
@@ -428,11 +427,11 @@ public class Game <: Resource {
         }
     }
 
-    protected func onLostFocus(): Unit {
+    protected func onFocusLost(): Unit {
         m_eventManager.addBack(m_focusLossAction)
     }
 
-    protected func onGainedFocus(): Unit {
+    protected func onFocusGained(): Unit {
         m_eventManager.addBack(m_focusGainAction)
     }
 
@@ -467,8 +466,7 @@ public class Game <: Resource {
         }
         updateMousePosition()
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_mouseScrollEvt = evt2
     }
 
@@ -478,8 +476,7 @@ public class Game <: Resource {
         }
         updateMousePosition()
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_mousePressEvt = evt2
     }
 
@@ -489,19 +486,17 @@ public class Game <: Resource {
         }
         updateMousePosition()
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_mouseReleaseEvt = evt2
     }
 
     protected func onMouseMoved(evt: MouseMoveEvent): Unit {
-        updateMousePosition(Vector2i(evt.x, evt.y))
+        updateMousePosition(evt.position)
         if (m_enableInput == false) {
             return
         }
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_mouseMoveEvt = evt2
     }
 
@@ -511,19 +506,17 @@ public class Game <: Resource {
         }
         updateMousePosition()
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_touchBeganEvt = evt2
     }
 
     protected func onTouchMoved(evt: TouchEvent): Unit {
-        updateMousePosition(Vector2i(evt.x, evt.y))
+        updateMousePosition(evt.position)
         if (m_enableInput == false) {
             return
         }
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_touchMovedEvt = evt2
     }
 
@@ -533,8 +526,7 @@ public class Game <: Resource {
         }
         updateMousePosition()
         var evt2 = evt
-        evt2.x = m_mousePositioni.x
-        evt2.y = m_mousePositioni.y
+        evt2.position = m_mousePositioni
         m_touchEndedEvt = evt2
     }
 

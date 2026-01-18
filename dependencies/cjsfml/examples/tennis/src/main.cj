@@ -21,7 +21,7 @@ main(): Int64 {
     const paddleSize = Vector2f(25.0, 100.0)
     const ballRadius = 10.0f32
 
-    let videoMode = VideoMode(UInt32(gameWidth), UInt32(gameHeight))
+    let videoMode = VideoMode(Vector2u(UInt32(gameWidth), UInt32(gameHeight)))
     let window = RenderWindow(videoMode, "SFML Tennis", style: WindowStyle.Titlebar | WindowStyle.Close)
     window.setVerticalSyncEnabled(true)
 
@@ -59,10 +59,10 @@ main(): Int64 {
     let font = Font(resourcesDir() + "tuffy.ttf")
 
     // Initialize the pause message
-    let pauseMessage = Text(font, characterSize: 40)
+    const pauseMsg = "Welcome to SFML Tennis!\n\nPress space to start the game."
+    let pauseMessage = Text(font, pauseMsg, characterSize: 40)
     pauseMessage.position = Vector2f(170.0, 200.0)
     pauseMessage.fillColor = Color.white
-    pauseMessage.string = "Welcome to SFML Tennis!\n\nPress space to start the game."
 
     // Define the paddles properties
     var AITimer = Clock()

@@ -44,8 +44,8 @@ public class Palette <: Iterable<Color> & Resource {
             }
         )
         let width = UInt32(palette.size)
-        texture = Texture(width, 1)
-        texture.update(palette, width, 1, 0, 0)
+        texture = Texture(Vector2u(width, 1))
+        texture.update(palette, Vector2u(width, 1), Vector2u())
     }
 
     public init(fileName: String, colorFormat: ColorFormat) {
@@ -90,7 +90,7 @@ public class Palette <: Iterable<Color> & Resource {
                 palette[index] = Color(r.value, g.value, b.value, a.value)
             }
         }
-        try (img = SFMLImage(UInt32(palette.size), 1, palette)) {
+        try (img = SFMLImage(Vector2u(UInt32(palette.size), 1), palette)) {
             texture = Texture(img)
             return
         }
@@ -104,7 +104,7 @@ public class Palette <: Iterable<Color> & Resource {
                 palette[index] = pal[Int64(trn[start + index])]
             }
         }
-        try (img = SFMLImage(UInt32(palette.size), 1, palette)) {
+        try (img = SFMLImage(Vector2u(UInt32(palette.size), 1), palette)) {
             texture = Texture(img)
             return
         }
@@ -113,7 +113,7 @@ public class Palette <: Iterable<Color> & Resource {
 
     protected init(pal: PaletteArray) {
         palette = pal.clone()
-        try (img = SFMLImage(UInt32(palette.size), 1, palette)) {
+        try (img = SFMLImage(Vector2u(UInt32(palette.size), 1), palette)) {
             texture = Texture(img)
             return
         }
@@ -147,7 +147,7 @@ public class Palette <: Iterable<Color> & Resource {
     }
 
     private func updateTexture(): Unit {
-        texture.update(palette, UInt32(palette.size), 1, 0, 0)
+        texture.update(palette, Vector2u(UInt32(palette.size), 1), Vector2u())
     }
 
     public func shiftLeft(shift: Int64, startIdx: Int64, stopIdx: Int64): Bool {

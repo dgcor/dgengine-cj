@@ -3,48 +3,42 @@ package cjsfml.graphics
 import cjsfml.system.*
 import ctemplate.*
 
-@Template[ClassName, NumType, VectorType, DefaultValue: FloatRect, Float32, Vector2f, 0.0 ; IntRect, Int32, Vector2i, 0](
+@Template[ClassName, NumType, VectorType: FloatRect, Float32, Vector2f ; IntRect, Int32, Vector2i](
 @C
 public struct ClassName {
-    public var left: NumType = DefaultValue
-    public var top: NumType = DefaultValue
-    public var width: NumType = DefaultValue
-    public var height: NumType = DefaultValue
+    public var position: VectorType
+    public var size: VectorType
 
-    public const init() {}
+    public const init() {
+        this.position = VectorType()
+        this.size = VectorType()
+    }
+
     public const init(left: NumType, top: NumType, width: NumType, height: NumType) {
-        this.left = left
-        this.top = top
-        this.width = width
-        this.height = height
+        this.position = VectorType(left, top)
+        this.size = VectorType(width, height)
     }
 
     public const init(rect: (NumType, NumType, NumType, NumType)) {
-        left = rect[0]
-        top = rect[1]
-        width = rect[2]
-        height = rect[3]
+        this.position = VectorType(rect[0], rect[1])
+        this.size = VectorType(rect[2], rect[3])
     }
 
     public const init(position: VectorType, size: VectorType) {
-        left = position.x
-        top = position.y
-        width = size.x
-        height = size.y
+        this.position = position
+        this.size = size
     }
 
     public const init(position: (NumType, NumType), size: (NumType, NumType)) {
-        left = position[0]
-        top = position[1]
-        width = size[0]
-        height = size[1]
+        this.position = VectorType(position[0], position[1])
+        this.size = VectorType(size[0], size[1])
     }
 
     public func contains(x: NumType, y: NumType): Bool {
-        let minX = min(left, left + width)
-        let maxX = max(left, left + width)
-        let minY = min(top, top + height)
-        let maxY = max(top, top + height)
+        let minX = min(position.x, position.x + size.x)
+        let maxX = max(position.x, position.x + size.x)
+        let minY = min(position.y, position.y + size.y)
+        let maxY = max(position.y, position.y + size.y)
         let x64 = x
         let y64 = y
 
@@ -59,18 +53,18 @@ public struct ClassName {
         return contains(point[0], point[1])
     }
 
-    public func intersects(rectangle: ClassName): ?ClassName {
+    public func findIntersection(rectangle: ClassName): ?ClassName {
         // Rectangles with negative dimensions are allowed, so we must handle them correctly
 
         // Compute the min and max of the first rectangle on both axes
-        let r1MinX = min(left, left + width)
-        let r1MaxX = max(left, left + width)
-        let r1MinY = min(top, top + height)
-        let r1MaxY = max(top, top + height)
-        let r2MinX = min(rectangle.left, rectangle.left + rectangle.width)
-        let r2MaxX = max(rectangle.left, rectangle.left + rectangle.width)
-        let r2MinY = min(rectangle.top, rectangle.top + rectangle.height)
-        let r2MaxY = max(rectangle.top, rectangle.top + rectangle.height)
+        let r1MinX = min(position.x, position.x + size.x)
+        let r1MaxX = max(position.x, position.x + size.x)
+        let r1MinY = min(position.y, position.y + size.y)
+        let r1MaxY = max(position.y, position.y + size.y)
+        let r2MinX = min(rectangle.position.x, rectangle.position.x + rectangle.size.x)
+        let r2MaxX = max(rectangle.position.x, rectangle.position.x + rectangle.size.x)
+        let r2MinY = min(rectangle.position.y, rectangle.position.y + rectangle.size.y)
+        let r2MaxY = max(rectangle.position.y, rectangle.position.y + rectangle.size.y)
         let interLeft = max(r1MinX, r2MinX)
         let interTop = max(r1MinY, r2MinY)
         let interRight = min(r1MaxX, r2MaxX)
@@ -84,35 +78,23 @@ public struct ClassName {
         return None
     }
 
-    public prop position: VectorType {
-        get() {
-            VectorType(left, top)
-        }
-    }
-
-    public prop size: VectorType {
-        get() {
-            VectorType(width, height)
-        }
-    }
-
     public operator const func ==(right: ClassName): Bool {
-        return left == right.left && top == right.top && width == right.width && height == right.height
+        return position == right.position && size == right.size
     }
 
     public operator const func !=(right: ClassName): Bool {
-        return left != right.left || top != right.top || width != right.width || height != right.height
+        return position != right.position || size != right.size
     }
 
     public operator const func ==(right: (NumType, NumType, NumType, NumType)): Bool {
-        return left == right[0] && top == right[1] && width == right[2] && height == right[3]
+        return position.x == right[0] && position.y == right[1] && size.x == right[2] && size.y == right[3]
     }
 
     public operator const func !=(right: (NumType, NumType, NumType, NumType)): Bool {
-        return left != right[0] || top != right[1] || width != right[2] || height != right[3]
+        return position.x != right[0] || position.y != right[1] || size.x != right[2] || size.y != right[3]
     }
 
     public func toTuple(): (NumType, NumType, NumType, NumType) {
-        (left, top, width, height)
+        (position.x, position.y, size.x, size.y)
     }
 })

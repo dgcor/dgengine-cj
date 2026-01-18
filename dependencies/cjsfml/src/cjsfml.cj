@@ -1,5 +1,5 @@
 package cjsfml
 
-public const cjsfmlVersionMajor: Int32 = 2
-public const cjsfmlVersionMinor: Int32 = 6
-public const cjsfmlVersionPatch: Int32 = 1
+public const cjsfmlVersionMajor: Int32 = 3
+public const cjsfmlVersionMinor: Int32 = 0
+public const cjsfmlVersionPatch: Int32 = 0

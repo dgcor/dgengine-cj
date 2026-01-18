@@ -64,7 +64,7 @@ public open class Image <: UIObject {
         } else {
             // stretch to fill and keep aspect ratio
             let scale = SFMLUtils.getScaleToStretchAndKeepAR(
-                Vector2u(UInt32(m_sprite.textureRect.width), UInt32(m_sprite.textureRect.height)),
+                Vector2u(UInt32(m_sprite.textureRect.size.x), UInt32(m_sprite.textureRect.size.y)),
                 game.drawRegionSize
             )
             m_sprite.setScale(Vector2f(scale, scale))
@@ -103,11 +103,11 @@ public open class Image <: UIObject {
             }
             if (m_stretch == true) {
                 let rect = m_sprite.textureRect
-                m_sprite.setScale(Vector2f(value.x / Float32(rect.width), value.y / Float32(rect.height)))
+                m_sprite.setScale(Vector2f(value.x / Float32(rect.size.x), value.y / Float32(rect.size.y)))
             } else {
                 var rect = m_sprite.textureRect
-                rect.width = Int32(value.x)
-                rect.height = Int32(value.y)
+                rect.size.x = Int32(value.x)
+                rect.size.y = Int32(value.y)
                 m_sprite.textureRect = rect
             }
         }
@@ -225,8 +225,8 @@ public open class Image <: UIObject {
     public func setOrigin(): Unit {
         m_sprite.setOrigin(
             Vector2f(
-                round(Float32(m_sprite.textureRect.width) / 2.0),
-                round(Float32(m_sprite.textureRect.height) / 2.0)
+                round(Float32(m_sprite.textureRect.size.x) / 2.0),
+                round(Float32(m_sprite.textureRect.size.y) / 2.0)
             )
         )
     }

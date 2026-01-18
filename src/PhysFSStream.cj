@@ -3,17 +3,17 @@ package dgengine
 import cjsfml.system.*
 
 @C
-private func physfsInputStream_read(data: CPointer<Byte>, size: Int64, userData: CPointer<Unit>): Int64 {
+private func physfsInputStream_read(data: CPointer<Byte>, size: UIntNative, userData: CPointer<Unit>): Int64 {
     unsafe { PHYSFS_readBytes(userData, data, UInt64(size)) }
 }
 
 @C
-private func physfsInputStream_seek(position: Int64, userData: CPointer<Unit>): Int64 {
+private func physfsInputStream_seek(position: UIntNative, userData: CPointer<Unit>): Int64 {
     unsafe {
         if (PHYSFS_seek(userData, UInt64(position)) == 0) {
             return -1
         }
-        return position
+        return Int64(position)
     }
 }
 

@@ -456,12 +456,12 @@ extend Game {
         }
     }
 
-    public func setIcon(width: UInt32, height: UInt32, pixels: Array<UInt8>) {
-        m_window?.setIcon(width, height, pixels)
+    public func setIcon(size: Vector2u, pixels: Array<UInt8>) {
+        m_window?.setIcon(size, pixels)
     }
 
-    public func setIcon(width: UInt32, height: UInt32, pixels: CPointer<UInt8>) {
-        m_window?.setIcon(width, height, pixels)
+    public func setIcon(size: Vector2u, pixels: CPointer<UInt8>) {
+        m_window?.setIcon(size, pixels)
     }
 
     public func getVarOrPropNoToken(key: String): ?Variable {

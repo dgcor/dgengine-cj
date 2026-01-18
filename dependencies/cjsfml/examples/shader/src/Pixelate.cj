@@ -1,16 +1,18 @@
 package shader
 
 import cjsfml.graphics.*
-import cjsfml.system.*
 
 // "Pixelate" fragment shader
 class Pixelate <: Effect {
-    private var m_texture: ?Texture = None
-    private let m_sprite: Sprite = Sprite()
-    private let m_shader: Shader = Shader()
+    private var m_texture: Texture
+    private let m_sprite: Sprite
+    private let m_shader: Shader
 
-    public init() {
-        super("Pixelate")
+    public init(texture: Texture, shader: Shader) {
+        m_texture = texture
+        m_sprite = Sprite(texture)
+        m_shader = shader
+        m_shader.setCurrentTextureUniform("texture")
     }
 
     public func isClosed(): Bool {
@@ -20,41 +22,30 @@ class Pixelate <: Effect {
     public func close(): Unit {
         m_shader.close()
         m_sprite.close()
-        if (let Some(texture) <- m_texture) {
-            texture.close()
-        }
+        m_texture.close()
     }
 
-    protected func onLoad(): Bool {
-        // Load the texture and initialize the sprite
+    public static func tryLoad(): ?Effect {
         try {
             let texture = Texture("resources/background.jpg")
-            m_texture = texture
-            m_sprite.setTexture(texture)
+            texture.smooth = true
+
+            let shader = Shader()
+            shader.createFromFile(fragmentShader: "resources/pixelate.frag")
+            shader.setCurrentTextureUniform("texture")
+
+            return Pixelate(texture, shader)
         } catch (ex: Exception) {
-            println(ex)
-            return false
-        }
-
-        // Load the shader
-        try {
-            m_shader.createFromFile(fragmentShader: "resources/pixelate.frag")
-            m_shader.setCurrentTextureUniform("texture")
-        } catch (ex: Exception) {
-            println(ex)
-            return false
-        }
-
-        return true
-    }
-
-    protected func onUpdate(_: Float32, x: Float32, y: Float32): Unit {
-        if (!m_shader.isClosed()) {
-            m_shader.setUniform("pixel_threshold", (x + y) / 30.0)
+            eprintln(ex)
+            return None
         }
     }
 
-    protected func onDraw(target: RenderTarget, states: RenderStates): Unit {
+    public func update(_: Float32, x: Float32, y: Float32): Unit {
+        m_shader.setUniform("pixel_threshold", (x + y) / 30.0)
+    }
+
+    public func draw(target: RenderTarget, states: RenderStates): Unit {
         var states2 = states
         if (!m_shader.isClosed()) {
             states2.shader = m_shader

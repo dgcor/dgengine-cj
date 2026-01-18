@@ -81,8 +81,8 @@ public class Menu <: ActionQueryable & UIObject {
         m_position = pos.value
         m_scrollPosition = scrollPos.value
 
-        m_scrollRect.left = Int32(m_scrollPosition.x)
-        m_scrollRect.top = Int32(m_scrollPosition.y)
+        m_scrollRect.position.x = Int32(m_scrollPosition.x)
+        m_scrollRect.position.y = Int32(m_scrollPosition.y)
 
         for (item in m_items) {
             item.updateSize(game)
@@ -109,11 +109,11 @@ public class Menu <: ActionQueryable & UIObject {
 
     public mut prop size: Vector2f {
         get() {
-            Vector2f(Float32(m_scrollRect.width), Float32(m_scrollRect.height))
+            Vector2f(Float32(m_scrollRect.size.x), Float32(m_scrollRect.size.y))
         }
         set(value) {
-            m_scrollRect.width = Int32(value.x)
-            m_scrollRect.height = Int32(value.y)
+            m_scrollRect.size.x = Int32(value.x)
+            m_scrollRect.size.y = Int32(value.y)
         }
     }
 
@@ -161,7 +161,7 @@ public class Menu <: ActionQueryable & UIObject {
             m_recalculateVisibleItems = false
         }
         if (let Some(scroll) <- game.mouseScroll) {
-            if (m_scrollRect.contains(scroll.x, scroll.y)) {
+            if (m_scrollRect.contains(scroll.position)) {
                 game.mouseScroll = None
                 if (scroll.delta < 0.0) {
                     game.events.addBack(m_scrollDownAction)
@@ -313,8 +313,8 @@ public class Menu <: ActionQueryable & UIObject {
 
     public func setScrollPosition(position: Vector2f): Unit {
         m_scrollPosition = position
-        m_scrollRect.left = Int32(position.x)
-        m_scrollRect.top = Int32(position.y)
+        m_scrollRect.position.x = Int32(position.x)
+        m_scrollRect.position.y = Int32(position.y)
     }
 
     public func setVerticalAlign(align: VerticalAlign): Unit {

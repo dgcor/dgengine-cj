@@ -98,15 +98,15 @@ extend Game <: ActionQueryable & Queryable {
             case "minSize" => Variable.getTuple2iProp(m_minSize, prop2)
             case "musicVolume" => VaInteger(Int64(m_musicVolume))
             case "openGL" => match ((prop2, m_window)) {
-                case ("antialiasingLevel", Some(window)) => VaInteger(Int64(window.settings.antialiasing))
-                case ("depthBits", Some(window)) => VaInteger(Int64(window.settings.depth))
+                case ("antialiasingLevel", Some(window)) => VaInteger(Int64(window.settings.antiAliasingLevel))
+                case ("depthBits", Some(window)) => VaInteger(Int64(window.settings.depthBits))
                 case ("hasGeometryShaders", _) => VaBoolean(Shader.isGeometryAvailable)
                 case ("hasShaders", _) => VaBoolean(Shader.isAvailable)
-                case ("majorVersion", Some(window)) => VaInteger(Int64(window.settings.major))
+                case ("majorVersion", Some(window)) => VaInteger(Int64(window.settings.majorVersion))
                 case ("maxTextureSize", _) => VaInteger(Int64(Texture.maximumSize))
-                case ("minorVersion", Some(window)) => VaInteger(Int64(window.settings.minor))
-                case ("sRgbCapable", Some(window)) => VaBoolean(window.settings.sRgb)
-                case ("stencilBits", Some(window)) => VaInteger(Int64(window.settings.stencil))
+                case ("minorVersion", Some(window)) => VaInteger(Int64(window.settings.minorVersion))
+                case ("sRgbCapable", Some(window)) => VaBoolean(window.settings.sRgbCapable)
+                case ("stencilBits", Some(window)) => VaInteger(Int64(window.settings.stencilBits))
                 case _ => None
             }
             case "path" => VaString(m_path)

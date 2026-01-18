@@ -75,14 +75,14 @@ public class ImageUtils {
                     imgHeight += frameSize.y
                 }
 
-                let img = SFMLImage(imgWidth, imgHeight, Color.transparent)
+                let img = SFMLImage(Vector2u(imgWidth, imgHeight), Color.transparent)
 
                 var maxHeight = 0u32
                 for (frame in imgCache) {
                     let frameSize = frame.size
                     for (j in 0..frameSize.y) {
                         for (i in 0..frameSize.x) {
-                            img.setPixel(i, maxHeight + j, frame.getPixel(i, j))
+                            img.setPixel(Vector2u(i, maxHeight + j), frame.getPixel(Vector2u(i, j)))
                         }
                     }
                     maxHeight += frameSize.y
@@ -113,7 +113,7 @@ public class ImageUtils {
                 return None
             }
             let firstImgSize = imgCache[0].size
-            let img = SFMLImage(firstImgSize.x * 16, firstImgSize.y * 16, Color.transparent)
+            let img = SFMLImage(Vector2u(firstImgSize.x * 16, firstImgSize.y * 16), Color.transparent)
             let charMapping = NumberVector<UInt8>(fileNameCharMap, default: 0, maxNumElements: 256)
 
             var xx = 0u32
@@ -126,9 +126,8 @@ public class ImageUtils {
                     for (j in 0..frameSize.y) {
                         for (i in 0..frameSize.x) {
                             img.setPixel(
-                                frameSize.x * xx + i,
-                                frameSize.y * yy + j,
-                                frame.getPixel(i, j)
+                                Vector2u(frameSize.x * xx + i, frameSize.y * yy + j),
+                                frame.getPixel(Vector2u(i, j))
                             )
                         }
                     }
@@ -158,11 +157,11 @@ public class ImageUtils {
             let (packRects, packedSize) = packRectangles(rectangles, (maxSize, maxSize))
 
             let rects = ArrayList<IntRect>()
-            let img = SFMLImage(UInt32(packedSize[0]), UInt32(packedSize[1]), Color.transparent)
+            let img = SFMLImage(Vector2u(UInt32(packedSize[0]), UInt32(packedSize[1])), Color.transparent)
 
             for (rect in packRects) {
                 let frame = imgCache[rect.index]
-                img.copy(frame, UInt32(rect.x), UInt32(rect.y))
+                img.copy(frame, Vector2u(UInt32(rect.x), UInt32(rect.y)))
                 rects.add(IntRect(Int32(rect.x), Int32(rect.y), Int32(rect.width), Int32(rect.height)))
             }
             return (img, rects)
@@ -190,11 +189,11 @@ public class ImageUtils {
 
         let newY = size.y * pieces
         try {
-            let newImg = SFMLImage(newX, newY)
+            let newImg = SFMLImage(Vector2u(newX, newY))
             var rect = IntRect(0, 0, Int32(newX), Int32(size.y))
             for (index in 0..pieces) {
-                rect.left = Int32(index * newX)
-                newImg.copy(img, 0, index * size.y, sourceRect: rect)
+                rect.position.x = Int32(index * newX)
+                newImg.copy(img, Vector2u(0, index * size.y), sourceRect: rect)
             }
             return newImg
         } catch (ex: Exception) {
@@ -221,11 +220,11 @@ public class ImageUtils {
 
         let newX = size.x * pieces
         try {
-            let newImg = SFMLImage(newX, newY)
+            let newImg = SFMLImage(Vector2u(newX, newY))
             var rect = IntRect(0, 0, Int32(size.x), Int32(newY))
             for (index in 0..pieces) {
-                rect.top = Int32(index * newY)
-                newImg.copy(img, index * size.x, 0, sourceRect: rect)
+                rect.position.y = Int32(index * newY)
+                newImg.copy(img, Vector2u(index * size.x, 0), sourceRect: rect)
             }
             return newImg
         } catch (ex: Exception) {

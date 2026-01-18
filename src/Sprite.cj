@@ -21,8 +21,13 @@ public class Sprite2 <: Resource {
     private var m_outlineEnabled: Bool = false
     private var m_blendMode: BlendModeType = BlendAlpha
 
+    private static var m_emptyTexture: ?Texture = None
+
     public init() {
-        m_sprite = Sprite()
+        if (m_emptyTexture.isNone()) {
+            m_emptyTexture = Texture(Vector2u(1, 1))
+        }
+        m_sprite = Sprite(m_emptyTexture.getOrThrow())
     }
 
     public init(texture: Texture, palette!: ?Palette = None) {
@@ -220,8 +225,7 @@ public class Sprite2 <: Resource {
             m_sprite.textureRect = ti.textureRect
         } else {
             var oldRect = m_sprite.textureRect
-            oldRect.left = ti.textureRect.left
-            oldRect.top = ti.textureRect.top
+            oldRect.position = ti.textureRect.position
             m_sprite.textureRect = oldRect
         }
         m_blendMode = ti.blendMode
@@ -262,17 +266,16 @@ public class Sprite2 <: Resource {
                     match (uniform) {
                         case "pixelSize" =>
                             let textureRect = m_sprite.textureRect
-                            if (updateAll == true || textureRect.width != (cache?.textureSize.x ?? -1) ||
-                                textureRect.height != (cache?.textureSize.y ?? -1)) {
+                            if (updateAll == true || textureRect.size.x != (cache?.textureSize.x ?? -1) ||
+                                textureRect.size.y != (cache?.textureSize.y ?? -1)) {
                                 if (let Some(cache) <- cache) {
-                                    cache.textureSize.x = textureRect.width
-                                    cache.textureSize.y = textureRect.height
+                                    cache.textureSize = textureRect.size
                                 }
                                 shader.setUniform(
                                     "pixelSize",
                                     GlslVec2(
-                                        1.0 / Float32(textureRect.width),
-                                        1.0 / Float32(textureRect.height)
+                                        1.0 / Float32(textureRect.size.x),
+                                        1.0 / Float32(textureRect.size.y)
                                     )
                                 )
                             }

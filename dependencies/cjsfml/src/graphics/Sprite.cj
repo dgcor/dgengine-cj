@@ -3,7 +3,7 @@ package cjsfml.graphics
 import cjsfml.system.*
 
 foreign {
-    func sfSprite_create(): CPointer<Unit>
+    func sfSprite_create(texture: CPointer<Unit>): CPointer<Unit>
 
     func sfSprite_copy(handle: CPointer<Unit>): CPointer<Unit>
 
@@ -39,7 +39,7 @@ foreign {
 
     // Sprite
 
-    func sfSprite_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: SfBool): Unit
+    func sfSprite_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: Bool): Unit
 
     func sfSprite_setTextureRect(handle: CPointer<Unit>, rect: IntRect): Unit
 
@@ -59,28 +59,19 @@ foreign {
 public class Sprite <: ResourceHandle & RenderTargetDrawable & Transformable & Equatable<Sprite> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init() {
-        m_handle = unsafe { sfSprite_create() }
-        if (m_handle.isNull()) {
-            throw SFMLNullHandleException()
-        }
-    }
-
     public init(texture: Texture) {
-        m_handle = unsafe { sfSprite_create() }
+        m_handle = unsafe { sfSprite_create(texture.handle) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
-        unsafe { sfSprite_setTexture(m_handle, texture.handle, 1) }
     }
 
     public init(texture: Texture, rect: IntRect) {
-        m_handle = unsafe { sfSprite_create() }
+        m_handle = unsafe { sfSprite_create(texture.handle) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
         unsafe {
-            sfSprite_setTexture(m_handle, texture.handle, 0)
             sfSprite_setTextureRect(m_handle, rect)
         }
     }
@@ -219,7 +210,7 @@ public class Sprite <: ResourceHandle & RenderTargetDrawable & Transformable & E
     }
 
     public func setTexture(texture: Texture, resetRect!: Bool = false): Unit {
-        unsafe { sfSprite_setTexture(m_handle, texture.handle, SfBool.fromBool(resetRect)) }
+        unsafe { sfSprite_setTexture(m_handle, texture.handle, resetRect) }
     }
 
     public mut prop textureRect: IntRect {

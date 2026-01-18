@@ -32,10 +32,10 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(16, 8))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.red)
-                        @Expect(img.getPixel(1, 0) == Color.red)
-                        @Expect(img.getPixel(0, 1) == Color.red)
-                        @Expect(img.getPixel(1, 1) == Color.red)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
+                        @Expect(img.getPixel(Vector2u(1, 0)) == Color.red)
+                        @Expect(img.getPixel(Vector2u(0, 1)) == Color.red)
+                        @Expect(img.getPixel(Vector2u(1, 1)) == Color.red)
                     }
                 case _ => @Fail("Expected Texture: texture")
             }
@@ -69,10 +69,10 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(2, 2))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.transparent)
-                        @Expect(img.getPixel(1, 0) == Color.transparent)
-                        @Expect(img.getPixel(0, 1) == Color.transparent)
-                        @Expect(img.getPixel(1, 1) == Color.transparent)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.transparent)
+                        @Expect(img.getPixel(Vector2u(1, 0)) == Color.transparent)
+                        @Expect(img.getPixel(Vector2u(0, 1)) == Color.transparent)
+                        @Expect(img.getPixel(Vector2u(1, 1)) == Color.transparent)
                     }
                 case _ => @Fail("Expected Texture: key05")
             }
@@ -88,10 +88,10 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(2, 2))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.red)
-                        @Expect(img.getPixel(1, 0) == Color.green)
-                        @Expect(img.getPixel(0, 1) == Color.blue)
-                        @Expect(img.getPixel(1, 1) == Color.white)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
+                        @Expect(img.getPixel(Vector2u(1, 0)) == Color.green)
+                        @Expect(img.getPixel(Vector2u(0, 1)) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(1, 1)) == Color.white)
                     }
                 case _ => @Fail("Expected Texture: key07")
             }
@@ -107,7 +107,7 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(1, 1))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.transparent)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.transparent)
                     }
                 case _ => @Fail("Expected Texture: key09")
             }
@@ -117,10 +117,10 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(2, 2))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.blue)
-                        @Expect(img.getPixel(1, 0) == Color.blue)
-                        @Expect(img.getPixel(0, 1) == Color.blue)
-                        @Expect(img.getPixel(1, 1) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(1, 0)) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(0, 1)) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(1, 1)) == Color.blue)
                     }
                 case _ => @Fail("Expected Texture: key10")
             }
@@ -130,10 +130,10 @@ class TestParseTexture {
                 case Some(texture) =>
                     @Expect(texture.size == Vector2u(2, 2))
                     try (img = texture.copyToImage()) {
-                        @Expect(img.getPixel(0, 0) == Color.red)
-                        @Expect(img.getPixel(1, 0) == Color.green)
-                        @Expect(img.getPixel(0, 1) == Color.blue)
-                        @Expect(img.getPixel(1, 1) == Color.black)
+                        @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
+                        @Expect(img.getPixel(Vector2u(1, 0)) == Color.green)
+                        @Expect(img.getPixel(Vector2u(0, 1)) == Color.blue)
+                        @Expect(img.getPixel(Vector2u(1, 1)) == Color.black)
                     }
                 case _ => @Fail("Expected Texture: key11")
             }

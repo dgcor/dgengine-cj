@@ -4,9 +4,9 @@ import cenum.*
 import cjsfml.system.*
 
 foreign {
-    func sfSensor_isAvailable(sensor: SensorType): SfBool
+    func sfSensor_isAvailable(sensor: SensorType): Bool
 
-    func sfSensor_setEnabled(sensor: SensorType, enabled: SfBool): Unit
+    func sfSensor_setEnabled(sensor: SensorType, enabled: Bool): Unit
 
     func sfSensor_getValue(sensor: SensorType): Vector3f
 }
@@ -23,11 +23,11 @@ foreign {
 
 public class Sensor {
     public static func isAvailable(sensor: SensorType): Bool {
-        unsafe { sfSensor_isAvailable(sensor).toBool() }
+        unsafe { sfSensor_isAvailable(sensor) }
     }
 
     public static func setEnabled(sensor: SensorType, enabled: Bool): Unit {
-        unsafe { sfSensor_setEnabled(sensor, SfBool.fromBool(enabled)) }
+        unsafe { sfSensor_setEnabled(sensor, enabled) }
     }
 
     public static func getValue(sensor: SensorType): Vector3f {

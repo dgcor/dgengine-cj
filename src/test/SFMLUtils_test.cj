@@ -2,6 +2,7 @@ package dgengine.test
 
 import cjsfml.graphics.*
 import cjsfml.graphics.Image as SFMLImage
+import cjsfml.system.*
 import dgengine.*
 import std.unittest.*
 
@@ -41,14 +42,14 @@ class TestSFMLUtils {
 
     @TestCase
     func spriteCenterTexture() {
-        try (img = SFMLImage(64, 64), texture = Texture(img), sprite = Sprite(texture, IntRect(10, 10, 32, 32))) {
+        try (img = SFMLImage(Vector2u(64, 64)), texture = Texture(img), sprite = Sprite(texture, IntRect(10, 10, 32, 32))) {
             var rect = sprite.textureRect
             var orig = sprite.origin
 
-            @Expect(rect.left, 10)
-            @Expect(rect.top, 10)
-            @Expect(rect.width, 32)
-            @Expect(rect.height, 32)
+            @Expect(rect.position.x, 10)
+            @Expect(rect.position.y, 10)
+            @Expect(rect.size.x, 32)
+            @Expect(rect.size.y, 32)
             @Expect(orig.x, 0.0)
             @Expect(orig.y, 0.0)
 
@@ -56,10 +57,10 @@ class TestSFMLUtils {
             rect = sprite.textureRect
             orig = sprite.origin
 
-            @Expect(rect.left, 16)
-            @Expect(rect.top, 16)
-            @Expect(rect.width, 32)
-            @Expect(rect.height, 32)
+            @Expect(rect.position.x, 16)
+            @Expect(rect.position.y, 16)
+            @Expect(rect.size.x, 32)
+            @Expect(rect.size.y, 32)
             @Expect(orig.x, 0.0)
             @Expect(orig.y, 0.0)
 
@@ -68,10 +69,10 @@ class TestSFMLUtils {
             rect = sprite.textureRect
             orig = sprite.origin
 
-            @Expect(rect.left, 0)
-            @Expect(rect.top, 0)
-            @Expect(rect.width, 80)
-            @Expect(rect.height, 80)
+            @Expect(rect.position.x, 0)
+            @Expect(rect.position.y, 0)
+            @Expect(rect.size.x, 80)
+            @Expect(rect.size.y, 80)
             @Expect(orig.x, -8.0)
             @Expect(orig.y, -8.0)
         }

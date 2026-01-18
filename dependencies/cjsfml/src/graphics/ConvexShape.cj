@@ -39,7 +39,7 @@ foreign {
 
     // Shape
 
-    func sfConvexShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: SfBool): Unit
+    func sfConvexShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: Bool): Unit
 
     func sfConvexShape_setTextureRect(handle: CPointer<Unit>, rect: IntRect): Unit
 
@@ -62,6 +62,8 @@ foreign {
     func sfConvexShape_getPointCount(handle: CPointer<Unit>): UIntNative
 
     func sfConvexShape_getPoint(handle: CPointer<Unit>, index: UIntNative): Vector2f
+
+    func sfConvexShape_getGeometricCenter(handle: CPointer<Unit>): Vector2f
 
     func sfConvexShape_setPointCount(handle: CPointer<Unit>, count: UIntNative): Unit
 
@@ -227,7 +229,7 @@ public class ConvexShape <: ResourceHandle & RenderTargetDrawable & Transformabl
     }
 
     public func setTexture(texture: ?Texture, resetRect!: Bool = false): Unit {
-        unsafe { sfConvexShape_setTexture(m_handle, texture?.handle ?? CPointer(), SfBool.fromBool(resetRect)) }
+        unsafe { sfConvexShape_setTexture(m_handle, texture?.handle ?? CPointer(), resetRect) }
     }
 
     public mut prop textureRect: IntRect {
@@ -281,6 +283,12 @@ public class ConvexShape <: ResourceHandle & RenderTargetDrawable & Transformabl
 
     public func setPoint(index: UInt32, point: Vector2f): Unit {
         unsafe { sfConvexShape_setPoint(m_handle, UIntNative(index), point) }
+    }
+
+    public prop geometricCenter: Vector2f {
+        get() {
+            unsafe { sfConvexShape_getGeometricCenter(m_handle) }
+        }
     }
 
     public prop localBounds: FloatRect {

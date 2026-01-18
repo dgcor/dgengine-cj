@@ -50,28 +50,28 @@ class TestParseImageContainer {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAdd)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key02 -> 0")
                     }
                     match (imageContainer.get(1, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAdd)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key02 -> 1")
                     }
                     match (imageContainer.get(2, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAdd)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key02 -> 2")
                     }
                     match (imageContainer.get(3, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAdd)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key02 -> 3")
                     }
                 case _ => @Fail("Expected ImageContainer: key02")
@@ -87,28 +87,28 @@ class TestParseImageContainer {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAlpha)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key03 -> 0")
                     }
                     match (imageContainer.get(1, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAlpha)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key03 -> 1")
                     }
                     match (imageContainer.get(2, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAlpha)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key03 -> 2")
                     }
                     match (imageContainer.get(3, None)) {
                         case Some((img, imgInfo)) =>
                             @Expect(imgInfo.blendMode, BlendAlpha)
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key03 -> 3")
                     }
                 case _ => @Fail("Expected ImageContainer: key03")
@@ -122,7 +122,7 @@ class TestParseImageContainer {
                     match (imageContainer.get(1, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key04 -> 1")
                     }
                 case _ => @Fail("Expected ImageContainer: key04")
@@ -136,7 +136,7 @@ class TestParseImageContainer {
                     match (imageContainer.get(1, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key05 -> 1")
                     }
                 case _ => @Fail("Expected ImageContainer: key05")
@@ -150,7 +150,7 @@ class TestParseImageContainer {
                     match (imageContainer.get(1, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key06 -> 1")
                     }
                 case _ => @Fail("Expected ImageContainer: key06")
@@ -164,49 +164,49 @@ class TestParseImageContainer {
                     match (imageContainer.get(0, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key07 -> 0")
                     }
                     match (imageContainer.get(1, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key07 -> 1")
                     }
                     match (imageContainer.get(2, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key07 -> 2")
                     }
                     match (imageContainer.get(3, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key07 -> 3")
                     }
                     match (imageContainer.get(4, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key07 -> 4")
                     }
                     match (imageContainer.get(5, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key07 -> 5")
                     }
                     match (imageContainer.get(6, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key07 -> 6")
                     }
                     match (imageContainer.get(7, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(4, 4))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key07 -> 7")
                     }
                 case _ => @Fail("Expected ImageContainer: key07")
@@ -220,49 +220,49 @@ class TestParseImageContainer {
                     match (imageContainer.get(0, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key08 -> 0")
                     }
                     match (imageContainer.get(1, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key08 -> 1")
                     }
                     match (imageContainer.get(2, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key08 -> 2")
                     }
                     match (imageContainer.get(3, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key08 -> 3")
                     }
                     match (imageContainer.get(4, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key08 -> 4")
                     }
                     match (imageContainer.get(5, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key08 -> 5")
                     }
                     match (imageContainer.get(6, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key08 -> 6")
                     }
                     match (imageContainer.get(7, None)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 2))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key08 -> 7")
                     }
                 case _ => @Fail("Expected ImageContainer: key08")
@@ -279,25 +279,25 @@ class TestParseImageContainer {
                     match (imageContainer.get(0, pal.palette)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.red)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.red)
                         case _ => @Fail("Expected Image: key10 -> 0")
                     }
                     match (imageContainer.get(1, pal.palette)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.blue)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.blue)
                         case _ => @Fail("Expected Image: key10 -> 1")
                     }
                     match (imageContainer.get(2, pal.palette)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.green)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.green)
                         case _ => @Fail("Expected Image: key10 -> 2")
                     }
                     match (imageContainer.get(3, pal.palette)) {
                         case Some((img, __)) =>
                             @Expect(img.size == Vector2u(8, 4))
-                            @Expect(img.getPixel(0, 0) == Color.white)
+                            @Expect(img.getPixel(Vector2u(0, 0)) == Color.white)
                         case _ => @Fail("Expected Image: key10 -> 3")
                     }
                 case _ => @Fail("Expected ImageContainer: key10")

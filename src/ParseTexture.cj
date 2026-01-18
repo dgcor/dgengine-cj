@@ -2,6 +2,7 @@ package dgengine
 
 import cjsfml.graphics.*
 import cjsfml.graphics.Image as SFMLImage
+import cjsfml.system.*
 import stdx.encoding.json.*
 
 public func parseTextureImg(game: Game, elem: JsonObject): ?SFMLImage {
@@ -11,17 +12,17 @@ public func parseTextureImg(game: Game, elem: JsonObject): ?SFMLImage {
         let size = getVector2uKey(elem, "size", default: game.drawRegionSize)
         if (let Some(colorElem) <- getValidArray(colorElem)) {
             if (colorElem.size() == (Int64(size.x) * Int64(size.y))) {
-                let img2 = SFMLImage(size.x, size.y)
+                let img2 = SFMLImage(size)
                 for (j in 0..size.y) {
                     for (i in 0..size.x) {
-                        img2.setPixel(i, j, getColorVal(colorElem[Int64(i + j * size.x)]))
+                        img2.setPixel(Vector2u(i, j), getColorVal(colorElem[Int64(i + j * size.x)]))
                     }
                 }
                 img = img2
             }
         }
         if (img.isNone()) {
-            img = SFMLImage(size.x, size.y, getColorVal(colorElem))
+            img = SFMLImage(size, getColorVal(colorElem))
         }
     } else if (let Some(file) <- getValidString(elem, "file")) {
         if (let Some(parseTextureImg) <- Hooks.parseTextureImg) {
@@ -55,10 +56,11 @@ public func parseTextureImg(game: Game, elem: JsonObject): ?SFMLImage {
             let trimRect = getIntRectVal(elem)
             let imgSize = img2.size
 
-            if (trimRect.left >= 0 && trimRect.top >= 0 && trimRect.width > 0 && trimRect.height > 0 &&
-                trimRect.left + trimRect.width <= Int32(imgSize.x) && trimRect.top + trimRect.height <= Int32(imgSize.y)) {
-                let trimImg = SFMLImage(UInt32(trimRect.width), UInt32(trimRect.height))
-                trimImg.copy(img2, 0, 0, sourceRect: trimRect)
+            if (trimRect.position.x >= 0 && trimRect.position.y >= 0 && trimRect.size.x > 0 && trimRect.size.y > 0 &&
+                trimRect.position.x + trimRect.size.x <= Int32(imgSize.x) && trimRect.position.y + trimRect.size.y <=
+                Int32(imgSize.y)) {
+                let trimImg = SFMLImage(Vector2u(UInt32(trimRect.size.x), UInt32(trimRect.size.y)))
+                trimImg.copy(img2, Vector2u(), sourceRect: trimRect)
                 img = trimImg
                 img2.close()
             }

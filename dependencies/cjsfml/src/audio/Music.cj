@@ -13,9 +13,11 @@ foreign {
 
     // Music
 
-    func sfMusic_setLoop(handle: CPointer<Unit>, loop: SfBool): Unit
+    func sfMusic_setLooping(handle: CPointer<Unit>, loop: Bool): Unit
 
-    func sfMusic_getLoop(handle: CPointer<Unit>): SfBool
+    func sfMusic_isLooping(handle: CPointer<Unit>): Bool
+
+    func sfMusic_setEffectProcessor(handle: CPointer<Unit>, effectProcessor: EffectProcessor): Unit
 
     func sfMusic_getDuration(handle: CPointer<Unit>): Time
 
@@ -43,7 +45,7 @@ foreign {
 
     func sfMusic_setPosition(handle: CPointer<Unit>, position: Vector3f): Unit
 
-    func sfMusic_setRelativeToListener(handle: CPointer<Unit>, relative: SfBool): Unit
+    func sfMusic_setRelativeToListener(handle: CPointer<Unit>, relative: Bool): Unit
 
     func sfMusic_setMinDistance(handle: CPointer<Unit>, distance: Float32): Unit
 
@@ -57,7 +59,7 @@ foreign {
 
     func sfMusic_getPosition(handle: CPointer<Unit>): Vector3f
 
-    func sfMusic_isRelativeToListener(handle: CPointer<Unit>): SfBool
+    func sfMusic_isRelativeToListener(handle: CPointer<Unit>): Bool
 
     func sfMusic_getMinDistance(handle: CPointer<Unit>): Float32
 
@@ -151,10 +153,10 @@ public class Music <: ResourceHandle & Equatable<Music> {
 
     public mut prop loop: Bool {
         get() {
-            unsafe { sfMusic_getLoop(m_handle).toBool() }
+            unsafe { sfMusic_isLooping(m_handle) }
         }
         set(value) {
-            unsafe { sfMusic_setLoop(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfMusic_setLooping(m_handle, value) }
         }
     }
 
@@ -183,6 +185,13 @@ public class Music <: ResourceHandle & Equatable<Music> {
 
     public func stop(): Unit {
         unsafe { sfMusic_stop(m_handle) }
+    }
+
+    public func setEffectProcessor(effectProcessor: ?EffectProcessor): Unit {
+        match (effectProcessor) {
+            case Some(effectProcessor) => unsafe { sfMusic_setEffectProcessor(m_handle, effectProcessor) }
+            case None => unsafe { sfMusic_setEffectProcessor(m_handle, CPointer()) }
+        }
     }
 
     public prop channelCount: UInt32 {
@@ -232,10 +241,10 @@ public class Music <: ResourceHandle & Equatable<Music> {
 
     public mut prop relativeToListener: Bool {
         get() {
-            unsafe { sfMusic_isRelativeToListener(m_handle).toBool() }
+            unsafe { sfMusic_isRelativeToListener(m_handle) }
         }
         set(value) {
-            unsafe { sfMusic_setRelativeToListener(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfMusic_setRelativeToListener(m_handle, value) }
         }
     }
 

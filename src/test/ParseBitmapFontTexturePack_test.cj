@@ -99,18 +99,6 @@ class TestParseBitmapFontTexturePack {
         @Expect(animInfo.refresh.microseconds, Time.zero.microseconds)
     }
 
-    static func CHECK_AnimationAndDirection(texturePack: TexturePack, groupIndex: Int32, directionIndex: Rune,
-        indexRange: (UInt32, UInt32)): Unit {
-        CHECK_AnimationAndDirection(texturePack, groupIndex, Int32(UInt32(directionIndex)), indexRange)
-    }
-
-    static func CHECK_AnimationAndDirection(texturePack: TexturePack, groupIndex: Int32, directionIndex: Int32,
-        indexRange: (UInt32, UInt32)): Unit {
-        CHECK_Animation(texturePack, groupIndex, directionIndex, indexRange)
-        @Expect(Int64(texturePack.getDirection(indexRange[0])), Int64(directionIndex))
-        @Expect(Int64(texturePack.getDirection(indexRange[1])), Int64(directionIndex))
-    }
-
     @TestCase
     func test_BitmapFontTexturePack_key01() {
         if (let Some(game) <- game) {

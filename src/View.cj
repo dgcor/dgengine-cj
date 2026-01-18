@@ -171,7 +171,6 @@ public class View <: Resource {
     }
 
     public func reset(): Unit {
-        let vSize = m_view.size
-        view.reset(FloatRect(0.0, 0.0, vSize.x, vSize.y))
+        view.reset(FloatRect(Vector2f(), m_view.size))
     }
 }

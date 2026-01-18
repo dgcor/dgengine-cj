@@ -14,11 +14,10 @@ class TestImage {
             @Expect(obj.background, false)
             @Expect(obj.anchor == (Anchor.Top | Anchor.Left))
             @Expect(obj.color == Color.white)
-            @ExpectThrows[SFMLNullHandleException](obj.texture)
             @Expect(obj.palette.isNone())
             @Expect(obj.outlineEnabled, true)
             @Expect(obj.resizable, false)
-            @Expect(obj.size == Vector2f(0.0, 0.0))
+            @Expect(obj.size == Vector2f(1.0, 1.0))
             @Expect(obj.stretch, false)
             @Expect(obj.visible, true)
         }

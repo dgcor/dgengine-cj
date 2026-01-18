@@ -285,27 +285,28 @@ public class BitmapFont {
                             Vertex(
                                 position: Vector2f(curX, curY),
                                 color: vertexColor,
-                                texCoords: Vector2f(Float32(ti.textureRect.left), Float32(ti.textureRect.top))
+                                texCoords: Vector2f(Float32(ti.textureRect.position.x),
+                                    Float32(ti.textureRect.position.y))
                             )
                         )
 
                         // top right
                         vertexText.add(
                             Vertex(
-                                position: Vector2f(curX + Float32(ti.textureRect.width), curY),
+                                position: Vector2f(curX + Float32(ti.textureRect.size.x), curY),
                                 color: vertexColor,
-                                texCoords: Vector2f(Float32(ti.textureRect.left) + Float32(ti.textureRect.width),
-                                    Float32(ti.textureRect.top))
+                                texCoords: Vector2f(Float32(ti.textureRect.position.x) + Float32(ti.textureRect.size.x),
+                                    Float32(ti.textureRect.position.y))
                             )
                         )
 
                         // bottom left
                         vertexText.add(
                             Vertex(
-                                position: Vector2f(curX, curY + Float32(ti.textureRect.height)),
+                                position: Vector2f(curX, curY + Float32(ti.textureRect.size.y)),
                                 color: vertexColor,
-                                texCoords: Vector2f(Float32(ti.textureRect.left),
-                                    Float32(ti.textureRect.top) + Float32(ti.textureRect.height))
+                                texCoords: Vector2f(Float32(ti.textureRect.position.x),
+                                    Float32(ti.textureRect.position.y) + Float32(ti.textureRect.size.y))
                             )
                         )
 
@@ -320,16 +321,16 @@ public class BitmapFont {
                         // bottom right
                         vertexText.add(
                             Vertex(
-                                position: Vector2f(curX + Float32(ti.textureRect.width),
-                                    curY + Float32(ti.textureRect.height)),
+                                position: Vector2f(curX + Float32(ti.textureRect.size.x),
+                                    curY + Float32(ti.textureRect.size.y)),
                                 color: vertexColor,
-                                texCoords: Vector2f(Float32(ti.textureRect.left) + Float32(ti.textureRect.width),
-                                    Float32(ti.textureRect.top) + Float32(ti.textureRect.height))
+                                texCoords: Vector2f(Float32(ti.textureRect.position.x) + Float32(ti.textureRect.size.x),
+                                    Float32(ti.textureRect.position.y) + Float32(ti.textureRect.size.y))
                             )
                         )
 
                         // Move over the width of the character
-                        curX += Float32(ti.textureRect.width)
+                        curX += Float32(ti.textureRect.size.x)
                     }
                 }
                 if (index + 1 < runeCount) {

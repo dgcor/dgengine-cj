@@ -1,22 +1,23 @@
 package cjsfml.window
 
 import cenum.*
+import cjsfml.system.*
 import endian.utils.*
 import std.binary.*
 
 @CEnum[public EventType](
     Closed
     Resized
-    LostFocus
-    GainedFocus
+    FocusLost
+    FocusGained
     TextEntered
     KeyPressed
     KeyReleased
-    MouseWheelMoved // deprecated
     MouseWheelScrolled
     MouseButtonPressed
     MouseButtonReleased
     MouseMoved
+    MouseMovedRaw
     MouseEntered
     MouseLeft
     JoystickButtonPressed
@@ -102,18 +103,17 @@ public struct TextEvent <: Equatable<TextEvent> & Hashable {
 }
 
 public struct MouseMoveEvent <: Equatable<MouseMoveEvent> & Hashable {
-    public const MouseMoveEvent(
-        public var x!: Int32 = 0,
-        public var y!: Int32 = 0
-    ) {}
+    public const MouseMoveEvent(public var position!: Vector2i = Vector2i()) {}
 
     public init(eventData: Array<Byte>) {
-        x = @ReadEndian[Int32](eventData[4..8])
-        y = @ReadEndian[Int32](eventData[8..12])
+        position = Vector2i(
+            @ReadEndian[Int32](eventData[4..8]),
+            @ReadEndian[Int32](eventData[8..12])
+        )
     }
 
     public operator func ==(right: MouseMoveEvent): Bool {
-        x == right.x && y == right.y
+        position == right.position
     }
 
     public operator func !=(right: MouseMoveEvent): Bool {
@@ -122,8 +122,38 @@ public struct MouseMoveEvent <: Equatable<MouseMoveEvent> & Hashable {
 
     public func hashCode(res: Int64): Int64 {
         var hasher = DefaultHasher(res: res)
-        hasher.write(x)
-        hasher.write(y)
+        hasher.write(position.x)
+        hasher.write(position.y)
+        return hasher.finish()
+    }
+
+    public func hashCode(): Int64 {
+        hashCode(0)
+    }
+}
+
+public struct MouseMoveEventRaw <: Equatable<MouseMoveEventRaw> & Hashable {
+    public const MouseMoveEventRaw(public var delta!: Vector2i = Vector2i()) {}
+
+    public init(eventData: Array<Byte>) {
+        delta = Vector2i(
+            @ReadEndian[Int32](eventData[4..8]),
+            @ReadEndian[Int32](eventData[8..12])
+        )
+    }
+
+    public operator func ==(right: MouseMoveEventRaw): Bool {
+        delta == right.delta
+    }
+
+    public operator func !=(right: MouseMoveEventRaw): Bool {
+        !(this == right)
+    }
+
+    public func hashCode(res: Int64): Int64 {
+        var hasher = DefaultHasher(res: res)
+        hasher.write(delta.x)
+        hasher.write(delta.y)
         return hasher.finish()
     }
 
@@ -135,18 +165,19 @@ public struct MouseMoveEvent <: Equatable<MouseMoveEvent> & Hashable {
 public struct MouseButtonEvent <: Equatable<MouseButtonEvent> & Hashable {
     public const MouseButtonEvent(
         public var button!: MouseButton = MouseButton.Left,
-        public var x!: Int32 = 0,
-        public var y!: Int32 = 0
+        public var position!: Vector2i = Vector2i()
     ) {}
 
     public init(eventData: Array<Byte>) {
         button = MouseButton(@ReadEndian[Int32](eventData[4..8]))
-        x = @ReadEndian[Int32](eventData[8..12])
-        y = @ReadEndian[Int32](eventData[12..16])
+        position = Vector2i(
+            @ReadEndian[Int32](eventData[8..12]),
+            @ReadEndian[Int32](eventData[12..16])
+        )
     }
 
     public operator func ==(right: MouseButtonEvent): Bool {
-        button == right.button && x == right.x && y == right.y
+        button == right.button && position == right.position
     }
 
     public operator func !=(right: MouseButtonEvent): Bool {
@@ -156,8 +187,8 @@ public struct MouseButtonEvent <: Equatable<MouseButtonEvent> & Hashable {
     public func hashCode(res: Int64): Int64 {
         var hasher = DefaultHasher(res: res)
         hasher.write(button.value)
-        hasher.write(x)
-        hasher.write(y)
+        hasher.write(position.x)
+        hasher.write(position.y)
         return hasher.finish()
     }
 
@@ -170,19 +201,20 @@ public struct MouseWheelScrollEvent <: Equatable<MouseWheelScrollEvent> & Hashab
     public const MouseWheelScrollEvent(
         public var wheel!: MouseWheel = MouseWheel.VerticalWheel,
         public var delta!: Float32 = 0.0,
-        public var x!: Int32 = 0,
-        public var y!: Int32 = 0
+        public var position!: Vector2i = Vector2i()
     ) {}
 
     public init(eventData: Array<Byte>) {
         wheel = MouseWheel(@ReadEndian[Int32](eventData[4..8]))
         delta = @ReadEndian[Float32](eventData[8..12])
-        x = @ReadEndian[Int32](eventData[12..16])
-        y = @ReadEndian[Int32](eventData[16..20])
+        position = Vector2i(
+            @ReadEndian[Int32](eventData[12..16]),
+            @ReadEndian[Int32](eventData[16..20])
+        )
     }
 
     public operator func ==(right: MouseWheelScrollEvent): Bool {
-        wheel == right.wheel && delta == right.delta && x == right.x && y == right.y
+        wheel == right.wheel && delta == right.delta && position == right.position
     }
 
     public operator func !=(right: MouseWheelScrollEvent): Bool {
@@ -193,8 +225,8 @@ public struct MouseWheelScrollEvent <: Equatable<MouseWheelScrollEvent> & Hashab
         var hasher = DefaultHasher(res: res)
         hasher.write(wheel.value)
         hasher.write(delta)
-        hasher.write(x)
-        hasher.write(y)
+        hasher.write(position.x)
+        hasher.write(position.y)
         return hasher.finish()
     }
 
@@ -295,18 +327,17 @@ public struct JoystickConnectEvent <: Equatable<JoystickConnectEvent> & Hashable
 }
 
 public struct SizeEvent <: Equatable<SizeEvent> & Hashable {
-    public const SizeEvent(
-        public var width!: UInt32 = 0,
-        public var height!: UInt32 = 0
-    ) {}
+    public const SizeEvent(public var size!: Vector2u = Vector2u()) {}
 
     public init(eventData: Array<Byte>) {
-        width = @ReadEndian[UInt32](eventData[4..8])
-        height = @ReadEndian[UInt32](eventData[8..12])
+        size = Vector2u(
+            @ReadEndian[UInt32](eventData[4..8]),
+            @ReadEndian[UInt32](eventData[8..12])
+        )
     }
 
     public operator func ==(right: SizeEvent): Bool {
-        width == right.width && height == right.height
+        size == right.size
     }
 
     public operator func !=(right: SizeEvent): Bool {
@@ -315,8 +346,8 @@ public struct SizeEvent <: Equatable<SizeEvent> & Hashable {
 
     public func hashCode(res: Int64): Int64 {
         var hasher = DefaultHasher(res: res)
-        hasher.write(width)
-        hasher.write(height)
+        hasher.write(size.x)
+        hasher.write(size.y)
         return hasher.finish()
     }
 
@@ -328,18 +359,19 @@ public struct SizeEvent <: Equatable<SizeEvent> & Hashable {
 public struct TouchEvent <: Equatable<TouchEvent> & Hashable {
     public const TouchEvent(
         public var finger!: UInt32 = 0,
-        public var x!: Int32 = 0,
-        public var y!: Int32 = 0
+        public var position!: Vector2i = Vector2i()
     ) {}
 
     public init(eventData: Array<Byte>) {
         finger = @ReadEndian[UInt32](eventData[4..8])
-        x = @ReadEndian[Int32](eventData[8..12])
-        y = @ReadEndian[Int32](eventData[12..16])
+        position = Vector2i(
+            @ReadEndian[Int32](eventData[8..12]),
+            @ReadEndian[Int32](eventData[12..16])
+        )
     }
 
     public operator func ==(right: TouchEvent): Bool {
-        finger == right.finger && x == right.x && y == right.y
+        finger == right.finger && position == right.position
     }
 
     public operator func !=(right: TouchEvent): Bool {
@@ -349,8 +381,8 @@ public struct TouchEvent <: Equatable<TouchEvent> & Hashable {
     public func hashCode(res: Int64): Int64 {
         var hasher = DefaultHasher(res: res)
         hasher.write(finger)
-        hasher.write(x)
-        hasher.write(y)
+        hasher.write(position.x)
+        hasher.write(position.y)
         return hasher.finish()
     }
 
@@ -362,20 +394,20 @@ public struct TouchEvent <: Equatable<TouchEvent> & Hashable {
 public struct SensorEvent <: Equatable<SensorEvent> & Hashable {
     public const SensorEvent(
         public var sensorType!: SensorType = SensorType.Accelerometer,
-        public var x!: Float32 = 0.0,
-        public var y!: Float32 = 0.0,
-        public var z!: Float32 = 0.0
+        public var value!: Vector3f = Vector3f()
     ) {}
 
     public init(eventData: Array<Byte>) {
         sensorType = SensorType(@ReadEndian[Int32](eventData[4..8]))
-        x = @ReadEndian[Float32](eventData[8..12])
-        y = @ReadEndian[Float32](eventData[12..16])
-        z = @ReadEndian[Float32](eventData[16..20])
+        value = Vector3f(
+            @ReadEndian[Float32](eventData[8..12]),
+            @ReadEndian[Float32](eventData[12..16]),
+            @ReadEndian[Float32](eventData[16..20])
+        )
     }
 
     public operator func ==(right: SensorEvent): Bool {
-        sensorType == right.sensorType && x == right.x && y == right.y && z == right.z
+        sensorType == right.sensorType && value == right.value
     }
 
     public operator func !=(right: SensorEvent): Bool {
@@ -385,9 +417,9 @@ public struct SensorEvent <: Equatable<SensorEvent> & Hashable {
     public func hashCode(res: Int64): Int64 {
         var hasher = DefaultHasher(res: res)
         hasher.write(sensorType.value)
-        hasher.write(x)
-        hasher.write(y)
-        hasher.write(z)
+        hasher.write(value.x)
+        hasher.write(value.y)
+        hasher.write(value.z)
         return hasher.finish()
     }
 
@@ -399,8 +431,8 @@ public struct SensorEvent <: Equatable<SensorEvent> & Hashable {
 public enum Event <: Equatable<Event> & Hashable {
     | EvtClosed
     | EvtResized(SizeEvent)
-    | EvtLostFocus
-    | EvtGainedFocus
+    | EvtFocusLost
+    | EvtFocusGained
     | EvtTextEntered(TextEvent)
     | EvtKeyPressed(KeyEvent)
     | EvtKeyReleased(KeyEvent)
@@ -408,6 +440,7 @@ public enum Event <: Equatable<Event> & Hashable {
     | EvtMouseButtonPressed(MouseButtonEvent)
     | EvtMouseButtonReleased(MouseButtonEvent)
     | EvtMouseMoved(MouseMoveEvent)
+    | EvtMouseMovedRaw(MouseMoveEventRaw)
     | EvtMouseEntered
     | EvtMouseLeft
     | EvtJoystickButtonPressed(JoystickButtonEvent)
@@ -425,8 +458,8 @@ public enum Event <: Equatable<Event> & Hashable {
         match (EventType(@ReadEndian[Int32](eventData[0..4]))) {
             case e where e == EventType.Closed => EvtClosed
             case e where e == EventType.Resized => EvtResized(SizeEvent(eventData))
-            case e where e == EventType.LostFocus => EvtLostFocus
-            case e where e == EventType.GainedFocus => EvtGainedFocus
+            case e where e == EventType.FocusLost => EvtFocusLost
+            case e where e == EventType.FocusGained => EvtFocusGained
             case e where e == EventType.TextEntered => EvtTextEntered(TextEvent(eventData))
             case e where e == EventType.KeyPressed => EvtKeyPressed(KeyEvent(eventData))
             case e where e == EventType.KeyReleased => EvtKeyReleased(KeyEvent(eventData))
@@ -434,6 +467,7 @@ public enum Event <: Equatable<Event> & Hashable {
             case e where e == EventType.MouseButtonPressed => EvtMouseButtonPressed(MouseButtonEvent(eventData))
             case e where e == EventType.MouseButtonReleased => EvtMouseButtonReleased(MouseButtonEvent(eventData))
             case e where e == EventType.MouseMoved => EvtMouseMoved(MouseMoveEvent(eventData))
+            case e where e == EventType.MouseMovedRaw => EvtMouseMovedRaw(MouseMoveEventRaw(eventData))
             case e where e == EventType.MouseEntered => EvtMouseEntered
             case e where e == EventType.MouseLeft => EvtMouseLeft
             case e where e == EventType.JoystickButtonPressed => EvtJoystickButtonPressed(
@@ -455,8 +489,8 @@ public enum Event <: Equatable<Event> & Hashable {
         match ((this, right)) {
             case (EvtClosed, EvtClosed) => true
             case (EvtResized(evt1), EvtResized(evt2)) => evt1 == evt2
-            case (EvtLostFocus, EvtLostFocus) => true
-            case (EvtGainedFocus, EvtGainedFocus) => true
+            case (EvtFocusLost, EvtFocusLost) => true
+            case (EvtFocusGained, EvtFocusGained) => true
             case (EvtTextEntered(evt1), EvtTextEntered(evt2)) => evt1 == evt2
             case (EvtKeyPressed(evt1), EvtKeyPressed(evt2)) => evt1 == evt2
             case (EvtKeyReleased(evt1), EvtKeyReleased(evt2)) => evt1 == evt2
@@ -464,6 +498,7 @@ public enum Event <: Equatable<Event> & Hashable {
             case (EvtMouseButtonPressed(evt1), EvtMouseButtonPressed(evt2)) => evt1 == evt2
             case (EvtMouseButtonReleased(evt1), EvtMouseButtonReleased(evt2)) => evt1 == evt2
             case (EvtMouseMoved(evt1), EvtMouseMoved(evt2)) => evt1 == evt2
+            case (EvtMouseMovedRaw(evt1), EvtMouseMovedRaw(evt2)) => evt1 == evt2
             case (EvtMouseEntered, EvtMouseEntered) => true
             case (EvtMouseLeft, EvtMouseLeft) => true
             case (EvtJoystickButtonPressed(evt1), EvtJoystickButtonPressed(evt2)) => evt1 == evt2
@@ -488,8 +523,8 @@ public enum Event <: Equatable<Event> & Hashable {
         match (this) {
             case EvtClosed => 1
             case EvtResized(evt) => evt.hashCode(2)
-            case EvtLostFocus => 3
-            case EvtGainedFocus => 4
+            case EvtFocusLost => 3
+            case EvtFocusGained => 4
             case EvtTextEntered(evt) => evt.hashCode(5)
             case EvtKeyPressed(evt) => evt.hashCode(6)
             case EvtKeyReleased(evt) => evt.hashCode(7)
@@ -497,18 +532,19 @@ public enum Event <: Equatable<Event> & Hashable {
             case EvtMouseButtonPressed(evt) => evt.hashCode(9)
             case EvtMouseButtonReleased(evt) => evt.hashCode(10)
             case EvtMouseMoved(evt) => evt.hashCode(11)
-            case EvtMouseEntered => 12
-            case EvtMouseLeft => 13
-            case EvtJoystickButtonPressed(evt) => evt.hashCode(14)
-            case EvtJoystickButtonReleased(evt) => evt.hashCode(15)
-            case EvtJoystickMoved(evt) => evt.hashCode(16)
-            case EvtJoystickConnected(evt) => evt.hashCode(17)
-            case EvtJoystickDisconnected(evt) => evt.hashCode(18)
-            case EvtTouchBegan(evt) => evt.hashCode(19)
-            case EvtTouchMoved(evt) => evt.hashCode(20)
-            case EvtTouchEnded(evt) => evt.hashCode(21)
-            case EvtSensorChanged(evt) => evt.hashCode(22)
-            case EvtUnknown => 23
+            case EvtMouseMovedRaw(evt) => evt.hashCode(12)
+            case EvtMouseEntered => 13
+            case EvtMouseLeft => 14
+            case EvtJoystickButtonPressed(evt) => evt.hashCode(15)
+            case EvtJoystickButtonReleased(evt) => evt.hashCode(16)
+            case EvtJoystickMoved(evt) => evt.hashCode(17)
+            case EvtJoystickConnected(evt) => evt.hashCode(18)
+            case EvtJoystickDisconnected(evt) => evt.hashCode(19)
+            case EvtTouchBegan(evt) => evt.hashCode(20)
+            case EvtTouchMoved(evt) => evt.hashCode(21)
+            case EvtTouchEnded(evt) => evt.hashCode(22)
+            case EvtSensorChanged(evt) => evt.hashCode(23)
+            case EvtUnknown => 24
         }
     }
 

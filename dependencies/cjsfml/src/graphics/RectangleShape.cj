@@ -39,7 +39,7 @@ foreign {
 
     // Shape
 
-    func sfRectangleShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: SfBool): Unit
+    func sfRectangleShape_setTexture(handle: CPointer<Unit>, texture: CPointer<Unit>, resetRect: Bool): Unit
 
     func sfRectangleShape_setTextureRect(handle: CPointer<Unit>, rect: IntRect): Unit
 
@@ -62,6 +62,8 @@ foreign {
     func sfRectangleShape_getPointCount(handle: CPointer<Unit>): UIntNative
 
     func sfRectangleShape_getPoint(handle: CPointer<Unit>, index: UIntNative): Vector2f
+
+    func sfRectangleShape_getGeometricCenter(handle: CPointer<Unit>): Vector2f
 
     func sfRectangleShape_setSize(handle: CPointer<Unit>, size: Vector2f): Unit
 
@@ -227,7 +229,7 @@ public class RectangleShape <: ResourceHandle & RenderTargetDrawable & Transform
     }
 
     public func setTexture(texture: ?Texture, resetRect!: Bool = false): Unit {
-        unsafe { sfRectangleShape_setTexture(m_handle, texture?.handle ?? CPointer(), SfBool.fromBool(resetRect)) }
+        unsafe { sfRectangleShape_setTexture(m_handle, texture?.handle ?? CPointer(), resetRect) }
     }
 
     public mut prop textureRect: IntRect {
@@ -275,6 +277,12 @@ public class RectangleShape <: ResourceHandle & RenderTargetDrawable & Transform
 
     public func getPoint(index: UInt32): Vector2f {
         unsafe { sfRectangleShape_getPoint(m_handle, UIntNative(index)) }
+    }
+
+    public prop geometricCenter: Vector2f {
+        get() {
+            unsafe { sfRectangleShape_getGeometricCenter(m_handle) }
+        }
     }
 
     public mut prop size: Vector2f {

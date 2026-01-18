@@ -4,7 +4,7 @@ import cenum.*
 import cjsfml.system.*
 
 foreign {
-    func sfText_create(): CPointer<Unit>
+    func sfText_create(font: CPointer<Unit>): CPointer<Unit>
 
     func sfText_copy(handle: CPointer<Unit>): CPointer<Unit>
 
@@ -98,19 +98,12 @@ foreign {
 public class Text <: ResourceHandle & RenderTargetDrawable & Transformable & Equatable<Text> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init() {
-        m_handle = unsafe { sfText_create() }
-        if (m_handle.isNull()) {
-            throw SFMLNullHandleException()
-        }
-    }
-
     public init(font: Font, characterSize!: UInt32 = 30) {
-        this(String.empty, font, characterSize: characterSize)
+        this(font, String.empty, characterSize: characterSize)
     }
 
-    public init(string: String, font: Font, characterSize!: UInt32 = 30) {
-        m_handle = unsafe { sfText_create() }
+    public init(font: Font, string: String, characterSize!: UInt32 = 30) {
+        m_handle = unsafe { sfText_create(font.handle) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
@@ -121,7 +114,6 @@ public class Text <: ResourceHandle & RenderTargetDrawable & Transformable & Equ
                 }
             }
         }
-        unsafe { sfText_setFont(m_handle, font.handle) }
         if (characterSize != 30) {
             unsafe { sfText_setCharacterSize(m_handle, characterSize) }
         }

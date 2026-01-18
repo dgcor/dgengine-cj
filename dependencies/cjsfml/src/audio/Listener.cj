@@ -2,6 +2,15 @@ package cjsfml.audio
 
 import cjsfml.system.*
 
+@C
+public struct ListenerCone {
+    public const ListenerCone(
+        public var innerAngle!: Float32 = 0.0, // Inner angle, in degrees
+        public var outerAngle!: Float32 = 0.0, // Outer angle, in degrees
+        public var outerGain!: Float32 = 0.0 // Outer gain
+    ) {}
+}
+
 foreign {
     func sfListener_setGlobalVolume(volume: Float32): Unit
 
@@ -14,6 +23,14 @@ foreign {
     func sfListener_setDirection(direction: Vector3f): Unit
 
     func sfListener_getDirection(): Vector3f
+
+    func sfListener_setVelocity(velocity: Vector3f): Unit
+
+    func sfListener_getVelocity(): Vector3f
+
+    func sfListener_setCone(cone: ListenerCone): Unit
+
+    func sfListener_getCone(): ListenerCone
 
     func sfListener_setUpVector(upVector: Vector3f): Unit
 
@@ -45,6 +62,24 @@ public class Listener {
         }
         set(value) {
             unsafe { sfListener_setDirection(value) }
+        }
+    }
+
+    public mut static prop velocity: Vector3f {
+        get() {
+            unsafe { sfListener_getVelocity() }
+        }
+        set(value) {
+            unsafe { sfListener_setVelocity(value) }
+        }
+    }
+
+    public mut static prop cone: ListenerCone {
+        get() {
+            unsafe { sfListener_getCone() }
+        }
+        set(value) {
+            unsafe { sfListener_setCone(value) }
         }
     }
 

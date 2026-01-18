@@ -10,7 +10,7 @@ foreign {
     func sfSoundBuffer_createFromStream(stream: CPointer<InputStreamData>): CPointer<Unit>
 
     func sfSoundBuffer_createFromSamples(samples: CPointer<Int16>, sampleCount: UInt64, channelCount: UInt32,
-        sampleRate: UInt32): CPointer<Unit>
+        sampleRate: UInt32, channelMapData: CPointer<SoundChannel>, channelMapSize: UIntNative): CPointer<Unit>
 
     func sfSoundBuffer_copy(handle: CPointer<Unit>): CPointer<Unit>
 
@@ -18,7 +18,7 @@ foreign {
 
     // SoundBuffer
 
-    func sfSoundBuffer_saveToFile(handle: CPointer<Unit>, filename: CString): SfBool
+    func sfSoundBuffer_saveToFile(handle: CPointer<Unit>, filename: CString): Bool
 
     func sfSoundBuffer_getSamples(handle: CPointer<Unit>): CPointer<Int16>
 
@@ -130,7 +130,7 @@ public class SoundBuffer <: ResourceHandle & Equatable<SoundBuffer> {
     public func savetoFile(filename: String): Bool {
         unsafe {
             try (filenameRes = LibC.mallocCString(filename).asResource()) {
-                return sfSoundBuffer_saveToFile(m_handle, filenameRes.value).toBool()
+                return sfSoundBuffer_saveToFile(m_handle, filenameRes.value)
             }
         }
         return false

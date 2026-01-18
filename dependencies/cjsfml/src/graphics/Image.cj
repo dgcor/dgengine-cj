@@ -3,11 +3,11 @@ package cjsfml.graphics
 import cjsfml.system.*
 
 foreign {
-    func sfImage_create(width: UInt32, height: UInt32): CPointer<Unit>
+    func sfImage_create(size: Vector2u): CPointer<Unit>
 
-    func sfImage_createFromColor(width: UInt32, height: UInt32, color: Color): CPointer<Unit>
+    func sfImage_createFromColor(size: Vector2u, color: Color): CPointer<Unit>
 
-    func sfImage_createFromPixels(width: UInt32, height: UInt32, pixels: CPointer<UInt8>): CPointer<Unit>
+    func sfImage_createFromPixels(size: Vector2u, pixels: CPointer<UInt8>): CPointer<Unit>
 
     func sfImage_createFromFile(filename: CString): CPointer<Unit>
 
@@ -19,22 +19,22 @@ foreign {
 
     func sfImage_destroy(handle: CPointer<Unit>): Unit
 
-    func sfImage_saveToFile(handle: CPointer<Unit>, filename: CString): SfBool
+    func sfImage_saveToFile(handle: CPointer<Unit>, filename: CString): Bool
 
-    func sfImage_saveToMemory(handle: CPointer<Unit>, buffer: CPointer<Unit>, format: CString): SfBool
+    func sfImage_saveToMemory(handle: CPointer<Unit>, buffer: CPointer<Unit>, format: CString): Bool
 
     func sfImage_getSize(handle: CPointer<Unit>): Vector2u
 
     func sfImage_createMaskFromColor(handle: CPointer<Unit>, color: Color, alpha: UInt8): Unit
 
-    func sfImage_copyImage(handle: CPointer<Unit>, sourceHandle: CPointer<Unit>, destX: UInt32, destY: UInt32,
-        sourceRect: IntRect, applyAlpha: SfBool): Unit
+    func sfImage_copyImage(handle: CPointer<Unit>, sourceHandle: CPointer<Unit>, dest: Vector2u, sourceRect: IntRect,
+        applyAlpha: Bool): Bool
 
     @FastNative
-    func sfImage_setPixel(handle: CPointer<Unit>, x: UInt32, y: UInt32, color: Color): Unit
+    func sfImage_setPixel(handle: CPointer<Unit>, coords: Vector2u, color: Color): Unit
 
     @FastNative
-    func sfImage_getPixel(handle: CPointer<Unit>, x: UInt32, y: UInt32): Color
+    func sfImage_getPixel(handle: CPointer<Unit>, coords: Vector2u): Color
 
     @FastNative
     func sfImage_getPixelsPtr(handle: CPointer<Unit>): CPointer<UInt8>
@@ -47,28 +47,28 @@ foreign {
 public class Image <: ResourceHandle & Equatable<Image> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init(width: UInt32, height: UInt32) {
-        m_handle = unsafe { sfImage_create(width, height) }
+    public init(size: Vector2u) {
+        m_handle = unsafe { sfImage_create(size) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
     }
 
-    public init(width: UInt32, height: UInt32, color: Color) {
-        m_handle = unsafe { sfImage_createFromColor(width, height, color) }
+    public init(size: Vector2u, color: Color) {
+        m_handle = unsafe { sfImage_createFromColor(size, color) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
     }
 
-    public init(width: UInt32, height: UInt32, pixels: Array<Color>) {
-        if (pixels.size < Int64(width) * Int64(height)) {
+    public init(size: Vector2u, pixels: Array<Color>) {
+        if (pixels.size < Int64(size.x) * Int64(size.y)) {
             throw SFMLOutOfBoundsException()
         }
         unsafe {
             let rawData = acquireArrayRawData(pixels)
             try {
-                m_handle = sfImage_createFromPixels(width, height, CPointer<UInt8>(rawData.pointer))
+                m_handle = sfImage_createFromPixels(size, CPointer<UInt8>(rawData.pointer))
             } finally {
                 releaseArrayRawData(rawData)
             }
@@ -78,14 +78,14 @@ public class Image <: ResourceHandle & Equatable<Image> {
         }
     }
 
-    public init(width: UInt32, height: UInt32, pixels: Array<UInt8>) {
-        if (pixels.size < Int64(width) * Int64(height)) {
+    public init(size: Vector2u, pixels: Array<UInt8>) {
+        if (pixels.size < Int64(size.x) * Int64(size.y)) {
             throw SFMLOutOfBoundsException()
         }
         unsafe {
             let rawData = acquireArrayRawData(pixels)
             try {
-                m_handle = sfImage_createFromPixels(width, height, rawData.pointer)
+                m_handle = sfImage_createFromPixels(size, rawData.pointer)
             } finally {
                 releaseArrayRawData(rawData)
             }
@@ -180,7 +180,7 @@ public class Image <: ResourceHandle & Equatable<Image> {
     public func saveToFile(filename: String): Bool {
         unsafe {
             try (filenameRes = LibC.mallocCString(filename).asResource()) {
-                return sfImage_saveToFile(m_handle, filenameRes.value).toBool()
+                return sfImage_saveToFile(m_handle, filenameRes.value)
             }
         }
         return false
@@ -189,7 +189,7 @@ public class Image <: ResourceHandle & Equatable<Image> {
     public func saveToMemory(format: String): ?Array<Byte> {
         unsafe {
             try (buffer = Buffer(), formatRes = LibC.mallocCString(format).asResource()) {
-                if (sfImage_saveToMemory(m_handle, buffer.handle, formatRes.value).toBool()) {
+                if (sfImage_saveToMemory(m_handle, buffer.handle, formatRes.value)) {
                     let data = buffer.data
                     return Array<Byte>(
                         buffer.size,
@@ -213,17 +213,16 @@ public class Image <: ResourceHandle & Equatable<Image> {
         unsafe { sfImage_createMaskFromColor(m_handle, color, alpha) }
     }
 
-    public func copy(source: Image, destX: UInt32, destY: UInt32, sourceRect!: IntRect = IntRect(),
-        applyAlpha!: Bool = false): Unit {
-        unsafe { sfImage_copyImage(m_handle, source.m_handle, destX, destY, sourceRect, SfBool.fromBool(applyAlpha)) }
+    public func copy(source: Image, dest: Vector2u, sourceRect!: IntRect = IntRect(), applyAlpha!: Bool = false): Bool {
+        unsafe { sfImage_copyImage(m_handle, source.m_handle, dest, sourceRect, applyAlpha) }
     }
 
-    public func getPixel(x: UInt32, y: UInt32): Color {
-        unsafe { sfImage_getPixel(m_handle, x, y) }
+    public func getPixel(coords: Vector2u): Color {
+        unsafe { sfImage_getPixel(m_handle, coords) }
     }
 
-    public func setPixel(x: UInt32, y: UInt32, color: Color): Unit {
-        unsafe { sfImage_setPixel(m_handle, x, y, color) }
+    public func setPixel(coords: Vector2u, color: Color): Unit {
+        unsafe { sfImage_setPixel(m_handle, coords, color) }
     }
 
     public prop pixelsPtr: CPointer<UInt8> {

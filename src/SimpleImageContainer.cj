@@ -71,7 +71,7 @@ public open class SimpleImageContainer <: ImageContainer & Resource {
             return None
         }
 
-        let img = SFMLImage(m_subImageSizeX, m_subImageSizeY, Color.transparent)
+        let img = SFMLImage(Vector2u(m_subImageSizeX, m_subImageSizeY), Color.transparent)
         let imgInfo = ImageInfo(blendMode: m_blendMode)
 
         let (left, top) = match (m_verticalDirection) {
@@ -79,13 +79,14 @@ public open class SimpleImageContainer <: ImageContainer & Resource {
             case true => (Int32((index / m_maxFrames) * m_subImageSizeX), Int32((index % m_maxFrames) * m_subImageSizeY))
         }
 
-        img.copy(m_image, 0, 0, sourceRect: IntRect(left, top, Int32(m_subImageSizeX), Int32(m_subImageSizeY)),
+        img.copy(m_image, Vector2u(), sourceRect: IntRect(left, top, Int32(m_subImageSizeX), Int32(m_subImageSizeY)),
             applyAlpha: true)
 
         if (let Some(palette) <- palette) {
             for (j in 0..m_subImageSizeY) {
                 for (i in 0..m_subImageSizeX) {
-                    img.setPixel(i, j, palette[Int64(img.getPixel(i, j).r)])
+                    let pos = Vector2u(i, j)
+                    img.setPixel(pos, palette[Int64(img.getPixel(pos).r)])
                 }
             }
         }

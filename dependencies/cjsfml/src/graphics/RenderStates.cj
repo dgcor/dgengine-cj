@@ -3,14 +3,19 @@ package cjsfml.graphics
 @C
 public struct RenderStates {
     private var m_blendMode: BlendMode
+    private var m_stencilMode: StencilMode
     private var m_transform: Transform
+    private var m_coordinateType: CoordinateType
     private var m_texture: CPointer<Unit>
     private var m_shader: CPointer<Unit>
 
-    public init(blendMode!: BlendMode = BlendMode.alpha, transform!: Transform = Transform.identity,
+    public init(blendMode!: BlendMode = BlendMode.alpha, stencilMode!: StencilMode = StencilMode.default,
+        transform!: Transform = Transform.identity, coordinateType!: CoordinateType = CoordinateType.Pixels,
         texture!: ?Texture = None, shader!: ?Shader = None) {
         m_blendMode = blendMode
+        m_stencilMode = stencilMode
         m_transform = transform
+        m_coordinateType = coordinateType
         m_texture = texture?.handle ?? CPointer()
         m_shader = shader?.handle ?? CPointer()
     }
@@ -24,12 +29,30 @@ public struct RenderStates {
         }
     }
 
+    public mut prop stencilMode: StencilMode {
+        get() {
+            m_stencilMode
+        }
+        set(value) {
+            m_stencilMode = value
+        }
+    }
+
     public mut prop transform: Transform {
         get() {
             m_transform
         }
         set(value) {
             m_transform = value
+        }
+    }
+
+    public mut prop coordinateType: CoordinateType {
+        get() {
+            m_coordinateType
+        }
+        set(value) {
+            m_coordinateType = value
         }
     }
 

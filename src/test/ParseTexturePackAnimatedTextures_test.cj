@@ -38,17 +38,6 @@ class TestParseTexturePackAnimatedTextures {
         @Expect(texturePack.texture.isSome())
     }
 
-    static func CHECK_MultiTexturePack(texturePack: TexturePack, size: UInt32, groups: UInt32, palette: ?Palette): Unit {
-        @Expect(texturePack.size, size)
-        @Expect(texturePack.groupCount, groups)
-        match ((texturePack.palette, palette)) {
-            case (Some(pal), Some(pal2)) => @Expect(isObjEq(pal, pal2))
-            case (None, None) => ()
-            case _ => @Fail("CHECK_MultiTexturePack: Expected Palette match")
-        }
-        @Expect(texturePack.texture.isNone())
-    }
-
     static func CHECK_InvalidGet(texturePack: TexturePack, index: UInt32): Unit {
         CHECK_InvalidGet(texturePack, index, 0)
     }
@@ -93,13 +82,6 @@ class TestParseTexturePackAnimatedTextures {
         @Expect(animInfo.indexRange[0], indexRange[0])
         @Expect(animInfo.indexRange[1], indexRange[1])
         @Expect(animInfo.refresh.microseconds, refresh.microseconds)
-    }
-
-    static func CHECK_AnimationAndDirection(texturePack: TexturePack, groupIndex: Int32, directionIndex: Int32,
-        animType: AnimationType, indexRange: (UInt32, UInt32), refresh: Time): Unit {
-        CHECK_Animation(texturePack, groupIndex, directionIndex, animType, indexRange, refresh)
-        @Expect(Int64(texturePack.getDirection(indexRange[0])), Int64(directionIndex))
-        @Expect(Int64(texturePack.getDirection(indexRange[1])), Int64(directionIndex))
     }
 
     @TestCase

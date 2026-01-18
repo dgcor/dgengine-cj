@@ -45,17 +45,17 @@ public struct TextureGroup {
             offset: offset
         )
         if (numFrames <= 1 && index == 0) {
-            ti.textureRect.left = 0
-            ti.textureRect.top = 0
+            ti.textureRect.position.x = 0
+            ti.textureRect.position.y = 0
         } else if (verticalDirection == false) {
-            ti.textureRect.left = Int32((index % maxFrames) * subImageSizeX)
-            ti.textureRect.top = Int32((index / maxFrames) * subImageSizeY)
+            ti.textureRect.position.x = Int32((index % maxFrames) * subImageSizeX)
+            ti.textureRect.position.y = Int32((index / maxFrames) * subImageSizeY)
         } else {
-            ti.textureRect.left = Int32((index / maxFrames) * subImageSizeX)
-            ti.textureRect.top = Int32((index % maxFrames) * subImageSizeY)
+            ti.textureRect.position.x = Int32((index / maxFrames) * subImageSizeX)
+            ti.textureRect.position.y = Int32((index % maxFrames) * subImageSizeY)
         }
-        ti.textureRect.width = Int32(subImageSizeX)
-        ti.textureRect.height = Int32(subImageSizeY)
+        ti.textureRect.size.x = Int32(subImageSizeX)
+        ti.textureRect.size.y = Int32(subImageSizeY)
         return ti
     }
 

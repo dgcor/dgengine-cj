@@ -4,7 +4,7 @@ import cenum.*
 import cjsfml.system.*
 
 foreign {
-    func sfVertexBuffer_create(vertexCount: UInt32, primitiveType: PrimitiveType, usage: VertexBufferUsage): CPointer<Unit>
+    func sfVertexBuffer_create(vertexCount: UIntNative, primitiveType: PrimitiveType, usage: VertexBufferUsage): CPointer<Unit>
 
     func sfVertexBuffer_copy(handle: CPointer<Unit>): CPointer<Unit>
 
@@ -14,9 +14,9 @@ foreign {
 
     func sfVertexBuffer_getVertexCount(handle: CPointer<Unit>): UInt32
 
-    func sfVertexBuffer_update(handle: CPointer<Unit>, vertices: CPointer<Vertex>, vertexCount: UInt32, offset: UInt32): SfBool
+    func sfVertexBuffer_update(handle: CPointer<Unit>, vertices: CPointer<Vertex>, vertexCount: UInt32, offset: UInt32): Bool
 
-    func sfVertexBuffer_updateFromVertexBuffer(handle: CPointer<Unit>, other: CPointer<Unit>): SfBool
+    func sfVertexBuffer_updateFromVertexBuffer(handle: CPointer<Unit>, other: CPointer<Unit>): Bool
 
     func sfVertexBuffer_swap(left: CPointer<Unit>, right: CPointer<Unit>): Unit
 
@@ -32,7 +32,7 @@ foreign {
 
     func sfVertexBuffer_bind(handle: CPointer<Unit>): Unit
 
-    func sfVertexBuffer_isAvailable(): SfBool
+    func sfVertexBuffer_isAvailable(): Bool
 }
 
 @CEnum[public VertexBufferUsage](
@@ -44,7 +44,7 @@ foreign {
 public class VertexBuffer <: ResourceHandle & RenderTargetDrawable & Equatable<VertexBuffer> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init(vertexCount!: UInt32 = 0, primitiveType!: PrimitiveType = PrimitiveType.Points,
+    public init(vertexCount!: UIntNative = 0, primitiveType!: PrimitiveType = PrimitiveType.Points,
         usage!: VertexBufferUsage = VertexBufferUsage.Stream) {
         m_handle = unsafe { sfVertexBuffer_create(vertexCount, primitiveType, usage) }
         if (m_handle.isNull()) {
@@ -125,7 +125,7 @@ public class VertexBuffer <: ResourceHandle & RenderTargetDrawable & Equatable<V
         unsafe {
             let rawData = acquireArrayRawData(vertices)
             try {
-                success = sfVertexBuffer_update(m_handle, rawData.pointer, UInt32(vertices.size), offset).toBool()
+                success = sfVertexBuffer_update(m_handle, rawData.pointer, UInt32(vertices.size), offset)
             } finally {
                 releaseArrayRawData(rawData)
             }
@@ -171,7 +171,7 @@ public class VertexBuffer <: ResourceHandle & RenderTargetDrawable & Equatable<V
 
     public static prop isAvailable: Bool {
         get() {
-            unsafe { sfVertexBuffer_isAvailable().toBool() }
+            unsafe { sfVertexBuffer_isAvailable() }
         }
     }
 }

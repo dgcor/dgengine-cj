@@ -6,7 +6,6 @@ import cjsfml.window.*
 import dgengine.*
 import stdx.encoding.json.*
 import std.collection.*
-import std.math.*
 import std.unittest.*
 
 @Test

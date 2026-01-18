@@ -75,7 +75,7 @@ public class CompositeSprite <: Resource {
 
     public prop size: Vector2f {
         get() {
-            Vector2f(Float32(m_sprites[0].textureRect.width), Float32(m_sprites[0].textureRect.height))
+            Vector2f(Float32(m_sprites[0].textureRect.size.x), Float32(m_sprites[0].textureRect.size.y))
         }
     }
 

@@ -3,7 +3,7 @@ package cjsfml.window
 import cjsfml.system.*
 
 foreign {
-    func sfWindow_createUnicode(mode: VideoMode, title: CPointer<UInt32>, style: WindowStyle,
+    func sfWindow_createUnicode(mode: VideoMode, title: CPointer<UInt32>, style: WindowStyle, state: WindowState,
         settings: CPointer<ContextSettings>): CPointer<Unit>
 
     func sfWindow_createFromHandle(handle: CPointer<Unit>, settings: CPointer<ContextSettings>): CPointer<Unit>
@@ -14,11 +14,11 @@ foreign {
 
     func sfWindow_close(handle: CPointer<Unit>): Unit
 
-    func sfWindow_isOpen(handle: CPointer<Unit>): SfBool
+    func sfWindow_isOpen(handle: CPointer<Unit>): Bool
 
-    func sfWindow_pollEvent(handle: CPointer<Unit>, event: CPointer<Byte>): SfBool
+    func sfWindow_pollEvent(handle: CPointer<Unit>, event: CPointer<Byte>): Bool
 
-    func sfWindow_waitEvent(handle: CPointer<Unit>, event: CPointer<Byte>): SfBool
+    func sfWindow_waitEvent(handle: CPointer<Unit>, timeout: Time, event: CPointer<Byte>): Bool
 
     func sfWindow_getPosition(handle: CPointer<Unit>): Vector2i
 
@@ -28,37 +28,41 @@ foreign {
 
     func sfWindow_setSize(handle: CPointer<Unit>, size: Vector2u): Unit
 
+    func sfWindow_setMinimumSize(handle: CPointer<Unit>, minimumSize: CPointer<Vector2u>): Unit
+
+    func sfWindow_setMaximumSize(handle: CPointer<Unit>, maximumSize: CPointer<Vector2u>): Unit
+
     func sfWindow_setUnicodeTitle(handle: CPointer<Unit>, title: CPointer<UInt32>): Unit
 
-    func sfWindow_setIcon(handle: CPointer<Unit>, width: UInt32, height: UInt32, pixels: CPointer<UInt8>): Unit
+    func sfWindow_setIcon(handle: CPointer<Unit>, size: Vector2u, pixels: CPointer<UInt8>): Unit
 
-    func sfWindow_setVisible(handle: CPointer<Unit>, visible: SfBool): Unit
+    func sfWindow_setVisible(handle: CPointer<Unit>, visible: Bool): Unit
 
-    func sfWindow_setMouseCursorVisible(handle: CPointer<Unit>, visible: SfBool): Unit
+    func sfWindow_setMouseCursorVisible(handle: CPointer<Unit>, visible: Bool): Unit
 
-    func sfWindow_setMouseCursorGrabbed(handle: CPointer<Unit>, grabbed: SfBool): Unit
+    func sfWindow_setMouseCursorGrabbed(handle: CPointer<Unit>, grabbed: Bool): Unit
 
     func sfWindow_setMouseCursor(handle: CPointer<Unit>, cursor: CPointer<Unit>): Unit
 
-    func sfWindow_setKeyRepeatEnabled(handle: CPointer<Unit>, enabled: SfBool): Unit
+    func sfWindow_setKeyRepeatEnabled(handle: CPointer<Unit>, enabled: Bool): Unit
 
     func sfWindow_setJoystickThreshold(handle: CPointer<Unit>, threshold: Float32): Unit
 
     func sfWindow_requestFocus(handle: CPointer<Unit>): Unit
 
-    func sfWindow_hasFocus(handle: CPointer<Unit>): SfBool
+    func sfWindow_hasFocus(handle: CPointer<Unit>): Bool
 
-    func sfWindow_getSystemHandle(handle: CPointer<Unit>): CPointer<Unit>
+    func sfWindow_getNativeHandle(handle: CPointer<Unit>): CPointer<Unit>
 
     // Window
 
     func sfWindow_getSettings(handle: CPointer<Unit>): ContextSettings
 
-    func sfWindow_setVerticalSyncEnabled(handle: CPointer<Unit>, enabled: SfBool): Unit
+    func sfWindow_setVerticalSyncEnabled(handle: CPointer<Unit>, enabled: Bool): Unit
 
     func sfWindow_setFramerateLimit(handle: CPointer<Unit>, limit: UInt32): Unit
 
-    func sfWindow_setActive(handle: CPointer<Unit>, active: SfBool): SfBool
+    func sfWindow_setActive(handle: CPointer<Unit>, active: Bool): Bool
 
     func sfWindow_display(handle: CPointer<Unit>): Unit
 }
@@ -67,11 +71,11 @@ public class Window <: SFMLWindow & Equatable<Window> {
     private var m_handle: CPointer<Unit> = CPointer()
 
     public init(mode: VideoMode, title: String, style!: WindowStyle = WindowStyle.Default,
-        settings!: ContextSettings = ContextSettings()) {
+        state!: WindowState = WindowState.Windowed, settings!: ContextSettings = ContextSettings()) {
         unsafe {
             try (titleRes = (title |> toCStringUtf32).asResource()) {
                 var settings2 = settings
-                m_handle = sfWindow_createUnicode(mode, titleRes.value, style, inout settings2)
+                m_handle = sfWindow_createUnicode(mode, titleRes.value, style, state, inout settings2)
             }
         }
         if (m_handle.isNull()) {
@@ -132,7 +136,7 @@ public class Window <: SFMLWindow & Equatable<Window> {
 
     public prop isOpen: Bool {
         get() {
-            unsafe { sfWindow_isOpen(m_handle).toBool() }
+            unsafe { sfWindow_isOpen(m_handle) }
         }
     }
 
@@ -141,7 +145,7 @@ public class Window <: SFMLWindow & Equatable<Window> {
         unsafe {
             let rawData = acquireArrayRawData(data)
             try {
-                if (sfWindow_pollEvent(m_handle, rawData.pointer).toBool()) {
+                if (sfWindow_pollEvent(m_handle, rawData.pointer)) {
                     return Event.create(data)
                 }
             } finally {
@@ -151,12 +155,12 @@ public class Window <: SFMLWindow & Equatable<Window> {
         return None
     }
 
-    public func waitEvent(): ?Event {
+    public func waitEvent(timeout: Time): ?Event {
         var data = Event.getEmpty()
         unsafe {
             let rawData = acquireArrayRawData(data)
             try {
-                if (sfWindow_waitEvent(m_handle, rawData.pointer).toBool()) {
+                if (sfWindow_waitEvent(m_handle, timeout, rawData.pointer)) {
                     return Event.create(data)
                 }
             } finally {
@@ -184,6 +188,24 @@ public class Window <: SFMLWindow & Equatable<Window> {
         }
     }
 
+    public func setMinimumSize(size: ?Vector2u): Unit {
+        match (size) {
+            case Some(size) =>
+                var size2 = size
+                unsafe { sfWindow_setMinimumSize(m_handle, inout size2) }
+            case None => unsafe { sfWindow_setMinimumSize(m_handle, CPointer()) }
+        }
+    }
+
+    public func setMaximumSize(size: ?Vector2u): Unit {
+        match (size) {
+            case Some(size) =>
+                var size2 = size
+                unsafe { sfWindow_setMaximumSize(m_handle, inout size2) }
+            case None => unsafe { sfWindow_setMaximumSize(m_handle, CPointer()) }
+        }
+    }
+
     public func setTitle(title: String): Unit {
         unsafe {
             try (titleRes = (title |> toCStringUtf32).asResource()) {
@@ -192,33 +214,33 @@ public class Window <: SFMLWindow & Equatable<Window> {
         }
     }
 
-    public func setIcon(width: UInt32, height: UInt32, pixels: Array<UInt8>): Unit {
+    public func setIcon(size: Vector2u, pixels: Array<UInt8>): Unit {
         unsafe {
             let rawData = acquireArrayRawData(pixels)
             try {
-                sfWindow_setIcon(m_handle, width, height, CPointer(rawData.pointer))
+                sfWindow_setIcon(m_handle, size, CPointer(rawData.pointer))
             } finally {
                 releaseArrayRawData(rawData)
             }
         }
     }
 
-    public func setIcon(width: UInt32, height: UInt32, pixels: CPointer<UInt8>): Unit {
+    public func setIcon(size: Vector2u, pixels: CPointer<UInt8>): Unit {
         unsafe {
-            sfWindow_setIcon(m_handle, width, height, pixels)
+            sfWindow_setIcon(m_handle, size, pixels)
         }
     }
 
     public func setVisible(visible: Bool): Unit {
-        unsafe { sfWindow_setVisible(m_handle, SfBool.fromBool(visible)) }
+        unsafe { sfWindow_setVisible(m_handle, visible) }
     }
 
     public func setMouseCursorVisible(visible: Bool): Unit {
-        unsafe { sfWindow_setMouseCursorVisible(m_handle, SfBool.fromBool(visible)) }
+        unsafe { sfWindow_setMouseCursorVisible(m_handle, visible) }
     }
 
     public func setMouseCursorGrabbed(grabbed: Bool): Unit {
-        unsafe { sfWindow_setMouseCursorGrabbed(m_handle, SfBool.fromBool(grabbed)) }
+        unsafe { sfWindow_setMouseCursorGrabbed(m_handle, grabbed) }
     }
 
     public func setMouseCursor(cursor: Cursor): Unit {
@@ -226,7 +248,7 @@ public class Window <: SFMLWindow & Equatable<Window> {
     }
 
     public func setKeyRepeatEnabled(enabled: Bool): Unit {
-        unsafe { sfWindow_setKeyRepeatEnabled(m_handle, SfBool.fromBool(enabled)) }
+        unsafe { sfWindow_setKeyRepeatEnabled(m_handle, enabled) }
     }
 
     public func setJoystickThreshold(threshold: Float32): Unit {
@@ -239,13 +261,13 @@ public class Window <: SFMLWindow & Equatable<Window> {
 
     public prop hasFocus: Bool {
         get() {
-            unsafe { sfWindow_hasFocus(m_handle).toBool() }
+            unsafe { sfWindow_hasFocus(m_handle) }
         }
     }
 
-    public prop systemHandle: CPointer<Unit> {
+    public prop nativeHandle: CPointer<Unit> {
         get() {
-            unsafe { sfWindow_getSystemHandle(m_handle) }
+            unsafe { sfWindow_getNativeHandle(m_handle) }
         }
     }
 
@@ -258,7 +280,7 @@ public class Window <: SFMLWindow & Equatable<Window> {
     }
 
     public func setVerticalSyncEnabled(enabled: Bool): Unit {
-        unsafe { sfWindow_setVerticalSyncEnabled(m_handle, SfBool.fromBool(enabled)) }
+        unsafe { sfWindow_setVerticalSyncEnabled(m_handle, enabled) }
     }
 
     public func setFramerateLimit(limit: UInt32): Unit {
@@ -270,7 +292,7 @@ public class Window <: SFMLWindow & Equatable<Window> {
     }
 
     public func setActive(active: Bool): Bool {
-        unsafe { sfWindow_setActive(m_handle, SfBool.fromBool(active)).toBool() }
+        unsafe { sfWindow_setActive(m_handle, active) }
     }
 
     public func display(): Unit {

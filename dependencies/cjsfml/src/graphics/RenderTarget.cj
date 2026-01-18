@@ -9,11 +9,17 @@ public interface RenderTarget <: ResourceHandle {
 
     func clear(color: Color): Unit
 
+    func clearStencil(stencilValue: UInt32): Unit
+
+    func clear(color: Color, stencilValue: UInt32): Unit
+
     mut prop view: View
 
     prop defaultView: View
 
     func getViewport(view: View): IntRect
+
+    func getScissor(view: View): IntRect
 
     func mapPixelToCoords(point: Vector2i): Vector2f {
         mapPixelToCoords(point, view)

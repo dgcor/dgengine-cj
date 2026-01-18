@@ -13,28 +13,43 @@ foreign {
 
     // View
 
+    @FastNative
     func sfView_setCenter(handle: CPointer<Unit>, center: Vector2f): Unit
 
+    @FastNative
     func sfView_setSize(handle: CPointer<Unit>, size: Vector2f): Unit
 
+    @FastNative
     func sfView_setRotation(handle: CPointer<Unit>, angle: Float32): Unit
 
+    @FastNative
     func sfView_setViewport(handle: CPointer<Unit>, viewport: FloatRect): Unit
 
-    func sfView_reset(handle: CPointer<Unit>, rectangle: FloatRect): Unit
+    @FastNative
+    func sfView_setScissor(handle: CPointer<Unit>, scissor: FloatRect): Unit
 
+    @FastNative
     func sfView_getCenter(handle: CPointer<Unit>): Vector2f
 
+    @FastNative
     func sfView_getSize(handle: CPointer<Unit>): Vector2f
 
+    @FastNative
     func sfView_getRotation(handle: CPointer<Unit>): Float32
 
+    @FastNative
     func sfView_getViewport(handle: CPointer<Unit>): FloatRect
 
+    @FastNative
+    func sfView_getScissor(handle: CPointer<Unit>): FloatRect
+
+    @FastNative
     func sfView_move(handle: CPointer<Unit>, offset: Vector2f): Unit
 
+    @FastNative
     func sfView_rotate(handle: CPointer<Unit>, angle: Float32): Unit
 
+    @FastNative
     func sfView_zoom(handle: CPointer<Unit>, factor: Float32): Unit
 }
 
@@ -151,8 +166,30 @@ public class View <: ResourceHandle & Equatable<View> {
         }
     }
 
+    public mut prop scissor: FloatRect {
+        get() {
+            unsafe { sfView_getScissor(m_handle) }
+        }
+        set(value) {
+            unsafe { sfView_setScissor(m_handle, value) }
+        }
+    }
+
     public func reset(rectangle: FloatRect): Unit {
-        unsafe { sfView_reset(m_handle, rectangle) }
+        let center = Vector2f(
+            rectangle.position.x + rectangle.size.x / 2.0,
+            rectangle.position.y + rectangle.size.y / 2.0
+        )
+        let size = rectangle.size
+        let defaultRect = FloatRect(0.0, 0.0, 1.0, 1.0)
+
+        unsafe {
+            sfView_setCenter(m_handle, center)
+            sfView_setSize(m_handle, size)
+            sfView_setRotation(m_handle, 0.0)
+            sfView_setViewport(m_handle, defaultRect)
+            sfView_setScissor(m_handle, defaultRect)
+        }
     }
 
     public func move(offset: Vector2f): Unit {

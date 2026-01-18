@@ -13,16 +13,15 @@ foreign {
 
     func sfTransform_combine(transform: CPointer<Transform>, other: CPointer<Transform>): Unit
 
-    func sfTransform_translate(transform: CPointer<Transform>, x: Float32, y: Float32): Unit
+    func sfTransform_translate(transform: CPointer<Transform>, offset: Vector2f): Unit
 
     func sfTransform_rotate(transform: CPointer<Transform>, angle: Float32): Unit
 
-    func sfTransform_rotateWithCenter(transform: CPointer<Transform>, angle: Float32, centerX: Float32, centerY: Float32): Unit
+    func sfTransform_rotateWithCenter(transform: CPointer<Transform>, angle: Float32, center: Vector2f): Unit
 
-    func sfTransform_scale(transform: CPointer<Transform>, scaleX: Float32, scaleY: Float32): Unit
+    func sfTransform_scale(transform: CPointer<Transform>, scale: Vector2f): Unit
 
-    func sfTransform_scaleWithCenter(transform: CPointer<Transform>, scaleX: Float32, scaleY: Float32, centerX: Float32,
-        centerY: Float32): Unit
+    func sfTransform_scaleWithCenter(transform: CPointer<Transform>, scale: Vector2f, center: Vector2f): Unit
 }
 
 @C
@@ -129,13 +128,9 @@ public struct Transform {
     }
 
     public func translate(offset: Vector2f): Transform {
-        translate(offset.x, offset.y)
-    }
-
-    public func translate(x: Float32, y: Float32): Transform {
         unsafe {
             var transform2 = this
-            sfTransform_translate(inout transform2, x, y)
+            sfTransform_translate(inout transform2, offset)
             return transform2
         }
     }
@@ -149,37 +144,25 @@ public struct Transform {
     }
 
     public func rotate(angle: Float32, center: Vector2f): Transform {
-        rotate(angle, center.x, center.y)
-    }
-
-    public func rotate(angle: Float32, centerX: Float32, centerY: Float32): Transform {
         unsafe {
             var transform2 = this
-            sfTransform_rotateWithCenter(inout transform2, angle, centerX, centerY)
+            sfTransform_rotateWithCenter(inout transform2, angle, center)
             return transform2
         }
     }
 
     public func scale(factors: Vector2f): Transform {
-        scale(factors.x, factors.y)
-    }
-
-    public func scale(scaleX: Float32, scaleY: Float32): Transform {
         unsafe {
             var transform2 = this
-            sfTransform_scale(inout transform2, scaleX, scaleY)
+            sfTransform_scale(inout transform2, factors)
             return transform2
         }
     }
 
     public func scale(factors: Vector2f, center: Vector2f): Transform {
-        scale(factors.x, factors.y, center.x, center.y)
-    }
-
-    public func scale(scaleX: Float32, scaleY: Float32, centerX: Float32, centerY: Float32): Transform {
         unsafe {
             var transform2 = this
-            sfTransform_scaleWithCenter(inout transform2, scaleX, scaleY, centerX, centerY)
+            sfTransform_scaleWithCenter(inout transform2, factors, center)
             return transform2
         }
     }

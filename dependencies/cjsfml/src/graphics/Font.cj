@@ -13,10 +13,10 @@ foreign {
 
     func sfFont_destroy(handle: CPointer<Unit>): Unit
 
-    func sfFont_getGlyph(handle: CPointer<Unit>, codePoint: UInt32, characterSize: UInt32, bold: SfBool,
+    func sfFont_getGlyph(handle: CPointer<Unit>, codePoint: UInt32, characterSize: UInt32, bold: Bool,
         outlineThickness: Float32): Glyph
 
-    func sfFont_hasGlyph(handle: CPointer<Unit>, codePoint: UInt32): SfBool
+    func sfFont_hasGlyph(handle: CPointer<Unit>, codePoint: UInt32): Bool
 
     func sfFont_getKerning(handle: CPointer<Unit>, first: UInt32, second: UInt32, characterSize: UInt32): Float32
 
@@ -30,9 +30,9 @@ foreign {
 
     func sfFont_getTexture(handle: CPointer<Unit>, characterSize: UInt32): CPointer<Unit>
 
-    func sfFont_setSmooth(handle: CPointer<Unit>, smooth: SfBool): Unit
+    func sfFont_setSmooth(handle: CPointer<Unit>, smooth: Bool): Unit
 
-    func sfFont_isSmooth(handle: CPointer<Unit>): SfBool
+    func sfFont_isSmooth(handle: CPointer<Unit>): Bool
 
     func sfFont_getInfo(handle: CPointer<Unit>): CString
 }
@@ -137,11 +137,11 @@ public class Font <: ResourceHandle & Equatable<Font> {
     // Font
 
     public func getGlyph(codePoint: Rune, characterSize: UInt32, bold!: Bool, outlineThickness!: Float32 = 0.0): Glyph {
-        unsafe { sfFont_getGlyph(m_handle, UInt32(codePoint), characterSize, SfBool.fromBool(bold), outlineThickness) }
+        unsafe { sfFont_getGlyph(m_handle, UInt32(codePoint), characterSize, bold, outlineThickness) }
     }
 
     public func hasGlyph(codePoint: Rune): Bool {
-        unsafe { sfFont_hasGlyph(m_handle, UInt32(codePoint)).toBool() }
+        unsafe { sfFont_hasGlyph(m_handle, UInt32(codePoint)) }
     }
 
     public func getKerning(first: UInt32, second: UInt32, characterSize: UInt32, bold!: Bool = false): Float32 {
@@ -169,10 +169,10 @@ public class Font <: ResourceHandle & Equatable<Font> {
 
     public mut prop smooth: Bool {
         get() {
-            unsafe { sfFont_isSmooth(m_handle).toBool() }
+            unsafe { sfFont_isSmooth(m_handle) }
         }
         set(value) {
-            unsafe { sfFont_setSmooth(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfFont_setSmooth(m_handle, value) }
         }
     }
 

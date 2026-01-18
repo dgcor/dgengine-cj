@@ -4,13 +4,17 @@ import cjsfml.system.*
 import cjsfml.window.*
 
 foreign {
-    func sfRenderTexture_createWithSettings(width: UInt32, height: UInt32, settings: CPointer<ContextSettings>): CPointer<Unit>
+    func sfRenderTexture_create(size: Vector2u, settings: CPointer<ContextSettings>): CPointer<Unit>
 
     func sfRenderTexture_destroy(handle: CPointer<Unit>): Unit
 
     // RenderTarget
 
     func sfRenderTexture_clear(handle: CPointer<Unit>, color: Color): Unit
+
+    func sfRenderTexture_clearStencil(handle: CPointer<Unit>, stencilValue: UInt32): Unit
+
+    func sfRenderTexture_clearColorAndStencil(handle: CPointer<Unit>, color: Color, stencilValue: UInt32): Unit
 
     func sfRenderTexture_setView(handle: CPointer<Unit>, view: CPointer<Unit>): Unit
 
@@ -19,6 +23,8 @@ foreign {
     func sfRenderTexture_getDefaultView(handle: CPointer<Unit>): CPointer<Unit>
 
     func sfRenderTexture_getViewport(handle: CPointer<Unit>, view: CPointer<Unit>): IntRect
+
+    func sfRenderTexture_getScissor(handle: CPointer<Unit>, view: CPointer<Unit>): IntRect
 
     func sfRenderTexture_mapPixelToCoords(handle: CPointer<Unit>, point: Vector2i, view: CPointer<Unit>): Vector2f
 
@@ -55,9 +61,9 @@ foreign {
 
     func sfRenderTexture_getSize(handle: CPointer<Unit>): Vector2u
 
-    func sfRenderTexture_isSrgb(handle: CPointer<Unit>): SfBool
+    func sfRenderTexture_isSrgb(handle: CPointer<Unit>): Bool
 
-    func sfRenderTexture_setActive(handle: CPointer<Unit>, active: SfBool): SfBool
+    func sfRenderTexture_setActive(handle: CPointer<Unit>, active: Bool): Bool
 
     func sfRenderTexture_pushGLStates(handle: CPointer<Unit>): Unit
 
@@ -71,25 +77,25 @@ foreign {
 
     func sfRenderTexture_getTexture(handle: CPointer<Unit>): CPointer<Unit>
 
-    func sfRenderTexture_getMaximumAntialiasingLevel(): UInt32
+    func sfRenderTexture_getMaximumAntiAliasingLevel(): UInt32
 
-    func sfRenderTexture_setSmooth(handle: CPointer<Unit>, smooth: SfBool): Unit
+    func sfRenderTexture_setSmooth(handle: CPointer<Unit>, smooth: Bool): Unit
 
-    func sfRenderTexture_isSmooth(handle: CPointer<Unit>): SfBool
+    func sfRenderTexture_isSmooth(handle: CPointer<Unit>): Bool
 
-    func sfRenderTexture_setRepeated(handle: CPointer<Unit>, repeated: SfBool): Unit
+    func sfRenderTexture_setRepeated(handle: CPointer<Unit>, repeated: Bool): Unit
 
-    func sfRenderTexture_isRepeated(handle: CPointer<Unit>): SfBool
+    func sfRenderTexture_isRepeated(handle: CPointer<Unit>): Bool
 
-    func sfRenderTexture_generateMipmap(handle: CPointer<Unit>): SfBool
+    func sfRenderTexture_generateMipmap(handle: CPointer<Unit>): Bool
 }
 
 public class RenderTexture <: ResourceHandle & RenderTarget & Equatable<RenderTexture> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init(width: UInt32, height: UInt32, settings!: ContextSettings = ContextSettings()) {
+    public init(size: Vector2u, settings!: ContextSettings = ContextSettings()) {
         var settings2 = settings
-        m_handle = unsafe { sfRenderTexture_createWithSettings(width, height, inout settings2) }
+        m_handle = unsafe { sfRenderTexture_create(size, inout settings2) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
@@ -144,6 +150,14 @@ public class RenderTexture <: ResourceHandle & RenderTarget & Equatable<RenderTe
         unsafe { sfRenderTexture_clear(m_handle, color) }
     }
 
+    public func clearStencil(stencilValue: UInt32): Unit {
+        unsafe { sfRenderTexture_clearStencil(m_handle, stencilValue) }
+    }
+
+    public func clear(color: Color, stencilValue: UInt32): Unit {
+        unsafe { sfRenderTexture_clearColorAndStencil(m_handle, color, stencilValue) }
+    }
+
     public mut prop view: View {
         get() {
             unsafe { View(sfRenderTexture_getView(m_handle), isOwner: false) }
@@ -161,6 +175,10 @@ public class RenderTexture <: ResourceHandle & RenderTarget & Equatable<RenderTe
 
     public func getViewport(view: View): IntRect {
         unsafe { sfRenderTexture_getViewport(m_handle, view.handle) }
+    }
+
+    public func getScissor(view: View): IntRect {
+        unsafe { sfRenderTexture_getScissor(m_handle, view.handle) }
     }
 
     public func mapPixelToCoords(point: Vector2i, view: View): Vector2f {
@@ -213,12 +231,12 @@ public class RenderTexture <: ResourceHandle & RenderTarget & Equatable<RenderTe
 
     public prop isSrgb: Bool {
         get() {
-            unsafe { sfRenderTexture_isSrgb(m_handle).toBool() }
+            unsafe { sfRenderTexture_isSrgb(m_handle) }
         }
     }
 
     public func setActive(active: Bool): Bool {
-        unsafe { sfRenderWindow_setActive(m_handle, SfBool.fromBool(active)).toBool() }
+        unsafe { sfRenderWindow_setActive(m_handle, active) }
     }
 
     public func pushGLStates(): Unit {
@@ -245,31 +263,31 @@ public class RenderTexture <: ResourceHandle & RenderTarget & Equatable<RenderTe
         }
     }
 
-    public static prop maximumAntialiasingLevel: UInt32 {
+    public static prop maximumAntiAliasingLevel: UInt32 {
         get() {
-            unsafe { sfRenderTexture_getMaximumAntialiasingLevel() }
+            unsafe { sfRenderTexture_getMaximumAntiAliasingLevel() }
         }
     }
 
     public mut prop smooth: Bool {
         get() {
-            unsafe { sfRenderTexture_isSmooth(m_handle).toBool() }
+            unsafe { sfRenderTexture_isSmooth(m_handle) }
         }
         set(value) {
-            unsafe { sfRenderTexture_setSmooth(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfRenderTexture_setSmooth(m_handle, value) }
         }
     }
 
     public mut prop repeated: Bool {
         get() {
-            unsafe { sfRenderTexture_isRepeated(m_handle).toBool() }
+            unsafe { sfRenderTexture_isRepeated(m_handle) }
         }
         set(value) {
-            unsafe { sfRenderTexture_setRepeated(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfRenderTexture_setRepeated(m_handle, value) }
         }
     }
 
     public func generateMipmap(): Bool {
-        unsafe { sfRenderTexture_generateMipmap(m_handle).toBool() }
+        unsafe { sfRenderTexture_generateMipmap(m_handle) }
     }
 }

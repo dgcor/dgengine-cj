@@ -3,7 +3,7 @@ package cjsfml.window
 import cjsfml.system.*
 
 foreign {
-    func sfTouch_isDown(finger: UInt32): SfBool
+    func sfTouch_isDown(finger: UInt32): Bool
 
     func sfTouch_getPosition(finger: UInt32, relativeTo: CPointer<Unit>): Vector2i
 
@@ -12,7 +12,7 @@ foreign {
 
 public class Touch {
     public static func isDown(finger: UInt32): Bool {
-        unsafe { sfTouch_isDown(finger).toBool() }
+        unsafe { sfTouch_isDown(finger) }
     }
 
     public static func getPosition(finger: UInt32): Vector2i {

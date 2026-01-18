@@ -140,7 +140,7 @@ public class Panel <: UIObject {
         for (drawable in m_drawables) {
             if (drawable.isClosed() == false) {
                 let itemRect = FloatRect(drawable.drawPosition, drawable.size)
-                if (visibleRect.intersects(itemRect).isSome()) {
+                if (visibleRect.findIntersection(itemRect).isSome()) {
                     drawable.draw(game, target)
                     hasDrawn = true
                 }

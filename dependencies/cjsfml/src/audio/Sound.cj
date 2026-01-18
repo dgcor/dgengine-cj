@@ -3,7 +3,7 @@ package cjsfml.audio
 import cjsfml.system.*
 
 foreign {
-    func sfSound_create(): CPointer<Unit>
+    func sfSound_create(buffer: CPointer<Unit>): CPointer<Unit>
 
     func sfSound_copy(handle: CPointer<Unit>): CPointer<Unit>
 
@@ -15,9 +15,9 @@ foreign {
 
     func sfSound_getBuffer(handle: CPointer<Unit>): CPointer<Unit>
 
-    func sfSound_setLoop(handle: CPointer<Unit>, loop: SfBool): Unit
+    func sfSound_setLooping(handle: CPointer<Unit>, loop: Bool): Unit
 
-    func sfSound_getLoop(handle: CPointer<Unit>): SfBool
+    func sfSound_isLooping(handle: CPointer<Unit>): Bool
 
     func sfSound_play(handle: CPointer<Unit>): Unit
 
@@ -35,7 +35,7 @@ foreign {
 
     func sfSound_setPosition(handle: CPointer<Unit>, position: Vector3f): Unit
 
-    func sfSound_setRelativeToListener(handle: CPointer<Unit>, relative: SfBool): Unit
+    func sfSound_setRelativeToListener(handle: CPointer<Unit>, relative: Bool): Unit
 
     func sfSound_setMinDistance(handle: CPointer<Unit>, distance: Float32): Unit
 
@@ -43,13 +43,15 @@ foreign {
 
     func sfSound_setPlayingOffset(handle: CPointer<Unit>, timeOffset: Time): Unit
 
+    func sfSound_setEffectProcessor(handle: CPointer<Unit>, effectProcessor: EffectProcessor): Unit
+
     func sfSound_getPitch(handle: CPointer<Unit>): Float32
 
     func sfSound_getVolume(handle: CPointer<Unit>): Float32
 
     func sfSound_getPosition(handle: CPointer<Unit>): Vector3f
 
-    func sfSound_isRelativeToListener(handle: CPointer<Unit>): SfBool
+    func sfSound_isRelativeToListener(handle: CPointer<Unit>): Bool
 
     func sfSound_getMinDistance(handle: CPointer<Unit>): Float32
 
@@ -59,19 +61,11 @@ foreign {
 public class Sound <: ResourceHandle & Equatable<Sound> {
     private var m_handle: CPointer<Unit> = CPointer()
 
-    public init() {
-        m_handle = unsafe { sfSound_create() }
-        if (m_handle.isNull()) {
-            throw SFMLNullHandleException()
-        }
-    }
-
     public init(buffer: SoundBuffer) {
-        m_handle = unsafe { sfSound_create() }
+        m_handle = unsafe { sfSound_create(buffer.handle) }
         if (m_handle.isNull()) {
             throw SFMLNullHandleException()
         }
-        unsafe { sfSound_setBuffer(m_handle, buffer.handle) }
     }
 
     private init(handle: CPointer<Unit>) {
@@ -139,10 +133,10 @@ public class Sound <: ResourceHandle & Equatable<Sound> {
 
     public mut prop loop: Bool {
         get() {
-            unsafe { sfSound_getLoop(m_handle).toBool() }
+            unsafe { sfSound_isLooping(m_handle) }
         }
         set(value) {
-            unsafe { sfSound_setLoop(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfSound_setLooping(m_handle, value) }
         }
     }
 
@@ -156,6 +150,13 @@ public class Sound <: ResourceHandle & Equatable<Sound> {
 
     public func stop(): Unit {
         unsafe { sfSound_stop(m_handle) }
+    }
+
+    public func setEffectProcessor(effectProcessor: ?EffectProcessor): Unit {
+        match (effectProcessor) {
+            case Some(effectProcessor) => unsafe { sfSound_setEffectProcessor(m_handle, effectProcessor) }
+            case None => unsafe { sfSound_setEffectProcessor(m_handle, CPointer()) }
+        }
     }
 
     public prop status: SoundStatus {
@@ -193,10 +194,10 @@ public class Sound <: ResourceHandle & Equatable<Sound> {
 
     public mut prop relativeToListener: Bool {
         get() {
-            unsafe { sfSound_isRelativeToListener(m_handle).toBool() }
+            unsafe { sfSound_isRelativeToListener(m_handle) }
         }
         set(value) {
-            unsafe { sfSound_setRelativeToListener(m_handle, SfBool.fromBool(value)) }
+            unsafe { sfSound_setRelativeToListener(m_handle, value) }
         }
     }
 

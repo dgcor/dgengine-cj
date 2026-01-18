@@ -42,13 +42,13 @@ public class ActImageInverseResizeXY <: Action {
                     var rect = image.textureRect
                     var diff = 0i32
                     if (applyToY == false) {
-                        diff = rect.left - newSize
-                        rect.left = newSize
-                        rect.width += diff
+                        diff = rect.position.x - newSize
+                        rect.position.x = newSize
+                        rect.size.x += diff
                     } else {
-                        diff = rect.top - newSize
-                        rect.top = newSize
-                        rect.height += diff
+                        diff = rect.position.y - newSize
+                        rect.position.y = newSize
+                        rect.size.y += diff
                     }
                     image.textureRect = rect
 

@@ -173,7 +173,7 @@ public class Surface <: Resource {
                 texture.close()
                 m_texture = None
             }
-            let texture = RenderTexture(newWidth, newHeight)
+            let texture = RenderTexture(Vector2u(newWidth, newHeight))
             texture.smooth = smoothTexture
             texture.repeated = true
             m_texture = texture
@@ -184,10 +184,10 @@ public class Surface <: Resource {
     protected func updateVisibleArea(): Unit {
         let viewCenter = m_mapView.center
         let viewSize = m_mapView.visibleSize
-        m_visibleRect.left = viewCenter.x - round(viewSize.x / 2.0)
-        m_visibleRect.top = viewCenter.y - round(viewSize.y / 2.0)
-        m_visibleRect.width = round(viewSize.x)
-        m_visibleRect.height = round(viewSize.y)
+        m_visibleRect.position.x = viewCenter.x - round(viewSize.x / 2.0)
+        m_visibleRect.position.y = viewCenter.y - round(viewSize.y / 2.0)
+        m_visibleRect.size.x = round(viewSize.x)
+        m_visibleRect.size.y = round(viewSize.y)
     }
 
     public func draw(target: RenderTarget, states!: RenderStates = RenderStates.default): Unit {
@@ -230,8 +230,8 @@ public class Surface <: Resource {
     public func initialize(game: Game): Unit {
         let desktopMode = VideoMode.desktopMode
         let maxTexSize = max(
-            desktopMode.width * 2,
-            desktopMode.height * 2
+            desktopMode.size.x * 2,
+            desktopMode.size.y * 2
         )
         m_supportsBigTextures = (Texture.maximumSize >= maxTexSize)
         updateVisibleArea()
@@ -287,10 +287,10 @@ public class Surface <: Resource {
                 let sizeDiffX = (Float32(size.x) - drawSize.x) * factor * zoom
                 let sizeDiffY = (Float32(size.y) - drawSize.y) * factor * zoom
                 m_sprite.textureRect = IntRect(
-                    Int32(round(((Float32(size.x) - m_visibleRect.width) * factor) - sizeDiffX)),
-                    Int32(round(((Float32(size.y) - m_visibleRect.height) * factor) - sizeDiffY)),
-                    Int32(round(m_visibleRect.width * (Float32(size.x) / drawSize.x))),
-                    Int32(round(m_visibleRect.height * (Float32(size.y) / drawSize.y)))
+                    Int32(round(((Float32(size.x) - m_visibleRect.size.x) * factor) - sizeDiffX)),
+                    Int32(round(((Float32(size.y) - m_visibleRect.size.y) * factor) - sizeDiffY)),
+                    Int32(round(m_visibleRect.size.x * (Float32(size.x) / drawSize.x))),
+                    Int32(round(m_visibleRect.size.y * (Float32(size.y) / drawSize.y)))
                 )
             }
         }
@@ -314,15 +314,8 @@ public class Surface <: Resource {
             m_texture?.view = m_drawView.view
         } else {
             let newView = m_drawView.view.clone()
-            let newPosition = Vector2f(
-                m_drawView.position.x + viewportOffset.left,
-                m_drawView.position.y + viewportOffset.top
-            )
-            var newViewSize = newView.size
-            newViewSize = Vector2f(
-                newViewSize.x + viewportOffset.width,
-                newViewSize.y + viewportOffset.height
-            )
+            let newPosition = m_drawView.position + viewportOffset.position
+            let newViewSize = newView.size + viewportOffset.size
             newView.size = newViewSize
 
             let drawViewPosition = m_drawView.position

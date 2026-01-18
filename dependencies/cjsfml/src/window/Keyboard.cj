@@ -1,12 +1,11 @@
 package cjsfml.window
 
 import cenum.*
-import cjsfml.system.*
 
 foreign {
-    func sfKeyboard_isKeyPressed(keycode: KeyCode): SfBool
+    func sfKeyboard_isKeyPressed(keycode: KeyCode): Bool
 
-    func sfKeyboard_isScancodePressed(scancode: Scancode): SfBool
+    func sfKeyboard_isScancodePressed(scancode: Scancode): Bool
 
     func sfKeyboard_localize(scancode: Scancode): KeyCode
 
@@ -14,7 +13,7 @@ foreign {
 
     func sfKeyboard_getDescription(scancode: Scancode): CString
 
-    func sfKeyboard_setVirtualKeyboardVisible(visible: SfBool): Unit
+    func sfKeyboard_setVirtualKeyboardVisible(visible: Bool): Unit
 }
 
 @CEnum[public KeyCode](
@@ -276,11 +275,11 @@ foreign {
 
 public class Keyboard {
     public static func isKeyPressed(keycode: KeyCode): Bool {
-        unsafe { sfKeyboard_isKeyPressed(keycode).toBool() }
+        unsafe { sfKeyboard_isKeyPressed(keycode) }
     }
 
     public static func isKeyPressed(scancode: Scancode): Bool {
-        unsafe { sfKeyboard_isScancodePressed(scancode).toBool() }
+        unsafe { sfKeyboard_isScancodePressed(scancode) }
     }
 
     public static func localize(scancode: Scancode): KeyCode {
@@ -296,6 +295,6 @@ public class Keyboard {
     }
 
     public static func setVirtualKeyboardVisible(visible: Bool): Unit {
-        unsafe { sfKeyboard_setVirtualKeyboardVisible(SfBool.fromBool(visible)) }
+        unsafe { sfKeyboard_setVirtualKeyboardVisible(visible) }
     }
 }

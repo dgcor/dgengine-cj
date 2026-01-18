@@ -47,11 +47,6 @@ class TestParseCompositeTexturePack {
     }
 
     static func CHECK_TextureGet(texturePack: TexturePack, tiIndex: Int64, index: UInt32, position: (Int32, Int32),
-        size: (Int32, Int32), palette: ?Palette, offset: ?(Int64, Int64)): Unit {
-        CHECK_TextureGet(texturePack, tiIndex, index, position, size, palette, offset, -1)
-    }
-
-    static func CHECK_TextureGet(texturePack: TexturePack, tiIndex: Int64, index: UInt32, position: (Int32, Int32),
         size: (Int32, Int32), palette: ?Palette, offset: ?(Int64, Int64), tiVecSize: Int32): Unit {
         match (texturePack.getAll(index)) {
             case Some(tiVar) =>
