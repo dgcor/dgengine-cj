@@ -1,10 +1,10 @@
 package shader
 
-import cjsfml.graphics.*
-import cjsfml.system.*
-import cjsfml.window.*
+import cjsfml.graphics.{Color, Font, RenderWindow, Shader, Sprite, Text, Texture}
+import cjsfml.system.{Clock, Time, Vector2f, Vector2u}
+import cjsfml.window.{Event, KeyCode, Mouse, VideoMode, WindowStyle}
 
-main(): Int64 {
+main(): Int64 { // cjlint-ignore !G.FUN.01 function too long
     try {
         // Exit early if shaders are not available
         if (!Shader.isAvailable) {
@@ -32,7 +32,7 @@ main(): Int64 {
         let effectNames = ["Pixelate", "Wave + Blur", "Storm + Blink", "Edge Post-effect", "Geometry Shader Billboards"]
 
         // Index of currently selected effect
-        var current = 0
+        var current = 0 // cjlint-ignore !G.VAR.02 minimize scope
 
         // Create the messages background
         let textBackgroundTexture = Texture("resources/text-background.png")
@@ -98,7 +98,7 @@ main(): Int64 {
 
                 // Clear the window
                 if (currentEffect is Edge) {
-                    window.clear(Color.white)
+                    window.clear(Color.WHITE)
                 } else {
                     window.clear(Color(50, 50, 50))
                 }
