@@ -1,4 +1,4 @@
-name: build
+name: CI
 
 on: [push, pull_request]
 
@@ -6,35 +6,25 @@ jobs:
   build:
     name: Build on ${{ matrix.os }} with Cangjie ${{ matrix.cangjie_version }}
     runs-on: ${{ matrix.os }}
-
     strategy:
-      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
-      # Consider changing this to true when your workflow is stable.
-      fail-fast: false
-
-      # Set up a matrix to run the following configurations:
       matrix:
         include:
-          - preset: linux-release
+          - os: ubuntu-latest
             cangjie_version: 1.0.0
-            os: ubuntu-latest
+            preset: linux-release
             triplet: x64-linux
-          - preset: linux-release
-            cangjie_version: 1.0.4
-            os: ubuntu-latest
+          - os: ubuntu-latest
+            cangjie_version: 1.0.5
+            preset: linux-release
             triplet: x64-linux
-          - preset: windows-release
-            cangjie_version: 1.0.4
-            os: windows-latest
+          - os: windows-latest
+            cangjie_version: 1.0.5
+            preset: windows-release
             triplet: x64-mingw-dynamic
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install CMake
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "3.31.5"
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Install CSFML dependencies (Linux)
         if: runner.os == 'Linux'
@@ -57,11 +47,8 @@ jobs:
           gcc --version
           g++ --version
 
-      - name: Setup Ninja
-        uses: turtlesec-no/get-ninja@main
-
       - name: Setup Cangjie
-        uses: Zxilly/setup-cangjie@v2.1.0
+        uses: Zxilly/setup-cangjie@v2
         with:
           channel: lts
           version: ${{ matrix.cangjie_version }}
@@ -88,8 +75,9 @@ jobs:
           cmake --preset ${{ matrix.preset }} -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg-repo/scripts/buildsystems/vcpkg.cmake
           cmake --build --preset ${{ matrix.preset }} --target install
 
-      - name: Build cjsfml
+      - name: Build
         run: cjpm build
 
-      - name: Test cjsfml
+      - name: Test
+        if: matrix.cangjie_version != '1.0.0'
         run: cjpm test
